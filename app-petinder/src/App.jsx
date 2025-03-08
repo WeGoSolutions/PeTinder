@@ -1,11 +1,17 @@
-import SignupForm from "./pages/cadastro"; // Importa automaticamente do index.jsx
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignupForm from "./pages/cadastro/index";
+import LoginForm from "./pages/login/login";
 
-function App() {
-  return (
-    <div>
-      <SignupForm />
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<SignupForm />} />
+                <Route path="/login" element={<LoginForm />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;
