@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import { GlobalStyle } from "./style";
+import { useNavigate } from "react-router-dom";
 import {
     BackgroundContainer,
     FormContainer,
@@ -33,6 +34,8 @@ const SignupForm = () => {
         senha: "",
         confirmarSenha: ""
     });
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -104,6 +107,9 @@ const SignupForm = () => {
             });
             setDate(null);
             setIsChecked(false);
+
+            // Redireciona para a página de login
+            navigate("/login");
         } catch (error) {
             console.error("Erro:", error);
             alert(error.message);

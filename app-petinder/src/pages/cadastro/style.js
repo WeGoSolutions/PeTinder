@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-import background from "/assets/fundo.png";
+import background from "/assets/Cadastro/fundo.png";
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -15,8 +15,8 @@ export const BackgroundContainer = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  width: 100vw;
   height: 100vh;
+  Width: 100vw;
   display: flex;
   justify-content: flex-start; /* Alinha ao início da tela */
   align-items: center;
@@ -27,7 +27,7 @@ export const BackgroundContainer = styled.div`
 export const ImageContainer = styled.div`
   width: 553px; /* Ajusta o tamanho da imagem para ocupar metade da tela */
   height: 80%; /* Faz a altura ocupar a tela toda */
-  background-image: url("/assets/cao-cadastro.png");
+  background-image: url("/assets/Cadastro/cao-cadastro.png");
   background-size: cover;
   background-position: center;
 `;
@@ -108,7 +108,7 @@ font-family: 'Poppins', sans-serif;
   /* Ícone do calendário */
   &::before {
     content: ""; /* Adiciona um elemento visual */
-    background-image: url("/assets/icone-calendario.png"); 
+    background-image: url("/assets/Cadastro/icone-calendario.png"); 
     background-size: contain;
     background-repeat: no-repeat;
     width: 20px;
