@@ -10,6 +10,7 @@ import {
     Input,
     InputAlignDate,
     InputDate,
+    Text
 } from "./style";
 import { capitalizar, validarMaiorDeIdade, formatarCPF, formatarCNPJ, formatarTelefone, formatarCEP } from "../../utils";
 
@@ -123,10 +124,11 @@ const DemonstrationForm = () => {
                                 required
                             />
                             <FloatingLabel hasContent={formValues.telefone !== ""}>
-                            Formatação de Telefone
+                                Formatação de Telefone
                             </FloatingLabel>
                         </InputAlign>
 
+                        <Text>Data de Nascimento</Text>
                         <InputAlignDate>
                             <InputDate
                                 type="date"
@@ -136,8 +138,8 @@ const DemonstrationForm = () => {
                                 onChange={handleChange}
                                 required
                             />
-                            <p>Idade: {ageValidation.idade ? ageValidation.idade : "..."}</p>
-                            <p>+21: {ageValidation.ehMaiorDeIdade ? "Sim" : "Não"}</p>
+                            <p>Idade: {ageValidation.idade !== "" ? ageValidation.idade : "..."}</p>
+                            <p>+21: {ageValidation.ehMaiorDeIdade !== "" ? (ageValidation.ehMaiorDeIdade ? "Sim" : "Não") : "..."}</p>
                         </InputAlignDate>
 
                     </InputContainer>
