@@ -86,6 +86,13 @@ export const Input = styled.input`
   }
 `;
 
+export const Text = styled.p`
+  display: flex;
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: 600; 
+`;
+
 export const InputDate = styled.input`
   font-family: 'Poppins', sans-serif;
   color: #000;
