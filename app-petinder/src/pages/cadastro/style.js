@@ -23,23 +23,26 @@ export const BackgroundContainer = styled.div`
   padding-left: 100px; /* Adiciona uma margem grande à esquerda */
 `;
 
-// Novo componente para a imagem do lado direito
 export const ImageContainer = styled.div`
-  width: 553px; /* Ajusta o tamanho da imagem para ocupar metade da tela */
-  height: 80%; /* Faz a altura ocupar a tela toda */
+  width: 553px;
+  height: 90%; 
   background-image: url("/assets/Cadastro/cao-cadastro.png");
   background-size: cover;
   background-position: center;
+  position: relative;
+  z-index: 0; 
 `;
 
 export const FormContainer = styled.div`
   font-family: 'Poppins', sans-serif;
   background: #f7f7f7;
-  padding: 60px;
+  padding: 40px 60px 40px 60px;
   border-radius: 15px;
   width: 553px;
   text-align: center;
   box-shadow: 6px 6px rgb(0, 0, 0);
+  position: relative;
+  z-index: 1; 
 `;
 
 export const Title = styled.h2`
@@ -51,7 +54,6 @@ export const Title = styled.h2`
 export const InputAlign = styled.div`
   position: relative;
   width: 100%;
-  margin: 8px 0;
 `;
 
 export const FloatingLabel = styled.label`
@@ -91,8 +93,10 @@ export const AlignWrapper = styled.div`
   align-items: flex-start; 
 `;
 
-export const DatePickerButton = styled.button`
-font-family: 'Poppins', sans-serif;
+
+
+export const DatePickerButton = styled.div`
+  font-family: 'Poppins', sans-serif;
   width: 100%;
   padding: 12px;
   margin: 8px 0;
@@ -103,11 +107,11 @@ font-family: 'Poppins', sans-serif;
   cursor: pointer;
   display: flex;
   justify-content: flex-start;
-  align-items: center; 
+  align-items: center;
 
   /* Ícone do calendário */
   &::before {
-    content: ""; /* Adiciona um elemento visual */
+    content: "";
     background-image: url("/assets/Cadastro/icone-calendario.png"); 
     background-size: contain;
     background-repeat: no-repeat;
@@ -155,7 +159,15 @@ export const TermsText = styled.p`
   display: flex;
 `;
 
+export const TermsTextLogin = styled.p`
+  font-size: 14px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+`;
+
 export const TermsLink = styled.a`
+  margin-left: 5px;
   color: #8a3b55;
   font-weight: bold;
 `;
@@ -165,7 +177,6 @@ export const AlignButtonWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: flex-end; 
-  padding-top: 20px;
 `;
 
 export const SubmitButton = styled.button`
@@ -226,8 +237,6 @@ export const CloseButton = styled.button`
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  top: 10px;
-  left: 15px; /* Alterado para ficar no canto superior esquerdo */
   color: #000;
 `;
 
