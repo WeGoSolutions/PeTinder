@@ -38,7 +38,7 @@ const LoginForm = () => {
         const { email, senha } = formValues;
     
         try {
-            const response = await fetch(`http://localhost:8080/usuarios?email=${email}&senha=${senha}`, {
+            const response = await fetch(`http://localhost:8080/users?email=${email}&senha=${senha}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -56,7 +56,7 @@ const LoginForm = () => {
     
                 localStorage.setItem("userId", data[0].id);
     
-                // navigate("/");
+                navigate("/demonstration");
             } else {
                 throw new Error("Email ou senha incorretos.");
             }

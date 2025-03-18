@@ -85,7 +85,7 @@ const SignupForm = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/usuarios", {
+            const response = await fetch("http://localhost:8080/users", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -192,6 +192,7 @@ const SignupForm = () => {
                     <AlignWrapper>
 
                         <DatePicker
+                            name="dataNasc"
                             selected={date}
                             onChange={(selectedDate) => setDate(selectedDate)}
                             dateFormat="dd/MM/yyyy"
@@ -222,7 +223,7 @@ const SignupForm = () => {
                     </AlignButtonWrapper>
 
                     <TermsTextLogin>
-                        Já possui conta? Clique aqui para entrar no <TermsLink href="#" to="/login">PeTinder</TermsLink>!
+                        Já possui conta? Clique aqui para entrar no <TermsLink onClick={() => navigate("/login")}>PeTinder</TermsLink>!
                     </TermsTextLogin>
                 </FormContainer>
 
