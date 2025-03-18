@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import { GlobalStyle } from "./style";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ import {
     AlignWrapper,
     DatePickerButton,
     TermsText,
+    TermsTextLogin,
     CheckboxWrapper,
     HiddenCheckbox,
     StyledCheckbox,
@@ -84,7 +85,7 @@ const SignupForm = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/usuarios", {
+            const response = await fetch("http://localhost:8080/users", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -116,11 +117,20 @@ const SignupForm = () => {
         }
     };
 
+    const CustomDateInput = forwardRef(({ value, onClick }, ref) => (
+        <DatePickerButton onClick={onClick} ref={ref}>
+            {value || "Data de Nascimento"}
+        </DatePickerButton>
+    ));
+
     return (
         <>
             <GlobalStyle />
             <BackgroundContainer>
                 <FormContainer onSubmit={handleSubmit}>
+                    <AlignWrapper>
+                        <CloseButton><img src="/assets/Cadastro/sair.png" alt="" /></CloseButton>
+                    </AlignWrapper>
                     <Title>PeTinder</Title>
 
                     <InputAlign>
@@ -180,16 +190,23 @@ const SignupForm = () => {
                     </InputAlign>
 
                     <AlignWrapper>
+
                         <DatePicker
+                            name="dataNasc"
                             selected={date}
                             onChange={(selectedDate) => setDate(selectedDate)}
                             dateFormat="dd/MM/yyyy"
-                            customInput={
-                                <DatePickerButton>
-                                    {date ? date.toLocaleDateString("pt-BR") : "Data de Nascimento"}
-                                </DatePickerButton>
-                            }
+                            customInput={<CustomDateInput />}
                             popperPlacement="bottom"
+
+                            // Para permitir escolher mês e ano diretamente
+                            showMonthDropdown
+                            showYearDropdown
+                            dropdownMode="select"
+
+                            // Limitar anos (ex: de 1900 até o ano atual)
+                            minDate={new Date(1900, 0, 1)}
+                            maxDate={new Date()}
                         />
 
                         <TermsText>
@@ -197,13 +214,17 @@ const SignupForm = () => {
                                 <HiddenCheckbox checked={isChecked} onChange={handleCheckboxChange} />
                                 <StyledCheckbox checked={isChecked} />
                             </CheckboxWrapper>
-                            Aceito os <TermsLink href="#">Termos de condição</TermsLink>.
+                            Li e aceito os <TermsLink href="#">Termos de condição</TermsLink>.
                         </TermsText>
                     </AlignWrapper>
 
                     <AlignButtonWrapper>
                         <SubmitButton onClick={handleSubmit}>Criar Conta</SubmitButton>
                     </AlignButtonWrapper>
+
+                    <TermsTextLogin>
+                        Já possui conta? Clique aqui para entrar no <TermsLink onClick={() => navigate("/login")}>PeTinder</TermsLink>!
+                    </TermsTextLogin>
                 </FormContainer>
 
                 <ImageContainer />
@@ -213,7 +234,10 @@ const SignupForm = () => {
             {isModalOpen && (
                 <ModalContainer>
                     <ModalContent>
+                        <AlignWrapper>
                         <CloseButton onClick={() => setIsModalOpen(false)}>✖</CloseButton>
+
+                        </AlignWrapper>
                         <h2>IMPORTANTE</h2>
                         <p>O abandono, a negligência, a falta de alimentação, a soltura irresponsável e o tratamento inadequado de animais são formas de maus-tratos, sujeitas a penalidades conforme o artigo 32 da Lei Federal 9.605/1998 (Lei de Crimes Ambientais) e a Lei Municipal 13.131/2001 (Lei de Posse Responsável). Em caso de dúvidas, busque sempre orientação de profissionais qualificados, evitando informações de fontes não especializadas.</p>
                         <SubmitButton onClick={handleConfirmSubmit}>Estou Ciente</SubmitButton>
