@@ -15,6 +15,7 @@ function FormInput(props) {
                 disabled={props.disabled}
             />
             <label htmlFor={props.name}>{props.label}</label>
+            {props.error && <span className="error-message">{props.error}</span>}
         </div>
     );
 }

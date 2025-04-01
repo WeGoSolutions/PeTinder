@@ -12,17 +12,20 @@
 .container {
     padding: 10px 50px;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;    
     background-image: url(../../../assets/Cadastro/fundo.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .backgroundImage {
     background-image: url(../../../assets/Cadastro/cao-cadastro.png);
     background-size: 45rem;
-    background-position: 27rem;
+    background-position: 40rem;
     background-repeat: no-repeat;
 }
 
@@ -63,19 +66,19 @@ span {
     width: 80%;
 }
 
-
 .registerContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     background: var(--backgroundColor);
-    padding: 30px;
+    padding: 15px 30px 15px 30px;
     border-radius: 15px;
     width: 550px;
-    height: 625px;
+    min-height: 605px;
     text-align: center;
     box-shadow: 6px 6px rgb(0, 0, 0);
+    margin-left: 12%;
 }
 
 .containerGap {
@@ -129,10 +132,12 @@ span {
     width: 100%;
 }
 
-.closeButton {
+.closeButton img{
     cursor: pointer;
-    font-size: 20px;
+    height: 20px;
+    width: 20px;
     font-weight: bold;
+    margin-top: 8px;
 }
 
 .termsLabel {
