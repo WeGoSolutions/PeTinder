@@ -19,15 +19,117 @@ function Cadastro() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        // console.log(`Campo alterado: ${name}, Valor: ${value}`); // Adicione este log
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: value,
         }));
+    
+        if (errors[name]) {
+            const inputElement = document.getElementById(name);
+            if (inputElement) {
+                inputElement.style.border = "2px solid black"; // Volta ao normal
+                inputElement.closest(".input-container")?.classList.remove("error");
+            }
+    
+            setErrors((prevErrors) => {
+                const updatedErrors = { ...prevErrors };
+                delete updatedErrors[name];
+                return updatedErrors;
+            });
+        }
     };
+    
 
+    const [errors, setErrors] = useState({});
+    
+    const validateForm = () => {
+        let newErrors = {};
+
+        const resetInputStyle = (id) => {
+            const inputElement = document.getElementById(id);
+            if (inputElement) {
+                inputElement.style.border = "2px solid black";
+                inputElement.closest(".input-container").classList.remove("error");
+            }
+        };
+
+        const setErrorStyle = (id) => {
+            const inputElement = document.getElementById(id);
+            if (inputElement) {
+                inputElement.style.border = "2px solid red";
+                inputElement.closest(".input-container").classList.add("error");
+            }
+        };
+
+        if (!formValues.nome.trim()) {
+            newErrors.nome = "O nome é obrigatório.";
+            setErrorStyle("nome");
+        } else {
+            resetInputStyle("nome");
+        }
+
+        if (!formValues.email.trim()) {
+            newErrors.email = "O email é obrigatório.";
+            setErrorStyle("email");
+        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+            newErrors.email = "Email inválido. Verifique o formato.";
+            setErrorStyle("email");
+        } else {
+            resetInputStyle("email");
+        }
+
+        if (!formValues.senha.trim()) {
+            newErrors.senha = "A senha é obrigatória.";
+            setErrorStyle("senha");
+        } else if (formValues.senha.length < 8) {
+            newErrors.senha = "A senha deve ter pelo menos 8 caracteres.";
+            setErrorStyle("senha");
+        } else {
+            resetInputStyle("senha");
+        }
+
+        if (formValues.confSenha !== formValues.senha) {
+            newErrors.confSenha = "As senhas não coincidem.";
+            setErrorStyle("confSenha");
+        } else {
+            resetInputStyle("confSenha");
+        }
+
+        if (!formValues.dataNasc) {
+            newErrors.dataNasc = "A data de nascimento é obrigatória.";
+            setErrorStyle("dataNasc");
+        } else {
+            resetInputStyle("dataNasc");
+        }
+
+        if (!formValues.dataNasc) {
+            newErrors.dataNasc = "A data de nascimento é obrigatória.";
+            setErrorStyle("dataNasc");
+        } else {
+            const birthDate = new Date(formValues.dataNasc);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            const dayDiff = today.getDate() - birthDate.getDate();
+        
+            const adjustedAge = monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0) ? age : age - 1;
+        
+            if (adjustedAge < 21) {
+                newErrors.dataNasc = "Você deve ter pelo menos 21 anos.";
+                setErrorStyle("dataNasc");
+            } else {
+                resetInputStyle("dataNasc");
+            }
+        }
+        
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+    
     const handleConfirmSubmit = async (e) => {
         e.preventDefault();
+
 
         if (!isChecked) {
             alert("Você precisa aceitar os Termos de condição.");
@@ -57,7 +159,7 @@ function Cadastro() {
             });
 
             if (!response.ok) {
-                const errorMessage = await response.text();
+                // const errorMessage = await response.text();
                 throw new Error(`Erro ao criar conta: ${errorMessage}`);
             }
 
@@ -85,7 +187,7 @@ function Cadastro() {
                 <div className={styles.registerContainer}>
                     <div className={styles.closeButtonWrapper}>
                         <div className={styles.closeButton} onClick={() => Navigate("/")}>
-                            X
+                            <img src="./assets/closeButton.png" alt="" />
                         </div>
                     </div>
                     <form className={styles.registerForm} onSubmit={handleConfirmSubmit}>
@@ -103,6 +205,7 @@ function Cadastro() {
                                     required
                                     value={formValues.nome}
                                     onChange={handleInputChange}
+                                    error={errors.nome}
                                 />
                                 <FormInput
                                     id="email"
@@ -112,6 +215,7 @@ function Cadastro() {
                                     required
                                     value={formValues.email}
                                     onChange={handleInputChange}
+                                    error={errors.email}
                                 />
                                 <FormInput
                                     id="senha"
@@ -121,6 +225,7 @@ function Cadastro() {
                                     required
                                     value={formValues.senha}
                                     onChange={handleInputChange}
+                                    error={errors.senha}
                                 />
                                 <FormInput
                                     id="confSenha"
@@ -130,6 +235,7 @@ function Cadastro() {
                                     required
                                     value={formValues.confSenha}
                                     onChange={handleInputChange}
+                                    error={errors.confSenha}
                                 />
                                 <div className={styles.registerFormRow}>
                                     <FormInput
@@ -140,6 +246,7 @@ function Cadastro() {
                                         required
                                         value={formValues.dataNasc}
                                         onChange={handleInputChange}
+                                        error={errors.dataNasc}
                                     />
                                 </div>
                             </div>
@@ -155,7 +262,7 @@ function Cadastro() {
                                 Li e aceito os <a href="#" className={styles.termsLink}>Termos de condição</a>
                             </label>
                         </div>
-                        <div className={styles.registerButtonWrapper}>
+                        <div onClick={validateForm} className={styles.registerButtonWrapper}>
                             <PrimaryButton type="submit" text="Criar conta" />
                         </div>
                         <div className={styles.registerLinkWrapper}>
