@@ -6,20 +6,79 @@ import SecondaryButton from "../../components/SecondaryButton";
 import styles from './login.module.css';
 
 function Login() {
-
     const Navigate = useNavigate();
+    const [formValues, setFormValues] = useState({ email: "", senha: "" });
+    const [errors, setErrors] = useState({});
+
+    // Função para estilizar os inputs
+    const setErrorStyle = (id) => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            inputElement.style.border = "2px solid red";
+            inputElement.closest(".input-container")?.classList.add("error");
+        }
+    };
+
+    const resetInputStyle = (id) => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            inputElement.style.border = "2px solid black";
+            inputElement.closest(".input-container")?.classList.remove("error");
+        }
+    };
+
+    // Função de validação
+    const validateForm = () => {
+        let newErrors = {};
+
+        if (!formValues.email.trim()) {
+            newErrors.email = "O email é obrigatório.";
+            setErrorStyle("email");
+        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
+            newErrors.email = "Formato de email inválido.";
+            setErrorStyle("email");
+        } else {
+            resetInputStyle("email");
+        }
+
+        if (!formValues.senha.trim()) {
+            newErrors.senha = "A senha é obrigatória.";
+            setErrorStyle("senha");
+        } else {
+            resetInputStyle("senha");
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // Atualiza valores dos inputs e remove erro enquanto o usuário digita
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+
+        if (errors[name]) {
+            resetInputStyle(name);
+            setErrors((prevErrors) => {
+                const updatedErrors = { ...prevErrors };
+                delete updatedErrors[name];
+                return updatedErrors;
+            });
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const { email, senha } = e.target.elements;
-        if (!email.value || !senha.value) {
-            alert("Por favor, preencha todos os campos.");
+        if (!validateForm()) {
             return;
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/users?email${email.value}&senha=${senha.value}`, {
+            const response = await fetch(`http://localhost:8080/users?email=${formValues.email}&senha=${formValues.senha}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
@@ -31,8 +90,6 @@ function Login() {
             }
 
             const data = await response.json();
-            console.log(data);
-
             if (data.length === 1) {
                 console.log("Login realizado com sucesso!", data[0]);
                 localStorage.setItem("userId", data[0].id);
@@ -58,19 +115,39 @@ function Login() {
                         <img src="./Logo.svg" alt="" />
                         <h1 className={styles.loginTitle}>PeTinder</h1>
                     </div>
-                    <FormInput id={"email"} name={"email"} label={"Email"} type={"email"} required disabled={false} />
-                    <FormInput id={"senha"} name={"senha"} label={"Senha"} type={"password"} required disabled={false} />
+                    <FormInput
+                        id="email"
+                        name="email"
+                        label="Email"
+                        type="email"
+                        required
+                        value={formValues.email}
+                        onChange={handleInputChange}
+                        error={errors.email}
+                    />
+                    <FormInput
+                        id="senha"
+                        name="senha"
+                        label="Senha"
+                        type="password"
+                        required
+                        value={formValues.senha}
+                        onChange={handleInputChange}
+                        error={errors.senha}
+                    />
                     <div className={styles.loginLinkWrapper}>
-                        <span>Criar conta no </span><a onClick={() => Navigate("/cadastro")} className={styles.loginLink}>PeTinder</a>
+                        <span>Criar conta no </span>
+                        <a onClick={() => Navigate("/cadastro")} className={styles.loginLink}>PeTinder</a>
                     </div>
-                    <div className={styles.loginButtonWrapper}>
-                        <PrimaryButton type={"submit"} text={"Entrar"} />
-                        <SecondaryButton type={"button"} text={"Esqueci a senha"} />
+                    <div onClick={validateForm}
+                        className={styles.loginButtonWrapper}>
+                        <PrimaryButton type="submit" text="Entrar" />
+                        <SecondaryButton type="button" text="Esqueci a senha" />
                     </div>
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
 export default Login;
