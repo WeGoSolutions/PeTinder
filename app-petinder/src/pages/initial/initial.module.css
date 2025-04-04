@@ -1,0 +1,11 @@
+:root {
+    --backgroundColor: #F4F4F4;
+    --primaryColor: #FFC0D9;
+    --secondaryColor: #80465D;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;  
+    background-color: var(--secondaryColor);
+}
