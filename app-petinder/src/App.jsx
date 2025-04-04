@@ -4,6 +4,7 @@ import Index from "./pages/index/index";
 import Cadastro from "./pages/cadastro/cadastro";
 import Login from "./pages/login/login";
 import DemonstrationForm from "./pages/demonstration/demonstration"
+import Initial from "./pages/initial/initial";
 
 const App = () => {
     return (
@@ -12,6 +13,7 @@ const App = () => {
                 <Route path="/" element={<Index />} />
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/initial" element={<Initial />} />
                 <Route path="/demonstration" element={<DemonstrationForm />} />
             </Routes>
         </Router>
