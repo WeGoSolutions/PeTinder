@@ -10,7 +10,6 @@ function Login() {
     const [formValues, setFormValues] = useState({ email: "", senha: "" });
     const [errors, setErrors] = useState({});
 
-    // Função para estilizar os inputs
     const setErrorStyle = (id) => {
         const inputElement = document.getElementById(id);
         if (inputElement) {
@@ -27,15 +26,11 @@ function Login() {
         }
     };
 
-    // Função de validação
     const validateForm = () => {
         let newErrors = {};
 
         if (!formValues.email.trim()) {
             newErrors.email = "O email é obrigatório.";
-            setErrorStyle("email");
-        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-            newErrors.email = "Formato de email inválido.";
             setErrorStyle("email");
         } else {
             resetInputStyle("email");
@@ -52,7 +47,6 @@ function Login() {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Atualiza valores dos inputs e remove erro enquanto o usuário digita
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues((prevValues) => ({
@@ -107,7 +101,7 @@ function Login() {
             <div className={styles.loginContainer}>
                 <div className={styles.closeButtonWrapper}>
                     <div className={styles.closeButton} onClick={() => Navigate("/")}>
-                        X
+                        <img src="./assets/closeButton.png" alt="" />
                     </div>
                 </div>
                 <form className={styles.loginForm} onSubmit={handleSubmit}>

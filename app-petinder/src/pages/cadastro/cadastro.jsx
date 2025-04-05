@@ -38,7 +38,6 @@ function Cadastro() {
             });
         }
     };
-    
 
     const [errors, setErrors] = useState({});
     
