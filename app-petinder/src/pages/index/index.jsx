@@ -1,12 +1,12 @@
 import Footer from "../../components/Footer";
-import NavBar from "../../components/NavBar";
+import NavBarIndex from "../../components/NavBarIndex";
 import TextCard from "../../components/TextCard";
 import styles from './index.module.css';
 
 function Index() {
   return (
     <div className={styles.indexContainer}>
-        <NavBar />
+        <NavBarIndex />
         <div className={styles.firstSection}>
           <div className={styles.titles}>
             <span className={styles.title}>PeTinder</span>

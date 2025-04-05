@@ -1,9 +1,9 @@
 import "./components.css";
 
-function PrimaryButton(props) {
+function NavBar(props) {
     return (
         <button type={props.type} className="primary-button">{props.text}</button>
     )
 }
 
-export default PrimaryButton;
+export default NavBar;
