@@ -10,7 +10,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    
+
 }
 
 .input-container input {
@@ -94,4 +94,135 @@
         border: var(--secondaryColor);
         background: var(--secondaryColor);
     }
+}
+
+.navBar {
+    background-color: var(--primaryColor);
+    height: 81px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    border-bottom: 2px solid var(--secondaryColor);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 51px;
+    height: 53px;
+}
+
+.logo span {
+    font-size: 30px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--secondaryColor);
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.buttons button {
+    background-color: #fff;
+    border-radius: 15px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border: none;
+    padding: 10px;
+    width: 200px;
+}
+
+.buttons button:hover {
+    background-color: var(--secondaryColor);
+    color: var(--backgroundColor);
+    transition: background 0.5s;
+    cursor: pointer;
+}
+
+.textCard{
+    height: 393px;
+    width: 800px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+    position: absolute;
+    left: 42%;
+    top: 147%;
+}
+
+.textCard p{
+    font-size: 17px;
+    font-weight: semibold;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.textCard span{
+    font-size: 17px;
+    font-weight: semibold;
+    color: #f8126e;
+}
+
+.footer{
+    background-color: var(--secondaryColor);
+    height: 350px;
+    width: 100%;
+    position: absolute;
+    top: 219%;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+}
+
+.logoClara {
+    display: flex;
+    align-items: center;
+}
+
+.logoClara img {
+    width: 71px;
+    height: 73px;
+}
+
+.logoClara span {
+    font-size: 50px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--primaryColor);
+}
+
+.footerText{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.footerText span{
+    font-size: 18px;
+    font-weight: light;
+    color: var(--primaryColor);
+}
+
+.footerText img{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.redesSociais{
+    margin-top: 10px;
 }
