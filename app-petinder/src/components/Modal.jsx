@@ -5,6 +5,7 @@ import ModalCodigo from "./ModalCodigo";
 import { useState } from "react";
 
 import emailjs from '@emailjs/browser';
+import { serviceID, templateID, publicKey } from "../provider/apiInstance"
 
 export default function Modal(props) {
     const [openModalCodigo, setOpenModalCodigo] = useState(false);
@@ -45,10 +46,10 @@ export default function Modal(props) {
             setCodigo(codigo);
 
             emailjs.send(
-                'service_yjif6m9',
-                'template_w7bmpvc',
+                serviceID,
+                templateID,
                 templateParams,
-                'i-8NIqNC4S7DXzEPh'
+                publicKey
             ).then(
                 (response) => {
                     console.log('Email enviado com sucesso!', response.status, response.text);
@@ -73,6 +74,8 @@ export default function Modal(props) {
         } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
             newErrors.email = "Digite um email válido.";
             setErrorStyle("emailredefinir");
+        } else {
+            resetInputStyle("emailredefinir");
         }
 
         setErrors(newErrors);
@@ -84,6 +87,14 @@ export default function Modal(props) {
         if (inputElement) {
             inputElement.style.border = "2px solid red";
             inputElement.closest(".input-container")?.classList.add("error");
+        }
+    };
+
+    const resetInputStyle = (id) => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            inputElement.style.border = "2px solid black";
+            inputElement.closest(".input-container")?.classList.remove("error");
         }
     };
 
