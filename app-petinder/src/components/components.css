@@ -153,7 +153,7 @@
     cursor: pointer;
 }
 
-.textCard{
+.textCard {
     height: 393px;
     width: 800px;
     background-color: #fff;
@@ -165,20 +165,20 @@
     top: 147%;
 }
 
-.textCard p{
+.textCard p {
     font-size: 17px;
     font-weight: semibold;
     gap: 10px;
     margin-top: 20px;
 }
 
-.textCard span{
+.textCard span {
     font-size: 17px;
     font-weight: semibold;
     color: #f8126e;
 }
 
-.footer{
+.footer {
     background-color: var(--secondaryColor);
     height: 350px;
     width: 100%;
@@ -205,25 +205,25 @@
     color: var(--primaryColor);
 }
 
-.footerText{
+.footerText {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
 }
 
-.footerText span{
+.footerText span {
     font-size: 18px;
     font-weight: light;
     color: var(--primaryColor);
 }
 
-.footerText img{
+.footerText img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
 }
 
-.redesSociais{
+.redesSociais {
     margin-top: 10px;
 }
 
@@ -517,8 +517,7 @@
 }
 
 .actionsContainer .left:hover {
-    background-color: #87bb80
-    ;
+    background-color: #87bb80;
 }
 
 .like {
@@ -587,7 +586,7 @@
     cursor: pointer;
 }
 
-.textCard{
+.textCard {
     height: 393px;
     width: 800px;
     background-color: #fff;
@@ -599,20 +598,20 @@
     top: 147%;
 }
 
-.textCard p{
+.textCard p {
     font-size: 17px;
     font-weight: semibold;
     gap: 10px;
     margin-top: 20px;
 }
 
-.textCard span{
+.textCard span {
     font-size: 17px;
     font-weight: semibold;
     color: #f8126e;
 }
 
-.footer{
+.footer {
     background-color: var(--secondaryColor);
     height: 350px;
     width: 100%;
@@ -639,24 +638,194 @@
     color: var(--primaryColor);
 }
 
-.footerText{
+.footerText {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
 }
 
-.footerText span{
+.footerText span {
     font-size: 18px;
     font-weight: light;
     color: var(--primaryColor);
 }
 
-.footerText img{
+.footerText img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
 }
 
-.redesSociais{
+.redesSociais {
     margin-top: 10px;
+}
+
+.modalBackground {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+
+    .modal {
+        width: 547px;
+        height: 250px;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color: var(--backgroundColor);
+        padding: 30px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 6px 6px rgb(0, 0, 0);
+
+        .closeButtonModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+
+            img {
+                width: 25px;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1;
+
+            }
+        }
+
+        .modalContent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+
+            h1 {
+                font-size: 22px;
+                font-weight: 600;
+            }
+
+        }
+
+
+    }
+}
+
+.codeContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+
+    .codeInput {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 24px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+            border-color: var(--secondaryColor);
+        }
+    }
+}
+
+.modalPassword {
+    width: 547px;
+    height: 320px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--backgroundColor);
+    padding: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+
+    .closeButtonModal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        cursor: pointer;
+
+        img {
+            width: 25px;
+        }
+
+        span {
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1;
+
+        }
+    }
+
+    .modalContent {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+    }
+}
+
+.loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.loading-dots {
+    display: inline-block;
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1.2s steps(3, end) infinite;
+}
+
+@keyframes dots {
+    0% {
+        content: '.';
+    }
+
+    33% {
+        content: '..';
+    }
+
+    66% {
+        content: '...';
+    }
+
+    100% {
+        content: '.';
+    }
 }
