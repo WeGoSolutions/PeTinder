@@ -1,16 +1,19 @@
 import "./components.css";
+import { useNavigate } from "react-router-dom";
 
 function PrimaryButton(props) {
 
+    const Navigate = useNavigate();
+
     function sair() {
         localStorage.clear();
-        window.location.href = "/login";
+        Navigate("/login");
     }
 
 
     return (
         <div className="navContainer">
-            <div className="logo">
+            <div className="logo" onClick={() => Navigate("/")}>
                 <img src="../../Logo.svg" alt="" />
                 <div className="title">
                     <p>PeTinder</p>
