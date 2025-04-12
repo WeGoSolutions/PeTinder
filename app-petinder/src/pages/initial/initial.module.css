@@ -4,6 +4,10 @@
     --secondaryColor: #80465D;
 }
 
+body {
+    overflow-x: hidden;
+}
+
 .container {
     width: 100vw;
     height: 100vh;  

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import PetActions from "../../components/PetActions";
 import PetInfo from "../../components/PetInfo";
+import SideMenu from "../../components/SideMenu";
 import styles from './initial.module.css';
 
 function Initial() {
@@ -51,6 +52,7 @@ function Initial() {
 
     return (
         <div className={styles.container}>
+            <SideMenu />
             <NavBar />
             <div className="appArea">
                 <PetActions 
