@@ -51,20 +51,19 @@
 }
 
 .input-container input[disabled] {
-  background-color: #f1f1f1; /* fundo acinzentado */
-  color: #888;               /* texto mais claro */
-  cursor: not-allowed;       /* cursor com símbolo de proibido */
-  border: 1px solid #ccc;    /* borda mais suave */
+  background-color: #f1f1f1;
+  color: #888;            
+  cursor: not-allowed;      
+  border: 1px solid #ccc;    
 }
 
 .input-container input[disabled]::placeholder {
-  color: #aaa; /* placeholder mais clarinho, se estiver sendo usado */
+  color: #aaa;
 }
 
 .input-container label {
-  color: #888; /* deixa o label mais suave também, opcional */
+  color: #888;  
 }
-
 
 .error-message {
     color: red;

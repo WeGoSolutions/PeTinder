@@ -18,7 +18,6 @@ function Forms() {
         const formData = new FormData();
         formData.append('image', image);
 
-        // Aqui você pode enviar o formData com fetch ou axios
         console.log("Imagem pronta para envio:", image);
     };
 
@@ -32,14 +31,12 @@ function Forms() {
         const { name, checked } = e.target;
 
         if (name === "nao") {
-            // Se marcar "não", desmarca os outros
             setcastradoVacinado({
                 castrado: false,
                 vacinado: false,
                 nao: checked,
             });
         } else {
-            // Se marcar castrado ou vacinado, desmarca o "não"
             setcastradoVacinado((prev) => ({
                 ...prev,
                 [name]: checked,
