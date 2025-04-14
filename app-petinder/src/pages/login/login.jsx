@@ -143,11 +143,9 @@ function Login() {
                         <SecondaryButton type="button" text="Esqueci a senha" />
                     </div>
                 </form>
-                <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}/>
-            </div>
+                <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
 
-            
-            
+            </div>
         </div>
     );
 }

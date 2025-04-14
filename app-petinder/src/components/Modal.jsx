@@ -2,7 +2,7 @@ import "./components.css";
 import FormInput from "./FormInput";
 import SecondaryButton from "./SecondaryButton";
 import ModalCodigo from "./ModalCodigo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import emailjs from '@emailjs/browser';
 import { serviceID, templateID, publicKey } from "../provider/apiInstance"
@@ -12,9 +12,10 @@ export default function Modal(props) {
     const [formValues, setFormValues] = useState({ email: "" });
     const [errors, setErrors] = useState({});
     const [codigo, setCodigo] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     function gerarCodigo() {
-        return Math.floor(10000 + Math.random() * 90000).toString(); // código de 6 dígitos
+        return Math.floor(10000 + Math.random() * 90000).toString();
     }
 
     const handleInputChange = (e) => {
@@ -33,7 +34,6 @@ export default function Modal(props) {
         }
     };
 
-    const [isLoading, setIsLoading] = useState(false); // estado de loading
 
     const changeModal = () => {
         if (validateEmail()) {
@@ -58,7 +58,6 @@ export default function Modal(props) {
                 },
                 (error) => {
                     console.error('Erro ao enviar o email:', error);
-                    alert("Ocorreu um erro ao enviar o código. Tente novamente.");
                 }
             ).finally(() => {
                 setIsLoading(false);
@@ -98,42 +97,53 @@ export default function Modal(props) {
         }
     };
 
+    useEffect(() => {
+        if (props.isOpen) {
+            setFormValues({ email: "" });
+            setErrors({});
+            setCodigo("");
+            resetInputStyle("emailredefinir");
+            setOpenModalCodigo(false);
+        }
+    }, [props.isOpen]);
+
+
     if (props.isOpen) {
         return (
             <div className="modalBackground">
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <div className="closeButtonModal" onClick={props.setModalOpen}>
-                <img src="/left.png" />
-                <span>Voltar</span>
-                </div>
+                <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div className="closeButtonModal" onClick={props.setModalOpen}>
+                        <img src="/left.png" />
+                        <span>Voltar</span>
+                    </div>
 
-                <div className="modalContent">
-                <h1>Redefinição de senha</h1>
-                <FormInput
-                    id="emailredefinir"
-                    name="email"
-                    label="Email"
-                    type="email"
-                    required
-                    value={formValues.email}
-                    onChange={handleInputChange}
-                    error={errors.email}
-                />
-                <div onClick={changeModal}>
-                    <SecondaryButton 
-                    type="button" 
-                    text={
-                        isLoading ? (
-                        <span className="loading-text">
-                            Enviando<span className="loading-dots"></span>
-                        </span>
-                        ) : "Enviar código"
-                    }
-                    />
+                    <div className="modalContent">
+                        <h1>Redefinição de senha</h1>
+                        <FormInput
+                            id="emailredefinir"
+                            name="email"
+                            label="Email"
+                            type="email"
+                            required
+                            value={formValues.email}
+                            onChange={handleInputChange}
+                            error={errors.email}
+                        />
+                        <div onClick={changeModal}>
+                            <SecondaryButton
+                                type="button"
+                                text={
+                                    isLoading ? (
+                                        <span className="loading-text">
+                                            Enviando<span className="loading-dots"></span>
+                                        </span>
+                                    ) : "Enviar código"
+                                }
+                            />
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-            <ModalCodigo isOpen={openModalCodigo} cod={codigo} setModalOpen={() => setOpenModalCodigo(false)} />
+                <ModalCodigo isOpen={openModalCodigo} cod={codigo} setModalOpen={() => setOpenModalCodigo(false)} resendCod={changeModal} onCloseAll={props.onCloseAll} />
             </div>
         );
     }

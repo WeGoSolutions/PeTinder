@@ -709,16 +709,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-evenly;
 
             h1 {
                 font-size: 22px;
                 font-weight: 600;
             }
 
+            .resend{
+                color: gray;
+                /* margin-bottom: 10px; */
+                margin-top: 7px;
+            }
+
+            .resend:hover{
+                color: var(--secondaryColor);
+                cursor: pointer;
+            }
+
+            .invalidCod{
+                color: red;
+                margin: 6px;
+                margin-bottom: 10px;
+            }
+
         }
-
-
     }
 }
 
@@ -726,7 +741,7 @@
     display: flex;
     gap: 10px;
     justify-content: center;
-    margin: 20px 0;
+    margin: 8px 0;
 
     .codeInput {
         width: 50px;
@@ -770,7 +785,7 @@
         cursor: pointer;
 
         img {
-            width: 25px;
+            width: 20px;
         }
 
         span {
