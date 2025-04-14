@@ -50,6 +50,21 @@
     color: #000;
 }
 
+.input-container input[disabled] {
+  background-color: #f1f1f1;
+  color: #888;            
+  cursor: not-allowed;      
+  border: 1px solid #ccc;    
+}
+
+.input-container input[disabled]::placeholder {
+  color: #aaa;
+}
+
+.input-container label {
+  color: #888;  
+}
+
 .error-message {
     color: red;
     font-size: 12px;
