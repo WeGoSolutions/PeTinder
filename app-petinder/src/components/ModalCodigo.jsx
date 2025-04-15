@@ -11,13 +11,25 @@ export default function ModalCodigo(props) {
     const [changeToPassword, setChangeToPassword] = useState(false);
     const [codigoDigitado, setCodigoDigitado] = useState("");
     const [sendingCode, setSendingCode] = useState(false);
+    const [resetInputs, setResetInputs] = useState(0);
 
     const changeModalPassword = () => {
         setSendingCode(true);
+
+        if (!props.isValid) {
+            setCodigoExpiradoStyle();
+            return;
+        }
+
         if (codigoDigitado === props.cod) {
             setChangeToPassword(true);
-        } else {
-            setErrorStyle();
+        }
+    };
+
+    const setCodigoExpiradoStyle = () => {
+        const inputElement = document.getElementById("codigoInput");
+        if (inputElement) {
+            inputElement.style.border = "2px solid orange";
         }
     };
 
@@ -39,20 +51,32 @@ export default function ModalCodigo(props) {
                         id="codigoInput"
                         length={5}
                         onComplete={codigoCompleto}
-                        codigoDigitado={""}
+                        codigoDigitado={codigoDigitado}
+                        reset={resetInputs}
                     />
                     <span className="invalidCod">
-                        {sendingCode && codigoDigitado !== props.cod ? "Código incorreto. Tente novamente." : " "}
+                        {!props.isValid && sendingCode
+                            ? "Código expirado. Reenvie o código."
+                            : sendingCode && codigoDigitado !== props.cod
+                                ? "Código incorreto. Tente novamente."
+                                : " "}
                     </span>
 
                     <div onClick={changeModalPassword}>
                         <SecondaryButton type="button" text="Validar código" />
                     </div>
-                    <span className="resend" onClick={props.resendCod}>Reenviar código</span>
+                    <span className="resend" onClick={() => {
+                        setSendingCode(false);
+                        setCodigoDigitado("");
+                        setResetInputs(prev => prev + 1);
+                        props.resendCod();
+                    }}>
+                        Reenviar código
+                    </span>
 
                 </div>
             </div>
-            <NewPassword passwordOpen={changeToPassword} setPasswordOpen={() => setChangeToPassword(false)} onCloseAll={props.onCloseAll}/>
+            <NewPassword passwordOpen={changeToPassword} setPasswordOpen={() => setChangeToPassword(false)} onCloseAll={props.onCloseAll} />
         </div>
     );
 }

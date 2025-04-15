@@ -12,6 +12,7 @@ export default function Modal(props) {
     const [formValues, setFormValues] = useState({ email: "" });
     const [errors, setErrors] = useState({});
     const [codigo, setCodigo] = useState("");
+    const [isValid, setIsValid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     function gerarCodigo() {
@@ -34,7 +35,6 @@ export default function Modal(props) {
         }
     };
 
-
     const changeModal = () => {
         if (validateEmail()) {
             setIsLoading(true);
@@ -44,6 +44,10 @@ export default function Modal(props) {
                 codigo: codigo
             };
             setCodigo(codigo);
+            setIsValid(true);
+            setTimeout(() => {
+                setIsValid(false);
+            }, 60000);
 
             emailjs.send(
                 serviceID,
@@ -143,7 +147,14 @@ export default function Modal(props) {
                         </div>
                     </div>
                 </div>
-                <ModalCodigo isOpen={openModalCodigo} cod={codigo} setModalOpen={() => setOpenModalCodigo(false)} resendCod={changeModal} onCloseAll={props.onCloseAll} />
+                <ModalCodigo
+                    isOpen={openModalCodigo}
+                    cod={codigo}
+                    setModalOpen={() => setOpenModalCodigo(false)}
+                    resendCod={changeModal}
+                    onCloseAll={props.onCloseAll}
+                    isValid={isValid}
+                />
             </div>
         );
     }

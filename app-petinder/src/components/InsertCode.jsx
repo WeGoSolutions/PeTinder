@@ -1,9 +1,16 @@
 import { useRef } from "react";
 import "./components.css";
+import { useEffect } from "react";
 
-export default function InsertCode({ length = 5, onComplete }) {
+export default function InsertCode({ length = 5, onComplete, reset }) {
     const inputs = Array.from({ length });
     const refs = useRef([]);
+
+    useEffect(() => {
+        refs.current.forEach(ref => {
+            if (ref) ref.value = "";
+        });
+    }, [reset]);
 
     const handleChange = (e, index) => {
         const value = e.target.value;
