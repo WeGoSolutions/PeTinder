@@ -438,24 +438,38 @@
 .carouselImage {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    z-index: 0;
+}
+
+.imageWrapper img {
+    border-radius: 25px;
 }
 
 .carouselImage.current {
+    opacity: 1;
     z-index: 2;
+    transform: translateX(-50%) scale(1);
 }
+
+.carouselImage.next {
+    opacity: 0.6;
+    z-index: 1;
+    transform: translateX(-42%) scale(0.9);
+}
+/* 
 
 .carouselImage.behind {
     transform: translateX(7%) scale(0.9);
     z-index: 1;
     opacity: 0.6;
-}
+} */
 
 .navButton {
     position: absolute;
@@ -690,7 +704,7 @@
     height: 100%;
     width: 980px;
     border-radius: 20px 0px 0px 20px;
-    background-color: #fff;
+    background-color: var(--backgroundColor);
     transform: translateX(100%);
     transition: transform 0.4s ease;
     z-index: 1000;
@@ -707,7 +721,7 @@
 .sidebar-content {
     border-radius: 20px 0px 0px 20px;
     flex: 1;
-    background-color: #f5f5f5;
+    background-color: var(--backgroundColor);
     overflow-y: auto;
 }
 
@@ -717,7 +731,7 @@
     top: 44vh;
     width: 50px;
     height: 100px;
-    background-color: #ffffff;
+    background-color: var(--backgroundColor);
     border-radius: 100px 6px 6px 100px;
     cursor: pointer;
     display: flex;

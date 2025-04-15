@@ -89,7 +89,7 @@ function Login() {
             if (data.length === 1) {
                 console.log("Login realizado com sucesso!", data[0]);
                 localStorage.setItem("userId", data[0].id);
-                // Navigate("/home");
+                Navigate("/initial");
             } else {
                 throw new Error("Usuário ou senha inválidos.");
             }
