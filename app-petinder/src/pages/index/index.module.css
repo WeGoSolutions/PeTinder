@@ -61,7 +61,7 @@ body {
 .firstImage {
     position: absolute;
     right: 0;
-    top: 60%;
+    top: 70%;
     transform: translateY(-50%);
     max-width: 50%;
     height: auto;
@@ -82,7 +82,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12rem;
+    /* gap: 12rem; */
     justify-content: space-between;
 }
 
@@ -90,10 +90,7 @@ body {
     position: absolute;
     left: 0;
     top: 160%;
-    transform: translateY(-50%);
-    max-width: 50%;
-    height: auto;
-    z-index: 1;
+    transform: translateY(-49%);
 }
 
 .paws{

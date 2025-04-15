@@ -196,7 +196,7 @@
 .footer {
     background-color: var(--secondaryColor);
     height: 350px;
-    width: 100%;
+    width: 102%;
     position: absolute;
     top: 219%;
     padding: 100px;
