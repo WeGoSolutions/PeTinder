@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
+import Modal from "../../components/Modal";
 import styles from './login.module.css';
 
 function Login() {
     const Navigate = useNavigate();
     const [formValues, setFormValues] = useState({ email: "", senha: "" });
     const [errors, setErrors] = useState({});
+    const [openModal, setOpenModal] = useState(false);  
 
     const setErrorStyle = (id) => {
         const inputElement = document.getElementById(id);
@@ -136,9 +138,13 @@ function Login() {
                     <div onClick={validateForm}
                         className={styles.loginButtonWrapper}>
                         <PrimaryButton type="submit" text="Entrar" />
+                    </div>
+                    <div onClick={()=> setOpenModal(true)}>
                         <SecondaryButton type="button" text="Esqueci a senha" />
                     </div>
                 </form>
+                <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
+
             </div>
         </div>
     );

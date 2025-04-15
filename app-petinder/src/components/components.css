@@ -672,7 +672,8 @@
     color: var(--primaryColor);
 }
 
-.footerText img {
+
+.footerText img  {
     width: 30px;
     height: 30px;
     margin-right: 10px;
@@ -681,7 +682,6 @@
 .redesSociais {
     margin-top: 10px;
 }
-
 
 .sidebar-container {
     position: fixed;
@@ -956,4 +956,188 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.modalBackground {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+
+    .modal {
+        width: 547px;
+        height: 250px;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color: var(--backgroundColor);
+        padding: 30px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 6px 6px rgb(0, 0, 0);
+
+        .closeButtonModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+
+            img {
+                width: 25px;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1;
+
+            }
+        }
+
+        .modalContent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            h1 {
+                font-size: 22px;
+                font-weight: 600;
+            }
+
+            .resend{
+                color: gray;
+                margin-top: 7px;
+            }
+
+            .resend:hover{
+                color: var(--secondaryColor);
+                cursor: pointer;
+            }
+
+            .invalidCod{
+                color: red;
+                margin: 6px;
+                margin-bottom: 10px;
+            }
+
+        }
+    }
+}
+
+.codeContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 8px 0;
+
+    .codeInput {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 24px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+            border-color: var(--secondaryColor);
+        }
+    }
+}
+
+.modalPassword {
+    width: 547px;
+    height: 320px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--backgroundColor);
+    padding: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+
+    .closeButtonModal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        cursor: pointer;
+
+        img {
+            width: 20px;
+        }
+
+        span {
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1;
+
+        }
+    }
+
+    .modalContent {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+    }
+}
+
+.loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.loading-dots {
+    display: inline-block;
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1.2s steps(3, end) infinite;
+}
+
+@keyframes dots {
+    0% {
+        content: '.';
+    }
+
+    33% {
+        content: '..';
+    }
+
+    66% {
+        content: '...';
+    }
+
+    100% {
+        content: '.';
+    }
 }
