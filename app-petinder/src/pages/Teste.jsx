@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styles from './teste.module.css';
 import FormInput from '../components/FormInput';
+import { convertImagesToBase64 } from '../utils';
 
 function Teste() {
     const [formData, setFormData] = useState({
@@ -20,27 +21,18 @@ function Teste() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleImageUpload = (event) => {
-        const files = Array.from(event.target.files); // Permite múltiplos arquivos
-        const readers = files.map((file) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onloadend = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        });
+    const handleImageUpload = async (event) => {
+        const files = event.target.files;
 
-        Promise.all(readers)
-            .then((base64Images) => {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    imagemBase64: [...prevData.imagemBase64, ...base64Images],
-                }));
-            })
-            .catch((error) => {
-                console.error('Erro ao processar as imagens:', error);
-            });
+        try {
+            const base64Images = await convertImagesToBase64(files);
+            setFormData((prevData) => ({
+                ...prevData,
+                imagemBase64: [...prevData.imagemBase64, ...base64Images],
+            }));
+        } catch (error) {
+            console.error('Erro ao processar as imagens:', error);
+        }
     };
 
     const handleSubmit = async () => {
