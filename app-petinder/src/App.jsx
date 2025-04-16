@@ -6,6 +6,7 @@ import Login from "./pages/login/login";
 import DemonstrationForm from "./pages/demonstration/demonstration"
 import Initial from "./pages/initial/initial";
 import Forms from "./pages/forms/forms";
+import Teste from "./pages/Teste";
 
 const App = () => {
     return (
@@ -17,6 +18,7 @@ const App = () => {
                 <Route path="/initial" element={<Initial />} />
                 <Route path="/demonstration" element={<DemonstrationForm />} />
                 <Route path="/forms" element={<Forms />} />
+                <Route path="/teste" element={<Teste />} />
             </Routes>
         </Router>
     );
