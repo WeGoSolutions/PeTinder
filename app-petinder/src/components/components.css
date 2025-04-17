@@ -50,20 +50,20 @@
     color: #000;
 }
 
-.input-container input[disabled] {
-    background-color: #f1f1f1;
-    color: #888;
-    cursor: not-allowed;
-    border: 1px solid #ccc;
+/* .input-container input[disabled] {
+  background-color: #f1f1f1;
+  color: #888;            
+  cursor: not-allowed;      
+  border: 1px solid #ccc;    
 }
 
 .input-container input[disabled]::placeholder {
-    color: #aaa;
-}
+  color: #aaa;
+} */
 
-.input-container label {
-    color: #888;
-}
+/* .input-container label { */
+  /* color: #888;  
+} */
 
 .error-message {
     color: red;
@@ -196,7 +196,7 @@
 .footer {
     background-color: var(--secondaryColor);
     height: 350px;
-    width: 100%;
+    width: 102%;
     position: absolute;
     top: 219%;
     padding: 100px;

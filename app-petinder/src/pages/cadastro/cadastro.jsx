@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from './cadastro.module.css';
+import axios from "axios";
+import { url } from "../../provider/apiInstance";
 
 function Cadastro() {
     const Navigate = useNavigate();
@@ -23,14 +25,14 @@ function Cadastro() {
             ...prevValues,
             [name]: value,
         }));
-    
+
         if (errors[name]) {
             const inputElement = document.getElementById(name);
             if (inputElement) {
                 inputElement.style.border = "2px solid black"; // Volta ao normal
                 inputElement.closest(".input-container")?.classList.remove("error");
             }
-    
+
             setErrors((prevErrors) => {
                 const updatedErrors = { ...prevErrors };
                 delete updatedErrors[name];
@@ -40,7 +42,7 @@ function Cadastro() {
     };
 
     const [errors, setErrors] = useState({});
-    
+
     const validateForm = () => {
         let newErrors = {};
 
@@ -110,9 +112,9 @@ function Cadastro() {
             const age = today.getFullYear() - birthDate.getFullYear();
             const monthDiff = today.getMonth() - birthDate.getMonth();
             const dayDiff = today.getDate() - birthDate.getDate();
-        
+
             const adjustedAge = monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0) ? age : age - 1;
-        
+
             if (adjustedAge < 21) {
                 newErrors.dataNasc = "Você deve ter pelo menos 21 anos.";
                 setErrorStyle("dataNasc");
@@ -120,12 +122,12 @@ function Cadastro() {
                 resetInputStyle("dataNasc");
             }
         }
-        
+
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-    
+
     const handleConfirmSubmit = async (e) => {
         e.preventDefault();
 
@@ -135,32 +137,45 @@ function Cadastro() {
             return;
         }
 
-        const userData = {
-            nome: formValues.nome,
-            email: formValues.email,
-            senha: formValues.senha,
-            dataNasc: formValues.dataNasc,
-            cpf: null,
-            cep: null,
-            rua: null,
-            numero: null,
-            cidade: null,
-            uf: null,
-        };
+        // const userData = {
+        //     nome: formValues.nome,
+        //     email: formValues.email,
+        //     senha: formValues.senha,
+        //     dataNasc: formValues.dataNasc,
+        //     cpf: null,
+        //     cep: null,
+        //     rua: null,
+        //     numero: null,
+        //     cidade: null,
+        //     uf: null,
+        // };
 
         try {
-            const response = await fetch("http://localhost:8080/users", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(userData),
-            });
+            url.post("/users", {
+                nome: formValues.nome,
+                email: formValues.email,
+                senha: formValues.senha,
+                dataNasc: formValues.dataNasc,
+                cpf: null,
+                cep: null,
+                rua: null,
+                numero: null,
+                cidade: null,
+                uf: null,
+            })
 
-            if (!response.ok) {
-                // const errorMessage = await response.text();
-                throw new Error(`Erro ao criar conta: ${errorMessage}`);
-            }
+            // const response = await fetch("http://localhost:8080/users", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify(userData),
+            // });
+
+            // if (!response.ok) {
+            //     // const errorMessage = await response.text();
+            //     throw new Error(`Erro ao criar conta: ${errorMessage}`);
+            // }
 
             alert("Conta criada com sucesso!");
 
