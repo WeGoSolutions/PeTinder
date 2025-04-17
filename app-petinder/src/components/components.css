@@ -438,24 +438,39 @@
 .carouselImage {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    z-index: 0;
+}
+
+.imageWrapper img {
+    border-radius: 25px;
 }
 
 .carouselImage.current {
+    opacity: 1;
     z-index: 2;
+    transform: translateX(-50%) scale(1);
 }
+
+.carouselImage.next {
+    opacity: 0.6;
+    z-index: 1;
+    transform: translateX(-42%) scale(0.9);
+}
+
+/* 
 
 .carouselImage.behind {
     transform: translateX(7%) scale(0.9);
     z-index: 1;
     opacity: 0.6;
-}
+} */
 
 .navButton {
     position: absolute;
@@ -513,33 +528,62 @@
     height: 80px;
     border-radius: 50px;
     border: none;
-}
-
-.actionsContainer .right {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #EC5454;
-    transition: 500ms;
-    background-image: url(../../proximo.svg);
-    background-repeat: no-repeat;
-    background-position: 29px;
-    background-size: 25px;
+    cursor: pointer;
 }
 
-.actionsContainer .right:hover {
-    background-color: #d13333;
+.actionsContainer button img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease, margin 0.3s ease;
+}
 
+.actionsContainer button:hover img {
+    transform: translateX(-10px);
+    margin-right: 10px;
+}
+
+.actionsContainer button:hover {
+    width: 150px;
 }
 
 .actionsContainer .left {
     background-color: #C7FFC0;
     transition: 500ms;
-    background-image: url(../../adotar.svg);
-    background-repeat: no-repeat;
-    background-position: 24px;
-    background-size: 33px;
 }
 
 .actionsContainer .left:hover {
     background-color: #87bb80;
+    transform: translateX(-35px);
+}
+
+.actionsContainer .right {
+    background-color: #EC5454;
+    transition: 500ms;
+}
+
+.actionsContainer .right:hover {
+    background-color: #d13333;
+    transform: translateX(35px);
+}
+
+.actionsContainer button span {
+    display: none;
+    transition: opacity 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+
+
+.actionsContainer button:hover span {
+    display: block;
 }
 
 .like {
@@ -673,7 +717,7 @@
 }
 
 
-.footerText img  {
+.footerText img {
     width: 30px;
     height: 30px;
     margin-right: 10px;
@@ -690,7 +734,7 @@
     height: 100%;
     width: 980px;
     border-radius: 20px 0px 0px 20px;
-    background-color: #fff;
+    background-color: var(--backgroundColor);
     transform: translateX(100%);
     transition: transform 0.4s ease;
     z-index: 1000;
@@ -707,7 +751,7 @@
 .sidebar-content {
     border-radius: 20px 0px 0px 20px;
     flex: 1;
-    background-color: #f5f5f5;
+    background-color: var(--backgroundColor);
     overflow-y: auto;
 }
 
@@ -717,7 +761,7 @@
     top: 44vh;
     width: 50px;
     height: 100px;
-    background-color: #ffffff;
+    background-color: var(--backgroundColor);
     border-radius: 100px 6px 6px 100px;
     cursor: pointer;
     display: flex;
@@ -1014,17 +1058,17 @@
                 font-weight: 600;
             }
 
-            .resend{
+            .resend {
                 color: gray;
                 margin-top: 7px;
             }
 
-            .resend:hover{
+            .resend:hover {
                 color: var(--secondaryColor);
                 cursor: pointer;
             }
 
-            .invalidCod{
+            .invalidCod {
                 color: red;
                 margin: 6px;
                 margin-bottom: 10px;
