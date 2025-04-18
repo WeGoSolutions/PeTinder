@@ -103,7 +103,7 @@ function Login() {
                         mensagem: 'Ops! Ocorreu um erro interno.',
                         tipo: 'erro'
                     });
-                    throw new Error('Ops! Ocorreu um erro interno.');
+                    return;
                 }
             })
                 .catch((error) => {
@@ -117,62 +117,64 @@ function Login() {
 
     return (
         <>
-        {toast.mensagem && (
-            <Toast
-              mensagem={toast.mensagem}
-              tipo={toast.tipo}
-              onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
-            />
-          )}
-
-        <div className={styles.container}>
-            <div className={styles.loginContainer}>
-                <div className={styles.closeButtonWrapper}>
-                    <div className={styles.closeButton} onClick={() => Navigate("/")}>
-                        <img src="./assets/closeButton.png" alt="" />
-                    </div>
-                </div>
-                <form className={styles.loginForm} onSubmit={handleSubmit}>
-                    <div className={styles.titleWrapper}>
-                        <img src="./Logo.svg" alt="" />
-                        <h1 className={styles.loginTitle}>PeTinder</h1>
-                    </div>
-                    <FormInput
-                        id="email"
-                        name="email"
-                        label="Email"
-                        type="email"
-                        required
-                        value={formValues.email}
-                        onChange={handleInputChange}
-                        error={errors.email}
+            <div className="toastContainer">
+                {toast.mensagem && (
+                    <Toast
+                        mensagem={toast.mensagem}
+                        tipo={toast.tipo}
+                        onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
                     />
-                    <FormInput
-                        id="senha"
-                        name="senha"
-                        label="Senha"
-                        type="password"
-                        required
-                        value={formValues.senha}
-                        onChange={handleInputChange}
-                        error={errors.senha}
-                    />
-                    <div className={styles.loginLinkWrapper}>
-                        <span>Criar conta no </span>
-                        <a onClick={() => Navigate("/cadastro")} className={styles.loginLink}>PeTinder</a>
-                    </div>
-                    <div onClick={validateForm}
-                        className={styles.loginButtonWrapper}>
-                        <PrimaryButton type="submit" text="Entrar" />
-                    </div>
-                    <div onClick={() => setOpenModal(true)}>
-                        <SecondaryButton type="button" text="Esqueci a senha" />
-                    </div>
-                </form>
-                <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
-
+                )}
             </div>
-        </div>
+
+            <div className={styles.container}>
+                <div className={styles.loginContainer}>
+                    <div className={styles.closeButtonWrapper}>
+                        <div className={styles.closeButton} onClick={() => Navigate("/")}>
+                            <img src="./assets/closeButton.png" alt="" />
+                        </div>
+                    </div>
+                    <form className={styles.loginForm} onSubmit={handleSubmit}>
+                        <div className={styles.titleWrapper}>
+                            <img src="./Logo.svg" alt="" />
+                            <h1 className={styles.loginTitle}>PeTinder</h1>
+                        </div>
+                        <FormInput
+                            id="email"
+                            name="email"
+                            label="Email"
+                            type="email"
+                            required
+                            value={formValues.email}
+                            onChange={handleInputChange}
+                            error={errors.email}
+                        />
+                        <FormInput
+                            id="senha"
+                            name="senha"
+                            label="Senha"
+                            type="password"
+                            required
+                            value={formValues.senha}
+                            onChange={handleInputChange}
+                            error={errors.senha}
+                        />
+                        <div className={styles.loginLinkWrapper}>
+                            <span>Criar conta no </span>
+                            <a onClick={() => Navigate("/cadastro")} className={styles.loginLink}>PeTinder</a>
+                        </div>
+                        <div onClick={validateForm}
+                            className={styles.loginButtonWrapper}>
+                            <PrimaryButton type="submit" text="Entrar" />
+                        </div>
+                        <div onClick={() => setOpenModal(true)}>
+                            <SecondaryButton type="button" text="Esqueci a senha" />
+                        </div>
+                    </form>
+                    <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
+
+                </div>
+            </div>
         </>
     );
 }
