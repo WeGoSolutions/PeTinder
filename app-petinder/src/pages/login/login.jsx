@@ -7,12 +7,14 @@ import Modal from "../../components/Modal";
 import styles from './login.module.css';
 import axios from "axios";
 import { url } from "../../provider/apiInstance";
+import Toast from "../../components/Toast";
 
 function Login() {
     const Navigate = useNavigate();
     const [formValues, setFormValues] = useState({ email: "", senha: "" });
     const [errors, setErrors] = useState({});
     const [openModal, setOpenModal] = useState(false);
+    const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
 
     const setErrorStyle = (id) => {
         const inputElement = document.getElementById(id);
@@ -36,6 +38,7 @@ function Login() {
         if (!formValues.email.trim()) {
             newErrors.email = "O email é obrigatório.";
             setErrorStyle("email");
+            return
         } else {
             resetInputStyle("email");
         }
@@ -43,6 +46,7 @@ function Login() {
         if (!formValues.senha.trim()) {
             newErrors.senha = "A senha é obrigatória.";
             setErrorStyle("senha");
+            return
         } else {
             resetInputStyle("senha");
         }
@@ -76,48 +80,51 @@ function Login() {
         }
 
         try {
-            url.get(`/users?email=${formValues.email}&senha=${formValues.senha}`)
-                .then(response => {
-                    const data = response.data;
+            url.post("/users/login", {
+                email: formValues.email,
+                senha: formValues.senha
 
-                    if (Array.isArray(data) && data.length === 1) {
-                        console.log("Login realizado com sucesso!", data[0]);
-                        localStorage.setItem("userId", data[0].id);
-                        alert("Login realizado com sucesso!");
-                        // Navigate("/home");
-                    } else {
-                        throw new Error("Usuário ou senha inválidos.");
-                    }
-                })
+            }).then(response => {
+                if (response.status === 200 && response.data?.token) {
+                    const data = response.data;
+                    localStorage.setItem("userId", data.id);
+                    sessionStorage.setItem('authToken', data.token);
+
+                    setToast({
+                        mensagem: 'Login realizado com sucesso!',
+                        tipo: 'sucesso'
+                    });
+
+                    setTimeout(() => {
+                        navigate('/initial');
+                    }, 1000);
+                } else {
+                    setToast({
+                        mensagem: 'Ops! Ocorreu um erro interno.',
+                        tipo: 'erro'
+                    });
+                    throw new Error('Ops! Ocorreu um erro interno.');
+                }
+            })
                 .catch((error) => {
                     console.error("Erro ao fazer login:", error);
+                    alert("Erro ao fazer login: " + error.message);
                 });
-
-            // const response = await fetch(`http://localhost:8080/users?email=${formValues.email}&senha=${formValues.senha}`, {
-            //     method: "GET",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     }
-            // });
-
-            // if (!response.ok) {
-            //     throw new Error("Erro ao fazer login.");
-            // }
-
-            // const data = await response.json();
-            // if (data.length === 1) {
-            //     console.log("Login realizado com sucesso!", data[0]);
-            //     localStorage.setItem("userId", data[0].id);
-            //     // Navigate("/home");
-            // } else {
-            //     throw new Error("Usuário ou senha inválidos.");
-            // }
         } catch (error) {
             alert(error.message);
         }
     };
 
     return (
+        <>
+        {toast.mensagem && (
+            <Toast
+              mensagem={toast.mensagem}
+              tipo={toast.tipo}
+              onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+            />
+          )}
+
         <div className={styles.container}>
             <div className={styles.loginContainer}>
                 <div className={styles.closeButtonWrapper}>
@@ -166,6 +173,7 @@ function Login() {
 
             </div>
         </div>
+        </>
     );
 }
 

@@ -65,6 +65,7 @@ function Cadastro() {
         if (!formValues.nome.trim()) {
             newErrors.nome = "O nome é obrigatório.";
             setErrorStyle("nome");
+            return
         } else {
             resetInputStyle("nome");
         }
@@ -72,9 +73,11 @@ function Cadastro() {
         if (!formValues.email.trim()) {
             newErrors.email = "O email é obrigatório.";
             setErrorStyle("email");
+            return
         } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
             newErrors.email = "Email inválido. Verifique o formato.";
             setErrorStyle("email");
+            return
         } else {
             resetInputStyle("email");
         }
@@ -82,9 +85,11 @@ function Cadastro() {
         if (!formValues.senha.trim()) {
             newErrors.senha = "A senha é obrigatória.";
             setErrorStyle("senha");
+            return
         } else if (formValues.senha.length < 8) {
             newErrors.senha = "A senha deve ter pelo menos 8 caracteres.";
             setErrorStyle("senha");
+            return
         } else {
             resetInputStyle("senha");
         }
@@ -92,6 +97,7 @@ function Cadastro() {
         if (formValues.confSenha !== formValues.senha) {
             newErrors.confSenha = "As senhas não coincidem.";
             setErrorStyle("confSenha");
+            return
         } else {
             resetInputStyle("confSenha");
         }
@@ -99,6 +105,7 @@ function Cadastro() {
         if (!formValues.dataNasc) {
             newErrors.dataNasc = "A data de nascimento é obrigatória.";
             setErrorStyle("dataNasc");
+            return
         } else {
             resetInputStyle("dataNasc");
         }
@@ -106,6 +113,7 @@ function Cadastro() {
         if (!formValues.dataNasc) {
             newErrors.dataNasc = "A data de nascimento é obrigatória.";
             setErrorStyle("dataNasc");
+            return
         } else {
             const birthDate = new Date(formValues.dataNasc);
             const today = new Date();
@@ -118,6 +126,7 @@ function Cadastro() {
             if (adjustedAge < 21) {
                 newErrors.dataNasc = "Você deve ter pelo menos 21 anos.";
                 setErrorStyle("dataNasc");
+                return
             } else {
                 resetInputStyle("dataNasc");
             }
