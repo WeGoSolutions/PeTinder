@@ -190,3 +190,10 @@ span {
     color: black;
     position: absolute;
 }
+
+.disabledButton {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.7;
+}

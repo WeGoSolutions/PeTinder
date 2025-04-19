@@ -1207,3 +1207,76 @@
     justify-content: center;
     padding: 0.8rem;
 }
+
+.defaultModal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+
+    .modal {
+        width: 647px;
+        height: 550px;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color: var(--backgroundColor);
+        padding: 30px;
+        padding-top: 45px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 6px 6px rgb(0, 0, 0);
+
+        .closeButtonModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+
+            img {
+                width: 25px;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1;
+
+            }
+        }
+
+        .modalContent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+
+            .titleModal {
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .text {
+                width: 90%;
+                align-items: flex-start;
+                background-color: whitesmoke;
+                text-align: justify;
+                padding: 0 24px;
+                border-radius: 8px;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+        }
+
+    }
+}
