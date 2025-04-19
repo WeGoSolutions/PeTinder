@@ -5,7 +5,6 @@ import PrimaryButton from "../../components/PrimaryButton";
 import SecondaryButton from "../../components/SecondaryButton";
 import Modal from "../../components/Modal";
 import styles from './login.module.css';
-import axios from "axios";
 import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
 
