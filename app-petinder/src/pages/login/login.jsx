@@ -10,6 +10,7 @@ import Toast from "../../components/Toast";
 
 function Login() {
     const Navigate = useNavigate();
+
     const [formValues, setFormValues] = useState({ email: "", senha: "" });
     const [errors, setErrors] = useState({});
     const [openModal, setOpenModal] = useState(false);
@@ -86,7 +87,8 @@ function Login() {
             }).then(response => {
                 if (response.status === 200 && response.data?.token) {
                     const data = response.data;
-                    localStorage.setItem("userId", data.id);
+                    console.log(data);
+                    sessionStorage.setItem("userId", data.id);
                     sessionStorage.setItem('authToken', data.token);
 
                     setToast({
@@ -95,7 +97,7 @@ function Login() {
                     });
 
                     setTimeout(() => {
-                        navigate('/initial');
+                        Navigate('/initial');
                     }, 1000);
                 } else {
                     setToast({
