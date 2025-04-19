@@ -49,7 +49,7 @@ export default function ModalCodigo(props) {
                     <h1>Insira o código de verificação</h1>
                     <InsertCode
                         id="codigoInput"
-                        length={5}
+                        length={6}
                         onComplete={codigoCompleto}
                         codigoDigitado={codigoDigitado}
                         reset={resetInputs}

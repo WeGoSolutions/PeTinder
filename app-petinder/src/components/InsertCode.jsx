@@ -2,7 +2,7 @@ import { useRef } from "react";
 import "./components.css";
 import { useEffect } from "react";
 
-export default function InsertCode({ length = 5, onComplete, reset }) {
+export default function InsertCode({ length = 6, onComplete, reset }) {
     const inputs = Array.from({ length });
     const refs = useRef([]);
 

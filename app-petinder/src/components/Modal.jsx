@@ -16,7 +16,7 @@ export default function Modal(props) {
     const [isLoading, setIsLoading] = useState(false);
 
     function gerarCodigo() {
-        return Math.floor(10000 + Math.random() * 90000).toString();
+        return Math.floor(100000 + Math.random() * 900000).toString();
     }
 
     const handleInputChange = (e) => {
@@ -45,9 +45,9 @@ export default function Modal(props) {
             };
             setCodigo(codigo);
             setIsValid(true);
-            setTimeout(() => {
-                setIsValid(false);
-            }, 60000);
+            
+            const TWO_MINUTES = 2 * 60 * 1000;
+            setTimeout(() => setIsValid(false), TWO_MINUTES);
 
             emailjs.send(
                 serviceID,
