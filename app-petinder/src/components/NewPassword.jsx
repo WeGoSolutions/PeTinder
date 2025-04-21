@@ -2,47 +2,55 @@ import { useState } from "react";
 import "./components.css";
 import FormInput from "./FormInput";
 import SecondaryButton from "./SecondaryButton";
-import axios from "axios";
+import { url } from "../provider/apiInstance";
+import Toast from "../components/Toast";
 
 export default function NewPassword(props) {
     if (!props.passwordOpen) return null;
 
     const [formNewValues, setFormNewValues] = useState({ novaSenha: "", confirmarSenha: "" });
     const [errors, setErrors] = useState({});
+    const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
 
     const validatePasswords = () => {
         let newErrors = {};
+        const senha = formNewValues.novaSenha;
+        const confirmar = formNewValues.confirmarSenha;
 
-        if (!formNewValues.novaSenha.trim()) {
+        const temLetraMaiuscula = /[A-Z]/.test(senha);
+        const temLetraMinuscula = /[a-z]/.test(senha);
+        const temSimbolo = /[^A-Za-z0-9]/.test(senha);
+        const tamanhoValido = senha.length >= 8;
+
+        if (!senha.trim()) {
             newErrors.novaSenha = "A nova senha é obrigatória.";
+            setErrorStyle("novaSenha");
+        } else if (!tamanhoValido) {
+            newErrors.novaSenha = "A senha deve ter pelo menos 8 caracteres.";
+            setErrorStyle("novaSenha");
+        } else if (!temLetraMaiuscula) {
+            newErrors.novaSenha = "A senha deve conter pelo menos uma letra maiúscula.";
+            setErrorStyle("novaSenha");
+        } else if (!temLetraMinuscula) {
+            newErrors.novaSenha = "A senha deve conter pelo menos uma letra minúscula.";
+            setErrorStyle("novaSenha");
+        } else if (!temSimbolo) {
+            newErrors.novaSenha = "A senha deve conter pelo menos um símbolo.";
             setErrorStyle("novaSenha");
         } else {
             resetInputStyle("novaSenha");
         }
 
-        if (!formNewValues.confirmarSenha.trim()) {
+        if (!confirmar.trim()) {
             newErrors.confirmarSenha = "A confirmação de senha é obrigatória.";
             setErrorStyle("confirmarSenha");
-        } else {
-            resetInputStyle("confirmarSenha");
-        }
-
-        if (
-            formNewValues.novaSenha.trim() &&
-            formNewValues.confirmarSenha.trim() &&
-            formNewValues.novaSenha !== formNewValues.confirmarSenha
-        ) {
+        } else if (senha && confirmar && senha !== confirmar) {
             newErrors.confirmarSenha = "As senhas devem coincidir.";
             setErrorStyle("novaSenha");
             setErrorStyle("confirmarSenha");
-        } else if (
-            formNewValues.novaSenha.trim() &&
-            formNewValues.confirmarSenha.trim()
-        ) {
-            resetInputStyle("novaSenha");
+        } else {
             resetInputStyle("confirmarSenha");
         }
-        
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -81,26 +89,39 @@ export default function NewPassword(props) {
         }
     };
 
-    const changePassword = () => {
+    const changePassword = async () => {
         if (!validatePasswords()) return;
 
-        alert("Finalizado com sucesso! Chamar o axios/backend");
+        try {
+            await url.patch(`/users/senha?email=${props.emailReset}`, {
+                senha: formNewValues.novaSenha,
+            });
 
-        // axios
-        //     .patch("http://localhost:8080/users?", {
-        //         novaSenha: formNewValues.novaSenha,
-        //         confirmarSenha: formNewValues.confirmarSenha,
-        //     })
-        //     .then(() => {
-        //         props.onCloseAll();
-        //     })
-        //     .catch((error) => {
-        //         console.error("Erro ao atualizar a senha:", error);
-        //     });
-    }
+            setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });
+
+            setTimeout(() => {
+                props.onCloseAll();
+            }, 2000);
+
+        } catch (error) {
+            console.error("Erro ao atualizar a senha:", error);
+            setToast({ mensagem: 'Erro ao atualizar a senha. Tente novamente.', tipo: 'erro' });
+
+        }
+    };
 
     return (
         <div>
+            <div className="toastContainer">
+                {toast.mensagem && (
+                    <Toast
+                        mensagem={toast.mensagem}
+                        tipo={toast.tipo}
+                        onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                    />
+                )}
+            </div>
+
             <div className="modalPassword" onClick={(e) => e.stopPropagation()}>
                 <div className="closeButtonModal" onClick={props.onCloseAll}>
                     <img src="./assets/closeButton.png" />
