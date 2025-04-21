@@ -108,11 +108,17 @@ function Login() {
                 }
             })
                 .catch((error) => {
+                    setToast({
+                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        tipo: 'erro'
+                    });
                     console.error("Erro ao fazer login:", error);
-                    alert("Erro ao fazer login: " + error.message);
                 });
         } catch (error) {
-            alert(error.message);
+            setToast({
+                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                tipo: 'erro'
+            });
         }
     };
 
