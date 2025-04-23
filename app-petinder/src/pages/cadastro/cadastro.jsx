@@ -75,6 +75,14 @@ function Cadastro() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+
+        if (name === "dataNasc") {
+            const ano = value.split("-")[0];
+            if (ano.length > 4) {
+                return;
+            }
+        }
+
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: value,
@@ -83,7 +91,7 @@ function Cadastro() {
         if (errors[name]) {
             const inputElement = document.getElementById(name);
             if (inputElement) {
-                inputElement.style.border = "2px solid black"; // Volta ao normal
+                inputElement.style.border = "2px solid black";
                 inputElement.closest(".input-container")?.classList.remove("error");
             }
 
@@ -97,7 +105,7 @@ function Cadastro() {
 
     const [errors, setErrors] = useState({});
 
-    const validateForm = () => {
+    const validateForm = async () => {
         let newErrors = {};
 
         const resetInputStyle = (id) => {
@@ -116,31 +124,64 @@ function Cadastro() {
             }
         };
 
+        const email = formValues.email;
+        const senha = formValues.senha;
+
+        const contemAcento = /[^\u0000-\u007F]/.test(email);
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        const temLetraMaiuscula = /[A-Z]/.test(senha);
+        const temLetraMinuscula = /[a-z]/.test(senha);
+        const temSimbolo = /[^A-Za-z0-9]/.test(senha);
+        const tamanhoValido = senha.length >= 8;
+
         if (!formValues.nome.trim()) {
             newErrors.nome = "O nome é obrigatório.";
             setErrorStyle("nome");
         } else if (formValues.nome.trim().length < 3) {
             newErrors.nome = "O nome deve ter pelo menos 3 caracteres.";
             setErrorStyle("nome");
+        } else if (/[^a-zA-ZÀ-ÿ\s]/.test(formValues.nome.trim())) {
+            newErrors.nome = "O nome não deve conter símbolos ou caracteres especiais.";
+            setErrorStyle("nome");
         } else {
             resetInputStyle("nome");
         }
 
-        if (!formValues.email.trim()) {
+        if (!email.trim()) {
             newErrors.email = "O email é obrigatório.";
             setErrorStyle("email");
-        } else if (!/\S+@\S+\.\S+/.test(formValues.email)) {
-            newErrors.email = "Email inválido. Deve possuir @ e domínio.";
+        } else if (email.includes(" ")) {
+            newErrors.email = "O email não pode conter espaços.";
             setErrorStyle("email");
+        } else if (contemAcento) {
+            newErrors.email = "O email não deve conter acentos.";
+            setErrorStyle("email");
+        } else if (!email.includes("@") || email.lastIndexOf(".") < email.indexOf("@")) {
+            newErrors.email = "Formato de email inválido.";
+            setErrorStyle("email");
+        } else if (!emailValido) {
+            newErrors.email = "Formato de email inválido.";
+            setErrorStyle("email");
+
         } else {
             resetInputStyle("email");
         }
 
-        if (!formValues.senha.trim()) {
+        if (!senha.trim()) {
             newErrors.senha = "A senha é obrigatória.";
             setErrorStyle("senha");
-        } else if (formValues.senha.length < 8) {
-            newErrors.senha = "A senha deve ter pelo menos 8 caracteres.";
+        } else if (!tamanhoValido) {
+            newErrors.senha = "A senha deve ter no mínimo 8 caracteres.";
+            setErrorStyle("senha");
+        } else if (!temLetraMaiuscula) {
+            newErrors.senha = "A senha deve conter pelo menos uma letra maiúscula.";
+            setErrorStyle("senha");
+        } else if (!temLetraMinuscula) {
+            newErrors.senha = "A senha deve conter pelo menos uma letra minúscula.";
+            setErrorStyle("senha");
+        } else if (!temSimbolo) {
+            newErrors.senha = "A senha deve conter pelo menos um símbolo.";
             setErrorStyle("senha");
         } else {
             resetInputStyle("senha");
@@ -178,17 +219,19 @@ function Cadastro() {
 
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
 
+
+
     const handleConfirmSubmit = async (e) => {
         e.preventDefault();
 
-        const isValid = validateForm();
+        const isValid = await validateForm();
 
         if (!isValid) {
             return;
         }
 
         if (!isChecked) {
-            alert("Você precisa aceitar os Termos de condição.");
+            setToast({ mensagem: "Você precisa aceitar os Termos de condição.", tipo: "erro" });
             return;
         }
 
@@ -210,8 +253,6 @@ function Cadastro() {
                 uf: null,
             });
 
-            alert("Conta criada com sucesso!");
-
             setFormValues({
                 nome: "",
                 email: "",
@@ -220,7 +261,6 @@ function Cadastro() {
                 dataNasc: "",
             });
             setIsChecked(false);
-
             Navigate("/login");
         } catch (error) {
             if (error.response && error.response.status === 409) {
@@ -228,6 +268,7 @@ function Cadastro() {
                     ...prevErrors,
                     email: "Este e-mail já está cadastrado.",
                 }));
+                setModalWarning(false);
                 const inputElement = document.getElementById("email");
                 if (inputElement) {
                     inputElement.style.border = "2px solid red";
@@ -352,7 +393,6 @@ function Cadastro() {
                     text={terms}
                 />
 
-                {/* trabalhar aqui */}
                 <GenericModal
                     isOpen={modalWarning}
                     onClose={() => setModalWarning(false)}
@@ -369,8 +409,6 @@ function Cadastro() {
                     >
                         {isButtonDisabled ? `Aguarde: ${counter}s` : "Estou ciente"}
                     </button>
-
-
                 </GenericModal>
             </div>
         </>

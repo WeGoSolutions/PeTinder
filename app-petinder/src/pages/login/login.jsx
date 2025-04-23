@@ -108,6 +108,10 @@ function Login() {
                 }
             })
                 .catch((error) => {
+                    setToast({
+                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        tipo: 'erro'
+                    });
                     console.error("Erro ao fazer login:", error);
                     setToast({
                         mensagem: 'Conta não encontrada.',
@@ -115,7 +119,10 @@ function Login() {
                     });
                 });
         } catch (error) {
-            alert(error.message);
+            setToast({
+                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                tipo: 'erro'
+            });
         }
     };
 

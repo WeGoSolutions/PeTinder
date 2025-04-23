@@ -4,7 +4,6 @@ import SecondaryButton from "./SecondaryButton";
 import InsertCode from "./InsertCode";
 import NewPassword from "./NewPassword";
 
-
 export default function ModalCodigo(props) {
     if (!props.isOpen) return null;
 
@@ -12,16 +11,18 @@ export default function ModalCodigo(props) {
     const [codigoDigitado, setCodigoDigitado] = useState("");
     const [sendingCode, setSendingCode] = useState(false);
     const [resetInputs, setResetInputs] = useState(0);
+    const [mostrarErro, setMostrarErro] = useState(false);
 
     const changeModalPassword = () => {
         setSendingCode(true);
+        setMostrarErro(true);
 
-        if (!props.isValid) {
+        if (!props.isValid && codigoDigitado === props.cod) {
             setCodigoExpiradoStyle();
             return;
         }
 
-        if (codigoDigitado === props.cod) {
+        if (codigoDigitado === props.cod && props.isValid) {
             setChangeToPassword(true);
         }
     };
@@ -35,6 +36,7 @@ export default function ModalCodigo(props) {
 
     const codigoCompleto = (code) => {
         setCodigoDigitado(code);
+        setMostrarErro(false);
     };
 
     return (
@@ -55,10 +57,10 @@ export default function ModalCodigo(props) {
                         reset={resetInputs}
                     />
                     <span className="invalidCod">
-                        {!props.isValid && sendingCode
-                            ? "Código expirado. Reenvie o código."
-                            : sendingCode && codigoDigitado !== props.cod
-                                ? "Código incorreto. Tente novamente."
+                        {mostrarErro && sendingCode && codigoDigitado !== props.cod
+                            ? "Código inválido. Tente novamente."
+                            : mostrarErro && sendingCode && codigoDigitado === props.cod && !props.isValid
+                                ? "Código expirado. Reenvie o código."
                                 : " "}
                     </span>
 
@@ -67,16 +69,21 @@ export default function ModalCodigo(props) {
                     </div>
                     <span className="resend" onClick={() => {
                         setSendingCode(false);
+                        setMostrarErro(false);
                         setCodigoDigitado("");
                         setResetInputs(prev => prev + 1);
                         props.resendCod();
                     }}>
                         Reenviar código
                     </span>
-
                 </div>
             </div>
-            <NewPassword passwordOpen={changeToPassword} setPasswordOpen={() => setChangeToPassword(false)} onCloseAll={props.onCloseAll} />
+            <NewPassword
+                passwordOpen={changeToPassword}
+                setPasswordOpen={() => setChangeToPassword(false)}
+                onCloseAll={props.onCloseAll}
+                emailReset={props.emailReset}
+            />
         </div>
     );
 }

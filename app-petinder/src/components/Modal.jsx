@@ -1,11 +1,10 @@
 import "./components.css";
 import FormInput from "./FormInput";
 import SecondaryButton from "./SecondaryButton";
-import ModalCodigo from "./ModalCodigo";
 import { useState, useEffect } from "react";
-
 import emailjs from '@emailjs/browser';
-import { serviceID, templateID, publicKey } from "../provider/apiInstance"
+import { serviceID, templateID, publicKey, url } from "../provider/apiInstance"
+import ModalCodigo from "./ModalCodigo";
 
 export default function Modal(props) {
     const [openModalCodigo, setOpenModalCodigo] = useState(false);
@@ -26,7 +25,8 @@ export default function Modal(props) {
             [name]: value,
         }));
 
-        if (errors[name]) {
+        if (value.trim()) {
+            resetInputStyle("emailredefinir");
             setErrors((prevErrors) => {
                 const updatedErrors = { ...prevErrors };
                 delete updatedErrors[name];
@@ -35,9 +35,46 @@ export default function Modal(props) {
         }
     };
 
-    const changeModal = () => {
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+
+        if (value.trim()) {
+            let newErrors = {};
+            if (!/\S+@\S+\.\S+/.test(value)) {
+                newErrors[name] = "Digite um email válido.";
+                setErrorStyle("emailredefinir");
+            } else {
+                resetInputStyle("emailredefinir");
+            }
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                ...newErrors,
+            }));
+        }
+    };
+
+    const validarEmailNoBackend = async (email) => {
+        try {
+            const response = await url.get(`/users/${email}/validar-email`);
+            return response.status === 200;
+        } catch (error) {
+            console.error("Email não encontrado no banco de dados.", error);
+            return false;
+        }
+    };
+
+    const changeModal = async () => {
         if (validateEmail()) {
             setIsLoading(true);
+
+            const emailExiste = await validarEmailNoBackend(formValues.email);
+            if (!emailExiste) {
+                setErrors({ email: "Este e-mail não está cadastrado." });
+                setErrorStyle("emailredefinir");
+                setIsLoading(false);
+                return;
+            }
+
             const codigo = gerarCodigo();
             const templateParams = {
                 to_email: formValues.email,
@@ -51,27 +88,24 @@ export default function Modal(props) {
             };
             setCodigo(codigo);
             setIsValid(true);
-            
+
             const TWO_MINUTES = 2 * 60 * 1000;
             setTimeout(() => setIsValid(false), TWO_MINUTES);
 
-            emailjs.send(
-                serviceID,
-                templateID,
-                templateParams,
-                publicKey
-            ).then(
-                (response) => {
-                    console.log('Email enviado com sucesso!', response.status, response.text);
-                    console.log('Email enviado para:', formValues.email);
-                    setOpenModalCodigo(true);
-                },
-                (error) => {
-                    console.error('Erro ao enviar o email:', error);
-                }
-            ).finally(() => {
+            try {
+                const response = await emailjs.send(
+                    serviceID,
+                    templateID,
+                    templateParams,
+                    publicKey
+                );
+                console.log('Email enviado com sucesso!', response.status, response.text);
+                setOpenModalCodigo(true);
+            } catch (error) {
+                console.error('Erro ao enviar o email:', error);
+            } finally {
                 setIsLoading(false);
-            });
+            }
         }
     };
 
@@ -117,7 +151,6 @@ export default function Modal(props) {
         }
     }, [props.isOpen]);
 
-
     if (props.isOpen) {
         return (
             <div className="modalBackground">
@@ -137,6 +170,7 @@ export default function Modal(props) {
                             required
                             value={formValues.email}
                             onChange={handleInputChange}
+                            onBlur={handleBlur}
                             error={errors.email}
                         />
                         <div onClick={changeModal}>
@@ -160,9 +194,11 @@ export default function Modal(props) {
                     resendCod={changeModal}
                     onCloseAll={props.onCloseAll}
                     isValid={isValid}
+                    emailReset={formValues.email}
                 />
             </div>
         );
     }
+
     return null;
 }
