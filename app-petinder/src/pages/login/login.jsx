@@ -113,6 +113,10 @@ function Login() {
                         tipo: 'erro'
                     });
                     console.error("Erro ao fazer login:", error);
+                    setToast({
+                        mensagem: 'Conta não encontrada.',
+                        tipo: 'erro'
+                    });
                 });
         } catch (error) {
             setToast({
