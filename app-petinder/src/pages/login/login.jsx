@@ -109,7 +109,10 @@ function Login() {
             })
                 .catch((error) => {
                     console.error("Erro ao fazer login:", error);
-                    alert("Erro ao fazer login: " + error.message);
+                    setToast({
+                        mensagem: 'Conta não encontrada.',
+                        tipo: 'erro'
+                    });
                 });
         } catch (error) {
             alert(error.message);

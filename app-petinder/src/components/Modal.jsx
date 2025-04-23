@@ -41,6 +41,12 @@ export default function Modal(props) {
             const codigo = gerarCodigo();
             const templateParams = {
                 to_email: formValues.email,
+                digito1: codigo[0],
+                digito2: codigo[1],
+                digito3: codigo[2],
+                digito4: codigo[3],
+                digito5: codigo[4],
+                digito6: codigo[5],
                 codigo: codigo
             };
             setCodigo(codigo);

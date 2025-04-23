@@ -7,7 +7,7 @@ function PrimaryButton(props) {
 
     function sair() {
         sessionStorage.removeItem('authToken');
-        localStorage.clear();
+        sessionStorage.clear();
         Navigate("/login");
     }
 
