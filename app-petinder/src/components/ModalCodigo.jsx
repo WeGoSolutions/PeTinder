@@ -39,6 +39,29 @@ export default function ModalCodigo(props) {
         setMostrarErro(false);
     };
 
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [timer, setTimer] = useState(60);
+
+    const handleResendCode = () => {
+        setIsDisabled(true);
+        setSendingCode(false);
+        setMostrarErro(false);
+        setCodigoDigitado("");
+        setResetInputs(prev => prev + 1);
+        props.resendCod();
+
+        let countdown = 60;
+        setTimer(countdown);
+        const interval = setInterval(() => {
+            countdown -= 1;
+            setTimer(countdown);
+            if (countdown <= 0) {
+                clearInterval(interval);
+                setIsDisabled(false);
+            }
+        }, 1000);
+    };
+
     return (
         <div>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -67,15 +90,18 @@ export default function ModalCodigo(props) {
                     <div onClick={changeModalPassword}>
                         <SecondaryButton type="button" text="Validar código" />
                     </div>
-                    <span className="resend" onClick={() => {
-                        setSendingCode(false);
-                        setMostrarErro(false);
-                        setCodigoDigitado("");
-                        setResetInputs(prev => prev + 1);
-                        props.resendCod();
-                    }}>
-                        Reenviar código
-                    </span>
+                    <span
+    className={`resend ${isDisabled ? "disabled" : ""}`}
+    onClick={!isDisabled ? handleResendCode : null}
+>
+    Reenviar código
+    {isDisabled && (
+        <>
+            {": "}
+            <span style={{ color: "#80465D" }}>0:{String(timer).padStart(2, '0')}</span>
+        </>
+    )}
+</span>
                 </div>
             </div>
             <NewPassword

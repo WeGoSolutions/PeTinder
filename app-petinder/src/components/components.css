@@ -1059,14 +1059,18 @@
             }
 
             .resend {
-                color: gray;
-                margin-top: 7px;
-            }
-
-            .resend:hover {
                 color: var(--secondaryColor);
+                margin-top: 7px;
+              }
+              
+              .resend:hover {
                 cursor: pointer;
-            }
+              }
+              
+              .resend.disabled {
+                color: gray;
+                cursor: not-allowed;
+              }
 
             .invalidCod {
                 color: red;
@@ -1212,7 +1216,7 @@
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
+    z-index: 999;
 
     .modal {
         width: 647px;
