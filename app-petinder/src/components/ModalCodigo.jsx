@@ -91,17 +91,17 @@ export default function ModalCodigo(props) {
                         <SecondaryButton type="button" text="Validar código" />
                     </div>
                     <span
-                        className={`resend ${isDisabled ? "disabled" : ""}`}
-                        onClick={!isDisabled ? handleResendCode : null}
-                    >
-                        Reenviar código
-                        {isDisabled && (
-                            <>
-                                {" - "}
-                                <span style={{ color: "#80465D" }}>0:{timer}s</span>
-                            </>
-                        )}
-                    </span>
+    className={`resend ${isDisabled ? "disabled" : ""}`}
+    onClick={!isDisabled ? handleResendCode : null}
+>
+    Reenviar código
+    {isDisabled && (
+        <>
+            {": "}
+            <span style={{ color: "#80465D" }}>0:{String(timer).padStart(2, '0')}</span>
+        </>
+    )}
+</span>
                 </div>
             </div>
             <NewPassword

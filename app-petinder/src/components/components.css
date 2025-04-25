@@ -1059,17 +1059,16 @@
             }
 
             .resend {
-                color: gray;
+                color: var(--secondaryColor);
                 margin-top: 7px;
               }
               
               .resend:hover {
-                color: var(--secondaryColor);
                 cursor: pointer;
               }
               
               .resend.disabled {
-                color: #ccc;
+                color: gray;
                 cursor: not-allowed;
               }
 
