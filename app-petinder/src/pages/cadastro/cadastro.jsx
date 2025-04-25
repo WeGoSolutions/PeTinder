@@ -39,13 +39,14 @@ function Cadastro() {
     const [modalTermos, setModalTermos] = useState(false);
     const [modalWarning, setModalWarning] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-    const [counter, setCounter] = useState(30);
+    const [counter, setCounter] = useState(5);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         let timer;
         if (modalWarning) {
             setIsButtonDisabled(true);
-            setCounter(30);
+            setCounter(5);
 
             timer = setInterval(() => {
                 setCounter((prev) => {
@@ -239,6 +240,10 @@ function Cadastro() {
     };
 
     const createAccount = async () => {
+        if (isLoading) return;
+
+        setIsLoading(true);
+
         try {
             await url.post("/users", {
                 nome: formValues.nome,
@@ -261,8 +266,17 @@ function Cadastro() {
                 dataNasc: "",
             });
             setIsChecked(false);
-            Navigate("/login");
+            setToast({
+                mensagem: "Conta criada com sucesso!",
+                tipo: "sucesso"
+            });
+
+            setTimeout(() => {
+                Navigate("/login");
+            }, 1100);
         } catch (error) {
+            setIsButtonDisabled(false);
+
             if (error.response && error.response.status === 409) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
@@ -281,6 +295,8 @@ function Cadastro() {
                     tipo: "erro"
                 });
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -403,12 +419,12 @@ function Cadastro() {
                 >
                     <button
                         type="button"
-                        className={`primary-button ${isButtonDisabled ? styles.disabledButton : ''}`}
-                        disabled={isButtonDisabled}
+                        className={`primary-button ${isLoading || isButtonDisabled ? styles.disabledButton : ''}`}
+                        disabled={isLoading || isButtonDisabled}
                         onClick={createAccount}
                     >
-                        {isButtonDisabled ? `Aguarde: ${counter}s` : "Estou ciente"}
-                    </button>
+                        {isLoading ? "Criando conta..." : (isButtonDisabled ? `Aguarde: ${counter}s` : "Estou ciente")}
+                        </button>
                 </GenericModal>
             </div>
         </>
