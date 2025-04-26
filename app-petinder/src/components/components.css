@@ -50,6 +50,20 @@
     color: #000;
 }
 
+/* .button-eye{
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+} */
+
 /* .input-container input[disabled] {
   background-color: #f1f1f1;
   color: #888;            
