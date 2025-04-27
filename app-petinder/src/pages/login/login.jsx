@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import styles from './login.module.css';
 import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
+import Logo from "../../components/Logo";
 
 function Login() {
     const Navigate = useNavigate();
@@ -146,10 +147,7 @@ function Login() {
                         </div>
                     </div>
                     <form className={styles.loginForm} onSubmit={handleSubmit}>
-                        <div className={styles.titleWrapper}>
-                            <img src="./Logo.svg" alt="" />
-                            <h1 className={styles.loginTitle}>PeTinder</h1>
-                        </div>
+                        <Logo />
                         <FormInput
                             id="email"
                             name="email"

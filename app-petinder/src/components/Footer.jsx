@@ -1,13 +1,12 @@
 import "./components.css";
+import Logo from "./Logo";
 
 function Footer() {
     return (
         <div className="footer">
             <div>
-                <div className="logoClara">
-                    <img src="./LogoClara.svg" alt="" />
-                    <span >PeTinder</span>
-                </div>
+                <div className="footerLogo">
+                <Logo color="#FFC0D9" scale="1.4" imgSrc="./LogoClara.svg"/>
                 <div className="footerText">
                     <span>Veja nossas redes sociais!</span>
                     <div className="redesSociais">
@@ -15,6 +14,7 @@ function Footer() {
                         <img src="./assets/Index/instagram.png" alt="" />
                         <img src="./assets/Index/facebook.png" alt="" />
                     </div>
+                </div>
                 </div>
                 {/* PRECISA ALTERAR PRO ENDEREÇO DA MULHER */}
                 <iframe
