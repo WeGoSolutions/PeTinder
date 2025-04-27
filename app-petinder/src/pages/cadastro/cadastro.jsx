@@ -6,6 +6,7 @@ import styles from './cadastro.module.css';
 import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
 import GenericModal from "../../components/GenericModal";
+import Logo from "../../components/Logo";
 
 const terms = `
 <b>1. Introdução</b><br/>
@@ -321,10 +322,7 @@ function Cadastro() {
                             </div>
                         </div>
                         <form className={styles.registerForm} onSubmit={handleConfirmSubmit}>
-                            <div className={styles.titleWrapper}>
-                                <img src="./Logo.svg" alt="" />
-                                <h1 className={styles.registerTitle}>PeTinder</h1>
-                            </div>
+                            <Logo />
                             <div className={styles.containerGap}>
                                 <div className={styles.registerFormWrapper}>
                                     <FormInput

@@ -1,5 +1,6 @@
 import "./components.css";
 import { useNavigate } from "react-router-dom";
+import Logo from "./Logo";
 
 function PrimaryButton(props) {
 
@@ -14,11 +15,8 @@ function PrimaryButton(props) {
 
     return (
         <div className="navContainer">
-            <div className="logo" onClick={() => Navigate("/")}>
-                <img src="../../Logo.svg" alt="" />
-                <div className="title">
-                    <p>PeTinder</p>
-                </div>
+            <div onClick={() => Navigate("/")} style={{ cursor: "pointer" }}>
+                <Logo paddingBottom="0" scale=".85"/>  
             </div>
             <div className="navActions">
                 <button className="profileButton">
