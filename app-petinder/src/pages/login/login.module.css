@@ -1,0 +1,113 @@
+:root {
+    --backgroundColor: #F4F4F4;
+    --primaryColor: #FFC0D9;
+    --secondaryColor: #80465D;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../../../assets/Login/fundoLogin.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--backgroundColor);
+}
+
+a {
+    color: var(--secondaryColor);
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+span {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--backgroundColor);
+    padding: 30px;
+    border-radius: 15px;
+    width: 560px;
+    height: 560px;
+    text-align: center;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+}
+
+.loginForm {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.titleWrapper {
+    display: flex;
+    gap: 0px;
+    align-items: flex-start;
+}
+
+.titleWrapper img {
+    width: 4rem;
+}
+
+.loginTitle {
+    font-size: 30px;
+    margin-top: 25px;
+    font-weight: bold;
+}
+
+.loginButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.loginLinkWrapper {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+}
+
+
+.closeButtonWrapper {
+    display: flex;
+    width: 100%;
+}
+
+.closeButton img{
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    font-weight: bold;
+    margin-top: 8px;
+}

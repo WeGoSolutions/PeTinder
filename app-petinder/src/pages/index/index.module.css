@@ -1,0 +1,103 @@
+:root {
+    --backgroundColor: #F4F4F4;
+    --primaryColor: #FFC0D9;
+    --secondaryColor: #80465D;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    background-color: var(--backgroundColor);
+    overflow-x: hidden;
+}
+
+.indexContainer {
+    min-height: 100vh;
+    width: 100vw;
+    background-color: var(--backgroundColor);
+    display: flex;
+    flex-direction: column;
+    padding-top: 120px;
+}
+
+.titles {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 160px;
+    max-width: 50%;
+
+}
+
+.title {
+    font-size: 100px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.subtitle {
+    font-size: 22px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.firstSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12rem;
+    justify-content: space-between;
+    padding-left: 100px;
+
+}
+
+.firstImage {
+    position: absolute;
+    right: 0;
+    top: 70%;
+    transform: translateY(-50%);
+    max-width: 50%;
+    height: auto;
+    z-index: 1;
+}
+
+.pawPath{
+    position: absolute;
+    right: -15%;
+    top: 70%;
+    transform: translateX(-100%);
+    max-width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.secondSection{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* gap: 12rem; */
+    justify-content: space-between;
+}
+
+.secondImage {
+    position: absolute;
+    left: 0;
+    top: 160%;
+    transform: translateY(-49%);
+}
+
+.paws{
+    position: absolute;
+    right: -10%;
+    top: 201%;
+    transform: translateX(-100%);
+    max-width: 100%;
+    height: auto;
+}

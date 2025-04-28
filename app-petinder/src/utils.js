@@ -42,3 +42,16 @@ export function formatarTelefone(telefone) {
 
     }
 }
+
+export function convertImagesToBase64(files) {
+    const readers = Array.from(files).map((file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    });
+
+    return Promise.all(readers);
+}

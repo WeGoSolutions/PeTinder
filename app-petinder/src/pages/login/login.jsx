@@ -1,133 +1,191 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    GlobalStyle,
-    BackgroundContainer,
-    FormContainer,
-    AlignCloseButton,
-    CloseButton,
-    Title,
-    InputAlign,
-    InputContainer,
-    FloatingLabel,
-    Input,
-    AlignButtonWrapper,
-    AlignLinkTextWrapper,
-    LinkText,
-    SubmitButton,
-    Button,
-    ImageContainer
-} from "./style";
+import FormInput from "../../components/FormInput";
+import PrimaryButton from "../../components/PrimaryButton";
+import SecondaryButton from "../../components/SecondaryButton";
+import Modal from "../../components/Modal";
+import styles from './login.module.css';
+import { url } from "../../provider/apiInstance";
+import Toast from "../../components/Toast";
+import Logo from "../../components/Logo";
 
-const LoginForm = () => {
-    const [formValues, setFormValues] = useState({
-        email: "",
-        senha: ""
-    });
+function Login() {
+    const Navigate = useNavigate();
 
-    const navigate = useNavigate();
+    const [formValues, setFormValues] = useState({ email: "", senha: "" });
+    const [errors, setErrors] = useState({});
+    const [openModal, setOpenModal] = useState(false);
+    const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
 
-    const handleChange = (e) => {
+    const setErrorStyle = (id) => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            inputElement.style.border = "2px solid red";
+            inputElement.closest(".input-container")?.classList.add("error");
+        }
+    };
+
+    const resetInputStyle = (id) => {
+        const inputElement = document.getElementById(id);
+        if (inputElement) {
+            inputElement.style.border = "2px solid black";
+            inputElement.closest(".input-container")?.classList.remove("error");
+        }
+    };
+
+    const validateForm = () => {
+        let newErrors = {};
+
+        if (!formValues.email.trim()) {
+            newErrors.email = "O email é obrigatório.";
+            setErrorStyle("email");
+            return
+        } else {
+            resetInputStyle("email");
+        }
+
+        if (!formValues.senha.trim()) {
+            newErrors.senha = "A senha é obrigatória.";
+            setErrorStyle("senha");
+            return
+        } else {
+            resetInputStyle("senha");
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+
+        if (errors[name]) {
+            resetInputStyle(name);
+            setErrors((prevErrors) => {
+                const updatedErrors = { ...prevErrors };
+                delete updatedErrors[name];
+                return updatedErrors;
+            });
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        const { email, senha } = formValues;
-    
+
+        if (!validateForm()) {
+            return;
+        }
+
         try {
-            const response = await fetch(`http://localhost:8080/users?email=${email}&senha=${senha}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
+            url.post("/users/login", {
+                email: formValues.email,
+                senha: formValues.senha
+
+            }).then(response => {
+                if (response.status === 200 && response.data?.token) {
+                    const data = response.data;
+                    console.log(data);
+                    sessionStorage.setItem("userId", data.id);
+                    sessionStorage.setItem('authToken', data.token);
+
+                    setToast({
+                        mensagem: 'Login realizado com sucesso!',
+                        tipo: 'sucesso'
+                    });
+
+                    setTimeout(() => {
+                        Navigate('/initial');
+                    }, 1000);
+                } else {
+                    setToast({
+                        mensagem: 'Ops! Ocorreu um erro interno.',
+                        tipo: 'erro'
+                    });
+                    return;
                 }
-            });
-    
-            if (!response.ok) {
-                throw new Error("Erro ao fazer login. Verifique suas credenciais.");
-            }
-    
-            const data = await response.json();
-    
-            if (data.length > 0) {
-                console.log("Login bem-sucedido:", data[0]);
-    
-                localStorage.setItem("userId", data[0].id);
-    
-                navigate("/demonstration");
-            } else {
-                throw new Error("Email ou senha incorretos.");
-            }
+            })
+                .catch((error) => {
+                    setToast({
+                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        tipo: 'erro'
+                    });
+                    console.error("Erro ao fazer login:", error);
+                    setToast({
+                        mensagem: 'Conta não encontrada.',
+                        tipo: 'erro'
+                    });
+                });
         } catch (error) {
-            console.error("Erro:", error);
-            alert(error.message);
+            setToast({
+                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                tipo: 'erro'
+            });
         }
     };
-    
 
     return (
         <>
-            <GlobalStyle />
-            <BackgroundContainer>
-                <FormContainer>
-                    <AlignCloseButton>
-                        <CloseButton>
-                            x
-                        </CloseButton>
-                    </AlignCloseButton>
-                    <Title>PeTinder</Title>
-                    <InputContainer>
-                    <InputAlign>
-                        <Input
-                            type="email"
+            <div className="toastContainer">
+                {toast.mensagem && (
+                    <Toast
+                        mensagem={toast.mensagem}
+                        tipo={toast.tipo}
+                        onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                    />
+                )}
+            </div>
+
+            <div className={styles.container}>
+                <div className={styles.loginContainer}>
+                    <div className={styles.closeButtonWrapper}>
+                        <div className={styles.closeButton} onClick={() => Navigate("/")}>
+                            <img src="./assets/closeButton.png" alt="" />
+                        </div>
+                    </div>
+                    <form className={styles.loginForm} onSubmit={handleSubmit}>
+                        <Logo />
+                        <FormInput
+                            id="email"
                             name="email"
+                            label="Email"
+                            type="email"
+                            required
                             value={formValues.email}
-                            onChange={handleChange}
-                            placeholder=" "
-                            required
+                            onChange={handleInputChange}
+                            error={errors.email}
                         />
-                        <FloatingLabel hasContent={formValues.email !== ""}>
-                            Email
-                        </FloatingLabel>
-                    </InputAlign>
-
-                    <InputAlign>
-                        <Input
-                            type="password"
+                        <FormInput
+                            id="senha"
                             name="senha"
-                            value={formValues.senha}
-                            onChange={handleChange}
-                            placeholder=" "
+                            label="Senha"
+                            type="password"
                             required
+                            value={formValues.senha}
+                            onChange={handleInputChange}
+                            error={errors.senha}
                         />
-                        <FloatingLabel hasContent={formValues.senha !== ""}>
-                            Senha
-                        </FloatingLabel>
-                    </InputAlign>
-                    </InputContainer>
+                        <div className={styles.loginLinkWrapper}>
+                            <span>Criar conta no </span>
+                            <a onClick={() => Navigate("/cadastro")} className={styles.loginLink}>PeTinder</a>
+                        </div>
+                        <div onClick={validateForm}
+                            className={styles.loginButtonWrapper}>
+                            <PrimaryButton type="submit" text="Entrar" />
+                        </div>
+                        <div onClick={() => setOpenModal(true)}>
+                            <SecondaryButton type="button" text="Esqueci a senha" />
+                        </div>
+                    </form>
+                    <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
 
-                    <AlignLinkTextWrapper>
-                        <p>
-                            Criar conta no <LinkText onClick={() => navigate("/")}>PeTinder</LinkText>
-                        </p>
-                    </AlignLinkTextWrapper>
-
-                    <AlignButtonWrapper>
-                        <SubmitButton type="submit" onClick={handleSubmit}>Entrar</SubmitButton>
-                    </AlignButtonWrapper>
-                    <AlignButtonWrapper>
-                        <Button type="button" onClick={() => alert("Recuperação de senha ainda não implementada")}>
-                            Esqueci minha senha
-                        </Button>
-                    </AlignButtonWrapper>
-                </FormContainer>
-
-                <ImageContainer />
-            </BackgroundContainer>
+                </div>
+            </div>
         </>
     );
-};
+}
 
-export default LoginForm;
+export default Login;

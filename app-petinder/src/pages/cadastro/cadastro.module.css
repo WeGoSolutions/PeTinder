@@ -1,0 +1,199 @@
+:root {
+    --backgroundColor: #F4F4F4;
+    --primaryColor: #FFC0D9;
+    --secondaryColor: #80465D;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 10px 50px;
+    width: 100vw;
+    min-height: 100vh;    
+    background-image: url(../../../assets/Cadastro/fundo.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.backgroundImage {
+    background-image: url(../../../assets/Cadastro/cao-cadastro.png);
+    background-size: 45rem;
+    background-position: 40rem;
+    background-repeat: no-repeat;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--backgroundColor);
+}
+
+a {
+    color: var(--secondaryColor);
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+span {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.registerFormWrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+
+.registerFormRow {
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+}
+
+.registerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--backgroundColor);
+    padding: 15px 30px 15px 30px;
+    border-radius: 15px;
+    width: 550px;
+    min-height: 605px;
+    text-align: center;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+    margin-left: 12%;
+}
+
+.containerGap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.registerForm {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.registerTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.registerButtonWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.registerLinkWrapper {
+    width: 79%;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.titleWrapper {
+    display: flex;
+    gap: 0px;
+    align-items: flex-start;
+}
+
+.titleWrapper img {
+    width: 4rem;
+}
+
+.closeButtonWrapper {
+    display: flex;
+    width: 100%;
+}
+
+.closeButton img{
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.termsLabel {
+    width: 24rem;
+    display: flex;
+    gap: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.termsText {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.checkboxWrapper {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.hiddenCheckbox {
+    display: none;
+}
+
+.styledCheckbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    position: relative;
+    cursor: pointer;
+}
+
+.hiddenCheckbox:checked+.styledCheckbox {
+    background-color: #ffb6c1;
+}
+
+.hiddenCheckbox:checked+.styledCheckbox::after {
+    content: "✔";
+    font-size: 14px;
+    color: black;
+    position: absolute;
+}
+
+.disabledButton {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.7;
+}

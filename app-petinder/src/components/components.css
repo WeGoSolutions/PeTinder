@@ -1,0 +1,1323 @@
+:root {
+    --backgroundColor: #F4F4F4;
+    --primaryColor: #FFC0D9;
+    --secondaryColor: #80465D;
+}
+
+.input-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.input-container input {
+    width: 100%;
+    background-color: var(--backgroundColor);
+    height: 60px;
+    padding: 16px 12px 8px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.input-container label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #000;
+    transition: 0.3s ease-in-out;
+    pointer-events: none;
+    background: var(--backgroundColor);
+    padding: 0 4px;
+    font-weight: bold;
+}
+
+.input-container.error label {
+    top: 40%;
+}
+
+.input-container input:focus+label,
+.input-container input:not(:placeholder-shown)+label {
+    font-weight: bold;
+    top: 5px;
+    font-size: 14px;
+    color: #000;
+}
+
+/* .button-eye{
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+} */
+
+/* .input-container input[disabled] {
+  background-color: #f1f1f1;
+  color: #888;            
+  cursor: not-allowed;      
+  border: 1px solid #ccc;    
+}
+
+.input-container input[disabled]::placeholder {
+  color: #aaa;
+} */
+
+/* .input-container label { */
+/* color: #888;  
+} */
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+.primary-button {
+    font-family: 'Poppins', sans-serif;
+    width: 232px;
+    height: 50px;
+    padding: 12px;
+    background: var(--primaryColor);
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background 0.5s;
+
+    &:hover {
+        color: var(--backgroundColor);
+        background: var(--secondaryColor);
+    }
+}
+
+.secondary-button {
+    font-family: 'Poppins', sans-serif;
+    width: 232px;
+    height: 50px;
+    background: var(--backgroundColor);
+    border: 4px solid #FFC0D9;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.7s;
+
+    &:hover {
+        color: var(--backgroundColor);
+        border: var(--secondaryColor);
+        background: var(--secondaryColor);
+    }
+}
+
+.navBar {
+    background-color: var(--primaryColor);
+    height: 81px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    border-bottom: 2px solid var(--secondaryColor);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 51px;
+    height: 53px;
+}
+
+.logo span {
+    font-size: 30px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--secondaryColor);
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.buttons button {
+    background-color: #fff;
+    border-radius: 15px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border: none;
+    padding: 10px;
+    width: 200px;
+    transition: background 0.5s;
+}
+
+.buttons button:hover {
+    background-color: var(--secondaryColor);
+    color: var(--backgroundColor);
+    cursor: pointer;
+}
+
+.textCard {
+    height: 393px;
+    width: 800px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+    position: absolute;
+    left: 42%;
+    top: 147%;
+}
+
+.textCard p {
+    font-size: 17px;
+    font-weight: semibold;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.textCard span {
+    font-size: 17px;
+    font-weight: semibold;
+    color: #f8126e;
+}
+
+.footer {
+    background-color: var(--secondaryColor);
+    height: 350px;
+    width: 102%;
+    position: absolute;
+    top: 219%;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+}
+
+.logoClara {
+    display: flex;
+    align-items: center;
+}
+
+.logoClara img {
+    width: 71px;
+    height: 73px;
+}
+
+.logoClara span {
+    font-size: 50px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--primaryColor);
+}
+
+.footerText {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.footerText span {
+    font-size: 18px;
+    font-weight: light;
+    color: var(--primaryColor);
+}
+
+.footerText img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.redesSociais {
+    margin-top: 10px;
+}
+
+.navContainer {
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+    width: 100vw;
+    height: 70px;
+    background-color: var(--backgroundColor);
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+}
+
+.navContainer .logo {
+    margin-left: 45px;
+    cursor: pointer;
+}
+
+.navContainer .logo img {
+    width: 40px;
+}
+
+.navContainer .logo .title {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.navContainer .logo .title p {
+    margin: 0;
+    margin-top: 23px;
+}
+
+.navContainer .navActions {
+    display: flex;
+    gap: 15px;
+    margin-right: 50px;
+}
+
+.navContainer .navActions button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.appArea {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    height: 90vh;
+    justify-content: center;
+    background-image: url(../../assets/Initial/fundo.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.petInfoContainer {
+    width: 458px;
+    height: 630px;
+    background-color: var(--primaryColor);
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+}
+
+.petInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.containerimagews {
+    width: 500px;
+    height: 500px;
+    background: black;
+}
+
+.petTitle {
+    display: flex;
+    justify-content: space-between;
+}
+
+.petTitle h1 {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+}
+
+
+.likes {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.petTags {
+    display: flex;
+    gap: 10px;
+    max-height: 8rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+
+.containerTag {
+    width: fit-content;
+    height: fit-content;
+    padding: 0px;
+    border: 4px solid #ff2828;
+    padding: 5px;
+    border-radius: 50px;
+    font-weight: bold;
+    color: #ff2828;
+    background: #ffa5a5;
+}
+
+.containerTag p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.tag-red {
+    border-color: #80465D;
+    color: #80465D;
+    background: #FFC0D9;
+}
+
+.tag-blue {
+    border-color: #6578B7;
+    color: #6578B7;
+    background: #AFD2FF;
+}
+
+.tag-green {
+    border-color: #92B765;
+    color: #92B765;
+    background: #DEFFAF;
+}
+
+.tag-yellow {
+    border-color: #ffc107;
+    color: #ffc107;
+    background: #fff5a5;
+}
+
+.tag-purple {
+    border-color: #5B4680;
+    color: #5B4680;
+    background: #E2C0FF;
+}
+
+.petDesc {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.ong {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.petActionsContainer {
+    width: 790px;
+    height: 630px;
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.carrouselPetImages {
+    margin: 0 auto;
+    position: relative;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 700px;
+    height: 595px;
+    overflow: visible;
+}
+
+.carouselImage {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    z-index: 0;
+}
+
+.imageWrapper img {
+    border-radius: 25px;
+}
+
+.carouselImage.current {
+    opacity: 1;
+    z-index: 2;
+    transform: translateX(-50%) scale(1);
+}
+
+.carouselImage.next {
+    opacity: 0.6;
+    z-index: 1;
+    transform: translateX(-42%) scale(0.9);
+}
+
+/* 
+
+.carouselImage.behind {
+    transform: translateX(7%) scale(0.9);
+    z-index: 1;
+    opacity: 0.6;
+} */
+
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 3;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+.navButton:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.navButton.left {
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    background-image: url("../../left.png");
+    background-repeat: no-repeat;
+    background-position: 10px;
+    background-size: 25px;
+}
+
+.navButton.right {
+    width: 50px;
+    height: 50px;
+    right: 10px;
+    background-color: white;
+    background-image: url(../../right.png);
+    background-repeat: no-repeat;
+    background-position: 14px;
+    background-size: 25px;
+}
+
+.actionsContainer {
+    display: flex;
+    position: absolute;
+    gap: 30px;
+    z-index: 100;
+    height: 86%;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.actionsContainer button {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EC5454;
+    cursor: pointer;
+}
+
+.actionsContainer button img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease, margin 0.3s ease;
+}
+
+.actionsContainer button:hover img {
+    transform: translateX(-10px);
+    margin-right: 10px;
+}
+
+.actionsContainer button:hover {
+    width: 150px;
+}
+
+.actionsContainer .left {
+    background-color: #C7FFC0;
+    transition: 500ms;
+}
+
+.actionsContainer .left:hover {
+    background-color: #87bb80;
+    transform: translateX(-35px);
+}
+
+.actionsContainer .right {
+    background-color: #EC5454;
+    transition: 500ms;
+}
+
+.actionsContainer .right:hover {
+    background-color: #d13333;
+    transform: translateX(35px);
+}
+
+.actionsContainer button span {
+    display: none;
+    transition: opacity 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+
+
+.actionsContainer button:hover span {
+    display: block;
+}
+
+.like {
+    width: 40px;
+    transition: 500ms;
+}
+
+.like:hover {
+    scale: 1.1;
+}
+
+.navBar {
+    background-color: var(--primaryColor);
+    height: 81px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    border-bottom: 2px solid var(--secondaryColor);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 51px;
+    height: 53px;
+}
+
+.logo span {
+    font-size: 30px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--secondaryColor);
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.buttons button {
+    background-color: #fff;
+    border-radius: 15px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border: none;
+    padding: 10px;
+    width: 200px;
+}
+
+.buttons button:hover {
+    background-color: var(--secondaryColor);
+    color: var(--backgroundColor);
+    transition: background 0.5s;
+    cursor: pointer;
+}
+
+.textCard {
+    height: 393px;
+    width: 800px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+    position: absolute;
+    left: 42%;
+    top: 147%;
+}
+
+.textCard p {
+    font-size: 17px;
+    font-weight: semibold;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.textCard span {
+    font-size: 17px;
+    font-weight: semibold;
+    color: #f8126e;
+}
+
+.footer {
+    background-color: var(--secondaryColor);
+    height: 350px;
+    position: absolute;
+    top: 219%;
+    padding: 100px;
+    display: flex;
+    flex-direction: row;
+}
+
+.logoClara {
+    display: flex;
+    align-items: center;
+}
+
+.logoClara img {
+    width: 71px;
+    height: 73px;
+}
+
+.logoClara span {
+    font-size: 50px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--primaryColor);
+}
+
+.footerText {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.footerText span {
+    font-size: 18px;
+    font-weight: light;
+    color: var(--primaryColor);
+}
+
+
+.footerText img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.redesSociais {
+    margin-top: 10px;
+}
+
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 980px;
+    border-radius: 20px 0px 0px 20px;
+    background-color: var(--backgroundColor);
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.sidebar-container.open {
+    transform: translateX(0);
+
+}
+
+.sidebar-content {
+    border-radius: 20px 0px 0px 20px;
+    flex: 1;
+    background-color: var(--backgroundColor);
+    overflow-y: auto;
+}
+
+.toggle-button {
+    position: absolute;
+    left: -42px;
+    top: 44vh;
+    width: 50px;
+    height: 100px;
+    background-color: var(--backgroundColor);
+    border-radius: 100px 6px 6px 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    z-index: 1001;
+    justify-content: center;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 40% de opacidade */
+    z-index: 999;
+    /* um abaixo do menu */
+}
+
+.sidebar-content {
+    display: flex;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 37rem;
+    border-right: solid 2px;
+    height: 100vh;
+    /* ocupa a altura toda da tela */
+}
+
+.chatHeader {
+    height: 4rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.ongLogo {
+    margin-left: 15px;
+}
+
+.chatTitle {
+    display: flex;
+    gap: 15px;
+}
+
+.chatFooter {
+    display: flex;
+    height: 60px;
+    flex-shrink: 0;
+    background: var(--secondaryColor);
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.chatInput {
+    margin-left: 15px;
+}
+
+.chatInput input {
+    height: 3rem;
+    width: 28rem;
+    border-radius: 25px;
+    border: none;
+    padding-left: 15px;
+    font-size: 16px;
+}
+
+.chatMessages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+    /* justify-content: flex-end */
+}
+
+.msgAreaS {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.sentMessage {
+    width: fit-content;
+    height: fit-content;
+    min-height: 50px;
+    background-color: var(--primaryColor);
+    border-radius: 15px 15px 0px 15px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.sentMessage p {
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 310px;
+}
+
+.msgAreaR {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.receivedMessage {
+    width: fit-content;
+    height: fit-content;
+    min-height: 50px;
+    background-color: #FF8FBB;
+    border-radius: 15px 15px 15px 0px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.receivedMessage p {
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 310px;
+}
+
+.menuContent {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.menuButtons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+}
+
+
+.menuButtons button {
+    height: 35px;
+    width: 30%;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    cursor: pointer;
+    transition: 100ms;
+}
+
+.menuButtons button:hover {
+    border-bottom: 4px solid;
+}
+
+.ativo {
+    border-bottom: 4px solid;
+}
+
+.chatsArea {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    overflow: auto;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.chatCardContainer {
+    width: 100%;
+    height: 70px;
+    border-radius: 15px;
+    background: var(--backgroundColor);
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chatCardContainer:hover {
+    background: var(--primaryColor);
+}
+
+.chatCardContainer:focus {
+    background: var(--primaryColor);
+}
+
+.cardLogoOng {
+    width: 60px;
+    height: 60px;
+    border: 3px solid;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--backgroundColor);
+}
+
+.cardTextsArea {
+    margin-left: 5px;
+
+}
+
+.cardTitle {
+    display: flex;
+    gap: 7px;
+}
+
+.recentMessage {
+    font-size: 15px;
+    font-weight: 600;
+    color: #202020;
+    opacity: 60%;
+}
+
+.chatFooterButtons button {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalBackground {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+
+    .modal {
+        width: 547px;
+        height: 250px;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color: var(--backgroundColor);
+        padding: 30px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 6px 6px rgb(0, 0, 0);
+
+        .closeButtonModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+
+            img {
+                width: 25px;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1;
+
+            }
+        }
+
+        .modalContent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+
+            h1 {
+                font-size: 22px;
+                font-weight: 600;
+            }
+
+            .resend {
+                color: var(--secondaryColor);
+                margin-top: 7px;
+            }
+
+            .resend:hover {
+                cursor: pointer;
+            }
+
+            .resend.disabled {
+                color: gray;
+                cursor: not-allowed;
+            }
+
+            .invalidCod {
+                color: red;
+                margin: 6px;
+                margin-bottom: 10px;
+            }
+
+        }
+    }
+}
+
+.codeContainer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 8px 0;
+
+    .codeInput {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 24px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        outline: none;
+        transition: border-color 0.3s;
+
+        &:focus {
+            border-color: var(--secondaryColor);
+        }
+    }
+}
+
+.modalPassword {
+    width: 547px;
+    height: 320px;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--backgroundColor);
+    padding: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 6px 6px rgb(0, 0, 0);
+
+    .closeButtonModal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        cursor: pointer;
+
+        img {
+            width: 20px;
+        }
+
+        span {
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1;
+
+        }
+    }
+
+    .modalContent {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+    }
+}
+
+.loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.loading-dots {
+    display: inline-block;
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1.2s steps(3, end) infinite;
+}
+
+@keyframes dots {
+    0% {
+        content: '.';
+    }
+
+    33% {
+        content: '..';
+    }
+
+    66% {
+        content: '...';
+    }
+
+    100% {
+        content: '.';
+    }
+}
+
+.toast {
+    height: fit-content;
+    width: fit-content;
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+
+.toastContainer {
+    width: 100%;
+    height: 6rem;
+    position: absolute;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    padding: 0.8rem;
+}
+
+.defaultModal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+
+    .modal {
+        width: 647px;
+        height: 550px;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        background-color: var(--backgroundColor);
+        padding: 30px;
+        padding-top: 45px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 6px 6px rgb(0, 0, 0);
+
+        .closeButtonModal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+
+            img {
+                width: 25px;
+            }
+
+            span {
+                font-size: 14px;
+                font-weight: normal;
+                line-height: 1;
+
+            }
+        }
+
+        .modalContent {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+
+            .titleModal {
+                font-size: 20px;
+                font-weight: 600;
+            }
+
+            .text {
+                width: 90%;
+                align-items: flex-start;
+                background-color: whitesmoke;
+                text-align: justify;
+                padding: 0 24px;
+                border-radius: 8px;
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+        }
+
+    }
+}
+
+.containerLogo {
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 12px;
+
+    img {
+        width: 4rem;
+    }
+
+    .titleLogo {
+        font-size: 30px;
+        margin-top: 21px;
+        position: relative;
+        left: -5px;
+        font-weight: bold;
+        user-select: none;
+    }
+}
+
+.footerLogo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+  }
