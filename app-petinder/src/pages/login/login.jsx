@@ -91,6 +91,7 @@ function Login() {
                     console.log(data);
                     sessionStorage.setItem("userId", data.id);
                     sessionStorage.setItem('authToken', data.token);
+                    sessionStorage.setItem('isNew', data.userNovo)
 
                     setToast({
                         mensagem: 'Login realizado com sucesso!',

@@ -2,7 +2,7 @@ import "./components.css";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 
-function PrimaryButton(props) {
+function NavBar(props) {
 
     const Navigate = useNavigate();
 
@@ -34,4 +34,4 @@ function PrimaryButton(props) {
     )
 }
 
-export default PrimaryButton;
+export default NavBar;
