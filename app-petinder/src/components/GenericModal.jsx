@@ -11,16 +11,19 @@ export default function GenericModal(props) {
     return (
         <div className="defaultModal">
             <div style={modalStyle} className="modal" onClick={(e) => e.stopPropagation()}>
-                <div className="closeButtonModal" onClick={props.onClose}>
-                    <img src="/left.png" />
-                    <span>Voltar</span>
-                </div>
+                {/* Renderiza o botão de voltar apenas se `hideCloseButton` não for true */}
+                {!props.hideCloseButton && (
+                    <div className="closeButtonModal" onClick={props.onClose}>
+                        <img src="/left.png" />
+                        <span>Voltar</span>
+                    </div>
+                )}
 
                 <div className="modalContent">
                     <div className="titleModal">{props.title}</div>
-                    <div className="text" dangerouslySetInnerHTML={{ __html: props.text }}/>
+                    <div className="text" dangerouslySetInnerHTML={{ __html: props.text }} />
                     <div>{props.children && (
-                        <div className="extraContent">{props.children}</div>
+                        <div className="">{props.children}</div>
                     )}</div>
                 </div>
             </div>
