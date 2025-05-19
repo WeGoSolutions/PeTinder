@@ -18,7 +18,7 @@ export default function Logo(props) {
         paddingBottom: paddingBottom || '12px',
     };
 
-    const imageSource = props.imgSrc || "./Logo.svg";
+    const imageSource = props.imgSrc || "/Logo.svg";
 
     return (
         <div style={{ ...logoScale, ...logoPaddingBottom }} className="containerLogo">
