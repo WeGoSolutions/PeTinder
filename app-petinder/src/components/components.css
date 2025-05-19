@@ -1274,7 +1274,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 24px;
+            gap: 10px;
 
             .titleModal {
                 font-size: 20px;
@@ -1319,5 +1319,59 @@
 .footerLogo {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; 
-  }
+    align-items: flex-end;
+}
+
+.dropdown-select {
+    width: 100%;
+    background-color: var(--backgroundColor);
+    height: 60px;
+    padding: 16px 12px 8px;
+    border: 2px solid black;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    appearance: none; /* Remove o estilo padrão do select */
+    outline: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown-select:focus {
+    border-color: var(--secondaryColor);
+}
+
+.dropdown-select + label {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #000;
+    transition: 0.3s ease-in-out;
+    pointer-events: none;
+    background: var(--backgroundColor);
+    padding: 0 4px;
+    font-weight: bold;
+}
+
+.dropdown-select:focus + label,
+.dropdown-select:not([value=""]) + label {
+    top: 5px;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid black;
+    pointer-events: none;
+}
