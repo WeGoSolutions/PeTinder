@@ -7,6 +7,7 @@ import DemonstrationForm from "./pages/demonstration/demonstration"
 import Initial from "./pages/initial/initial";
 import Forms from "./pages/forms/forms";
 import Teste from "./pages/Teste";
+import Config from "./pages/config/Config";
 import HomeOng from "./pages/ong/home/home";
 
 import HomeContent from "./pages/ong/home/HomeContent";
@@ -27,6 +28,7 @@ const App = () => {
                 <Route path="/demonstration" element={<DemonstrationForm />} />
                 <Route path="/forms" element={<Forms />} />
                 <Route path="/teste" element={<Teste />} />
+                <Route path="/config" element={<Config />} />
 
 
                 <Route path="/ong" element={<HomeOng />}>
