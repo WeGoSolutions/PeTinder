@@ -7,6 +7,7 @@ import DemonstrationForm from "./pages/demonstration/demonstration"
 import Initial from "./pages/initial/initial";
 import Forms from "./pages/forms/forms";
 import Teste from "./pages/Teste";
+import Config from "./pages/config/Config";
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                 <Route path="/demonstration" element={<DemonstrationForm />} />
                 <Route path="/forms" element={<Forms />} />
                 <Route path="/teste" element={<Teste />} />
+                <Route path="/config" element={<Config />} />
             </Routes>
         </Router>
     );
