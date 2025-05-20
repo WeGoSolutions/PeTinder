@@ -36,17 +36,23 @@
         background-color: var(--backgroundColor);
         padding: 5%;
         border-radius: 20px;
-        height: 70%;
+        height: 85%;
         width: 95%;
         display: flex;
         padding: 0;
+        margin-top: 72px;
+
+        h2 {
+            margin-left: 100px;
+            margin-top: 10px;
+        }
 
         .sideMenu {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 0 3% 23% 3%;
+            margin: 0 3% 31% 3%;
 
             .optionsTitle {
                 font-size: 18px;
@@ -73,6 +79,89 @@
 
     .configInfos {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        /* height: 90%; */
+        /* justify-self: end;
+        align-items: center; */
+
+        .registerFormRow {
+            display: flex;
+            justify-content: flex-start;
+            width: 60%;
+        }
+
+        .containerForm {
+            display: flex;
+            width: 110%;
+            margin-left: 90px;
+
+            /* input {
+                margin-bottom: 7px;
+            } */
+
+            .title {
+                font-size: 20px;
+            }
+
+            .configTextInfo1 {
+                display: flex;
+                flex-direction: column;
+                margin-right: 7px;
+                width: 50%;
+                margin-right: 7px;
+                gap: 7px;
+
+            }
+
+            .configTextInfo2 {
+                display: flex;
+                flex-direction: column;
+                gap: 7px;
+
+                .inputDif {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 7px;
+
+                    .bigInput {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 7px;
+                        width: 90%;
+                    }
+
+                    .litInput {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 7px;
+                        width: 25%;
+                    }
+                }
+
+
+            }
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: row;
+            gap: 7px;
+            justify-content: end;
+            align-items: center;
+            margin-right: -186px;
+
+            .secondaryButton {
+                margin-top: 15px;
+            }
+        }
     }
+}
+
+.img {
+    background-color: #80465D;
+    border-radius: 100%;
+    height: 180px;
+    width: 180px;
+    margin-left: 90px;
+    margin: 0 0 15px 90px;
 }
