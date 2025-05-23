@@ -1,11 +1,15 @@
 import { useState } from "react";
 import "../components.css";
 import { IoIosMenu } from "react-icons/io";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
+import { url } from "../../provider/apiInstance";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
 
+    // const response = url.get(`/users/${email}/validar-email`);
+   
     return (
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
 
@@ -29,7 +33,7 @@ export default function SidePanel() {
             </div>
 
             <button onClick={() => setOpen(!open)} className="burgButton">
-                <IoIosMenu size={22} className={`menuIcon ${open ? "rotate" : ""}`} />
+                <MdOutlineKeyboardDoubleArrowRight size={22} className={`menuIcon ${open ? "rotate" : ""}`} />
             </button>
         </aside>
     );
