@@ -4,6 +4,8 @@ import PrimaryButton from "../../../components/PrimaryButton";
 import "../../../components/components.css";
 import SecondaryButton from "../../../components/SecondaryButton";
 import DropDown from "../../../components/DropDown";
+import UserImage from "../../../components/UserImage";
+
 
 export default function Configuracao() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
@@ -13,7 +15,8 @@ export default function Configuracao() {
             {/* <h2>Atualize suas informações de conta</h2> */}
             <h2>Atualize seus dados cadastrais</h2>
             <div className="imgUser">
-                <img src="/cauan.svg" alt="Foto de perfil do usuário" />
+                <UserImage size={160} src="/cauan.svg" /> 
+                {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}
             </div>
             <div className="containerForm">
                 <div className="configTextInfo1">
