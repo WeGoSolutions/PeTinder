@@ -3,13 +3,18 @@ import { MdOutlineContactPhone } from "react-icons/md";
 
 import "../components.css";
 import { useState } from "react";
+import UserImage from "../UserImage";
 
 export default function Mensagens({nome, mensagem, data, telefone, email, imgSrc}) {
     const [showBaloon, setShowBaloon] = useState(false);
 
     return (
         <div className="messageContainer">
-            <img src={imgSrc} className="imgPerfil" />
+            <div className="imgPerfil">
+                <UserImage size={48} src={imgSrc}  /> 
+            </div>
+
+            {/* <img src={imgSrc} className="imgPerfil" /> */}
 
             <div className="textos">
                 <h1>{nome}</h1>
