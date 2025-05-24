@@ -92,6 +92,7 @@ function Login() {
                     console.log(data);
                     sessionStorage.setItem("userId", data.id);
                     sessionStorage.setItem('authToken', data.token);
+                    sessionStorage.setItem('userName', data.nome);
                     sessionStorage.setItem('isNew', data.userNovo)
 
                     setToast({

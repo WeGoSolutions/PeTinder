@@ -32,6 +32,8 @@ function Initial() {
     const [modalStep, setModalStep] = useState(1); // 1: primeiro modal, 2: segundo modal
     const [profileImage, setProfileImage] = useState(null); // File
     const [profileImageBase64, setProfileImageBase64] = useState(""); // string
+    const userName = sessionStorage.getItem("userName") || "";
+    const firstName = userName.split(" ")[0];
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -293,7 +295,7 @@ function Initial() {
                 >
                     {modalStep === 1 ? (
                         <div className={styles.extraContent}>
-                            <h3>Olá! igor escolha a sua foto de perfil :</h3>
+                            <h3>Olá! {firstName} escolha a sua foto de perfil:</h3>
                             <div className={styles.imageContainer}>
                                 <ImageInput
                                     value={profileImage}
