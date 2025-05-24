@@ -1399,6 +1399,8 @@
         transition: 0.4s ease-in-out;
         padding: 15px;
         gap: 20px;
+        position: relative;
+        /*tirar talvez*/
 
         .burgButton {
             border: 3px solid var(--primaryColor);
@@ -1454,7 +1456,7 @@
 
         .sideButtons {
             width: 100%;
-            height: 75%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -1491,7 +1493,9 @@
                 }
 
                 &.activeButton {
-                    background-color: rgba(255, 192, 217, 0.5);
+                    /* background-color: rgba(255, 192, 217, 0.5); */
+                    background-color: #FADAE7;
+                    /*tirar a transparencia pro botao de segurança*/
                 }
             }
         }
@@ -1503,17 +1507,30 @@
             border-radius: 100px;
         }
 
-        .configButton {
+        /* .configButton {
             display: flex;
             height: 100%;
             align-items: flex-end;
+        } */
+
+        .configButton {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            /* ou 0, se quiser colado na borda */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            /* centraliza horizontalmente */
         }
+
     }
 
     .closedPanel {
         width: 70px;
         border-radius: 20px;
         transition: 0.3s;
+        position: relative;
 
         .ongInfos {
             height: 13%;
@@ -1602,7 +1619,7 @@
 
             .englobe {
                 width: 100%;
-                height: 100%; 
+                height: 100%;
                 /* height: 100%; ideal era por 90  */
                 display: flex;
                 flex-direction: column;
@@ -1624,6 +1641,8 @@
                         border-radius: 50%;
                         border: solid 3px #FF8FBB;
                         margin-left: 15px;
+                        object-fit: cover;
+                        object-position: center;
                     }
 
                     .textos {
@@ -1715,7 +1734,8 @@
 
             .chartContainer {
                 width: 100%;
-                height: 122%;  /* pelo englobe ser 100%... se mudar lá pra 90% pode por 100% aqui */
+                height: 122%;
+                /* pelo englobe ser 100%... se mudar lá pra 90% pode por 100% aqui */
                 display: flex;
                 flex-direction: row;
                 gap: 50px;
@@ -1764,4 +1784,160 @@
     }
 
     /* CONTEUDO PRINCIPAL - FIM*/
+
+
+}
+
+
+
+
+
+
+/* ADAPTANDO A PARTE DA LAISE - CONFIGURAÇÕES */
+
+.configContainer {
+    background-color: var(--backgroundColor);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    h2 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .imgUser {
+        width: 100%;
+        height: 30%;
+        display: flex;
+        align-items: center;
+        padding-left: 5%;
+
+        img {
+            background-color: #80465D;
+            border-radius: 50%;
+            height: 160px;
+            width: 160px;
+            border: solid 3.5px var(--secondaryColor);
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    .registerFormRow {
+        display: flex;
+        justify-content: flex-start;
+        width: 60%;
+    }
+
+    .containerForm {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        padding: 0 50px;
+        /* margin-left: 90px; */
+        /* padding: 70px; */
+
+        .title {
+            font-size: 20px;
+        }
+
+        .configTextInfo1 {
+            display: flex;
+            flex-direction: column;
+            margin-right: 7px;
+            width: 50%;
+            gap: 7px;
+        }
+
+        .configTextInfo2 {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+
+            .inputDif {
+                display: flex;
+                flex-direction: row;
+                gap: 7px;
+
+                .bigInput {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 7px;
+                    width: 90%;
+                }
+
+                .litInput {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 7px;
+                    width: 25%;
+                }
+            }
+        }
+    }
+
+    .buttonsAct {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 7px;
+        justify-content: center;
+        align-items: center;
+        padding-left: 52%;
+
+        .secondaryButton {
+            margin-top: 15px;
+        }
+    }
+}
+
+.aboveButtonDiv {
+    padding: 10px;
+    background: #FFC0D9;
+    background: #E6D9DE;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid var(--secondaryColor);
+    border-bottom: none;
+    text-align: center;
+    font-weight: bold;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 54px;
+    width: 88%;
+    height: 40px;
+    cursor: pointer;
+
+    .span-visible {
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        opacity: 1;
+        max-width: 200px;
+        margin-left: 10px;
+        transition: opacity 0.3s ease, max-width 0.3s ease, margin-left 0.3s ease;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .span-hidden {
+        opacity: 0;
+        max-width: 0;
+        margin-left: 0;
+    }
+
+
+    .iconFixed {
+        min-width: 24px;
+        text-align: center;
+    }
 }
