@@ -16,6 +16,7 @@ function Login() {
     const [errors, setErrors] = useState({});
     const [openModal, setOpenModal] = useState(false);
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
+    const [loginType, setLoginType] = useState("usuario");
 
     const setErrorStyle = (id) => {
         const inputElement = document.getElementById(id);
@@ -73,7 +74,7 @@ function Login() {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const loginUser = async (e) => {
         e.preventDefault();
 
         if (!validateForm()) {
@@ -128,6 +129,15 @@ function Login() {
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (loginType === "usuario") {
+            await loginUser(e);
+        } else {
+           alert("Login ONG");
+        }
+    }
+
     return (
         <>
             <div className="toastContainer">
@@ -145,6 +155,24 @@ function Login() {
                     <div className={styles.closeButtonWrapper}>
                         <div className={styles.closeButton} onClick={() => Navigate("/")}>
                             <img src="./assets/closeButton.png" alt="" />
+                        </div>
+                    </div>
+                    <div className={styles.switchWrapper}>
+                        <div className={styles.switchContainer}>
+                            <button
+                                className={`${styles.switchButton} ${loginType === "usuario" ? styles.active : ""}`}
+                                onClick={() => setLoginType("usuario")}
+                                type="button"
+                            >
+                                Usuário
+                            </button>
+                            <button
+                                className={`${styles.switchButton} ${loginType === "ong" ? styles.active : ""}`}
+                                onClick={() => setLoginType("ong")}
+                                type="button"
+                            >
+                                ONG
+                            </button>
                         </div>
                     </div>
                     <form className={styles.loginForm} onSubmit={handleSubmit}>

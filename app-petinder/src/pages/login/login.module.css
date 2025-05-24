@@ -104,10 +104,41 @@ span {
     width: 100%;
 }
 
-.closeButton img{
+.closeButton img {
     cursor: pointer;
     height: 20px;
     width: 20px;
     font-weight: bold;
     margin-top: 8px;
+}
+
+.switchWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.switchContainer {
+    display: flex;
+    border: 2px solid #80465D;
+    border-radius: 30px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.switchButton {
+    padding: 6px 18px;
+    width: 7rem;
+    border: none;
+    background: none;
+    color: #80465D;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.switchButton.active {
+    background: #80465D;
+    color: #fff;
 }
