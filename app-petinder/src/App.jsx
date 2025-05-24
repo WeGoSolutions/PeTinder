@@ -15,6 +15,7 @@ import Interessados from "./pages/ong/home/Interessados";
 import Dashboard from "./pages/ong/home/Dashboard";
 import PetsContent from "./pages/ong/home/PetsContent";
 import Configuracao from "./pages/ong/home/Configuracao";
+// import Configuracao from "./pages/config/config";
 
 
 const App = () => {

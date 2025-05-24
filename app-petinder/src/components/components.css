@@ -1386,8 +1386,8 @@
     gap: 22px;
     padding: 22px;
 
+    /* PAINEL LATERAL - INICIO */
     .sidePanel {
-        /* margin-left: 22px; */
         width: 35vh;
         height: 100%;
         background-color: var(--backgroundColor);
@@ -1402,6 +1402,9 @@
         gap: 20px;
 
         .burgButton {
+            border: 3px solid var(--primaryColor);
+            box-shadow: 0 0 0 5px var(--secondaryColor);
+            rotate: 180deg;
             border-radius: 50%;
             padding: 0;
             width: 2rem;
@@ -1414,13 +1417,14 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.4s;
+            bottom: 100px;
 
             .menuIcon {
                 transition: transform 0.5s ease;
             }
 
             .rotate {
-                transform: rotate(90deg);
+                transform: rotate(180deg);
             }
         }
 
@@ -1509,6 +1513,7 @@
 
     .closedPanel {
         width: 70px;
+        border-radius: 20px;
         transition: 0.3s;
 
         .ongInfos {
@@ -1516,8 +1521,8 @@
 
             img {
                 width: 50px;
-                margin-top: 15px;
                 transition: width 0.3s ease-in-out;
+                /* margin-top: 15px; */
             }
 
             span {
@@ -1546,39 +1551,60 @@
         }
     }
 
+    /* PAINEL LATERAL - FIM */
 
 
-
-
-
-
+    /* CONTEUDO PRINCIPAL - INICIO*/
     .mainContent {
         width: 100%;
         height: 100%;
         background-color: var(--backgroundColor);
         border-radius: 20px;
         display: flex;
-        /* align-items: center;
-        justify-content: center; */
-        padding: 30px;
+        padding: 25px;
 
         .containerFull {
             width: 100%;
             height: 100%;
-            /* border-radius: 20px; */
-            /* background-color: #b82222; */
             display: flex;
             flex-direction: column;
-            gap: 10px;
 
             h1 {
-                font-size: 30px;
+                font-size: 20px;
                 font-weight: bold;
+            }
+
+            .noMessages {
+                width: 100%;
+                height: 100%;
+                background-color: #E6D9DE;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                img {
+                    width: 180px;
+                    height: 180px;
+                }
+
+                h1 {
+                    font-size: 22px;
+                    font-weight: bold;
+                }
+
+                p {
+                    width: 400px;
+                    font-weight: 500;
+                }
+
             }
 
             .englobe {
                 width: 100%;
-                height: 100%;
+                height: 100%; 
+                /* height: 100%; ideal era por 90  */
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
@@ -1620,8 +1646,6 @@
                         span {
                             font-size: 10px;
                             font-weight: 500;
-                            /* margin-top: 15px;
-                        display: flex; */
                         }
                     }
 
@@ -1656,31 +1680,20 @@
                         right: 30px;
                         top: 50%;
                         transform: translateY(-50%);
+                        cursor: pointer;
                     }
-
                 }
             }
 
-
-            .chartContainer {
-                /* background-color: #E6D9DE; */
+            .titles {
                 width: 100%;
-                height: 100%;
-                margin-top: 10px;
+                height: min-content;
                 display: flex;
                 flex-direction: row;
-                gap: 50px;
+                justify-content: space-between;
+                margin-top: 7px;
 
-                h2 {
-                    font-size: 20px;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-
-                .chartLikes {
-                    width: 60%;
-                    height: 202px;
-
+                .left {
                     .chartTitle {
                         margin-left: 5px;
                         display: flex;
@@ -1688,11 +1701,37 @@
                         gap: 10px;
                     }
 
+                    h2 {
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                }
+
+                .right {
+                    margin-right: 7%;
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+            }
+
+            .chartContainer {
+                width: 100%;
+                height: 122%;  /* pelo englobe ser 100%... se mudar lá pra 90% pode por 100% aqui */
+                display: flex;
+                flex-direction: row;
+                gap: 50px;
+
+                .chartLikes {
+                    width: 60%;
+                    height: 100%;
+
                     .chartLikeContent {
                         width: 100%;
                         height: 100%;
                         padding: 20px;
                         /*APAGAR DAQUI*/
+                        border: solid 2px #6060647a;
+                        border-radius: 15px;
                         /* background-color: #1c19cc; */
                         display: flex;
                         align-items: center;
@@ -1704,12 +1743,15 @@
 
                 .chartAdoptions {
                     width: 40%;
+                    height: 100%;
 
                     .chartAdoptContent {
                         width: 100%;
-                        height: 227px;
+                        height: 100%;
                         padding: 20px;
                         /*APAGAR DAQUI*/
+                        border: solid 2px #6060647a;
+                        border-radius: 15px;
                         /* background-color: #1c19cc; */
                         display: flex;
                         align-items: center;
@@ -1722,7 +1764,6 @@
         }
     }
 }
-
 
 .modalSteps {
     width: 100%;
