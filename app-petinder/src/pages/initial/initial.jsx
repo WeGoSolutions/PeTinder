@@ -63,7 +63,7 @@ function Initial() {
         try {
             const [base64Image] = await convertImagesToBase64([profileImage]);
             await url.post(`/users/${userId}/imagem`, {
-                imagemBase64: base64Image
+                imagemUsuario: base64Image
             }, {
                 headers: {
                     "Content-Type": "application/json",
