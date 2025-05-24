@@ -1,10 +1,10 @@
-import React from "react";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from './config.module.css';
 import SecondaryButton from "../../components/SecondaryButton";
 import NavBar from "../../components/NavBar";
 import DropDown from "../../components/DropDown";
+import UserImage from "../../components/UserImage";
 
 function Config() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
@@ -26,7 +26,9 @@ function Config() {
                 <div className={styles.division}></div>
                 <div className={styles.configInfos}>
                     <h2>Conta</h2>
-                    <div className={styles.img}></div>
+                    <div className={styles.img}>
+                         <UserImage size={180} /> {/*AQUI QUE PASSA O VALOR DA IMAGEM, src={aaaaa...}*/}
+                    </div>
                     <div className={styles.containerForm}>
                         <div className={styles.configTextInfo1}>
                             <span className={styles.title}>Informações pessoais</span>
