@@ -15,6 +15,7 @@ import Interessados from "./pages/ong/home/Interessados";
 import Dashboard from "./pages/ong/home/Dashboard";
 import PetsContent from "./pages/ong/home/PetsContent";
 import Configuracao from "./pages/ong/home/Configuracao";
+import ConfigSeguranca from "./pages/ong/home/ConfigSeguranca";
 // import Configuracao from "./pages/config/config";
 
 
@@ -38,6 +39,7 @@ const App = () => {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="pets" element={<PetsContent />} />
                     <Route path="configuracao" element={<Configuracao />} />
+                    <Route path="configuracao/seguranca" element={<ConfigSeguranca />} />
                 </Route>
             </Routes>
         </Router>
