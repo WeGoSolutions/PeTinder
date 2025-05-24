@@ -5,7 +5,8 @@ import ChatsArea from "./chat/ChatsArea";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
 function SideMenu(props) {
-    const [isOpen, setIsOpen] = useState(false);
+    const isOpen = props.isOpen;
+    const setIsOpen = props.setIsOpen;
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -13,13 +14,10 @@ function SideMenu(props) {
 
     return (
         <>
-            {/* Overlay escuro */}
             {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar} />}
-
             <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
                 <div className="toggle-button" onClick={toggleSidebar}>
-                    {isOpen ? ">" : <><IoChatbubblesOutline />
-                    </>}
+                    {isOpen ? ">" : <><IoChatbubblesOutline /></>}
                 </div>
 
                 <div className="sidebar-content">

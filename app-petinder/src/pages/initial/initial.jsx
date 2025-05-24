@@ -34,6 +34,8 @@ function Initial() {
     const [profileImageBase64, setProfileImageBase64] = useState(""); // string
     const userName = sessionStorage.getItem("userName") || "";
     const firstName = userName.split(" ")[0];
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+    const handleOpenSideMenu = () => setIsSideMenuOpen(true);
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -70,7 +72,7 @@ function Initial() {
                     "Authorization": `Bearer ${authToken}`,
                 },
             });
-            setModalStep(2); // Só avança se a requisição der certo
+            setModalStep(2);
         } catch (error) {
             alert("Erro ao enviar a imagem de perfil.");
             console.error(error);
@@ -274,7 +276,7 @@ function Initial() {
                 curtidas: pet.curtidas,
             });
             alert("Solicitação de adoção enviada!");
-            // Você pode chamar aumentarIndex() aqui se quiser passar para o próximo pet automaticamente
+            setIsSideMenuOpen(true);
             aumentarIndex();
         } catch (error) {
             console.error("Erro ao enviar solicitação de adoção:", error);
@@ -284,7 +286,7 @@ function Initial() {
 
     return (
         <div className={styles.container}>
-            <SideMenu />
+            <SideMenu isOpen={isSideMenuOpen} setIsOpen={setIsSideMenuOpen} />
             <NavBar />
             <div className="appArea">
                 <PetActions

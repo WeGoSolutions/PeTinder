@@ -1,10 +1,12 @@
 import "./components.css";
 import { useNavigate } from "react-router-dom";
 import Logo from "./Logo";
+import PerfilArea from "./PerfilArea";
+import { useState } from "react";
 
 function NavBar(props) {
-
     const Navigate = useNavigate();
+    const [showPerfil, setShowPerfil] = useState(false);
 
     function sair() {
         sessionStorage.removeItem('authToken');
@@ -12,15 +14,17 @@ function NavBar(props) {
         Navigate("/login");
     }
 
-
     return (
         <div className="navContainer">
             <div onClick={() => Navigate("/")} style={{ cursor: "pointer" }}>
-                <Logo paddingBottom="0" scale=".85"/>  
+                <Logo paddingBottom="0" scale=".85" />
             </div>
             <div className="navActions">
                 {(props.showButtonIndex === 1 || props.showButtonIndex === undefined) && (
-                    <button className="profileButton">
+                    <button
+                        className="profileButton"
+                        onClick={() => setShowPerfil((prev) => !prev)} // Alterna entre abrir e fechar
+                    >
                         <img src="../../profile.svg" alt="" />
                     </button>
                 )}
@@ -35,6 +39,13 @@ function NavBar(props) {
                     </button>
                 )}
             </div>
+            {showPerfil && (
+                <div className="perfilAreaModal" onClick={() => setShowPerfil(false)}>
+                    <div onClick={e => e.stopPropagation()}>
+                        <PerfilArea />
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
