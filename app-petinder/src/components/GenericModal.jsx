@@ -5,21 +5,38 @@ export default function GenericModal(props) {
 
     const modalStyle = {
         width: props.width || "647px",
-        height: props.height || "550px" 
+        height: props.height || "550px"
     };
+
+    let steps = null;
+    if (props.hasSteps) {
+        steps = [];
+        for (let i = 1; i <= (props.totalSteps || 1); i++) {
+            steps.push(
+                <div
+                    key={i}
+                    className={`step${props.step === i ? " on" : ""}`}
+                ></div>
+            );
+        }
+    }
 
     return (
         <div className="defaultModal">
             <div style={modalStyle} className="modal" onClick={(e) => e.stopPropagation()}>
-                {/* Renderiza o botão de voltar apenas se `hideCloseButton` não for true */}
                 {!props.hideCloseButton && (
-                    <div className="closeButtonModal" onClick={props.onClose}>
+                    <div className="closeButtonModal" onClick={props.onClick ? props.onClick : props.onClose}>
                         <img src="/left.png" />
                         <span>Voltar</span>
                     </div>
                 )}
 
                 <div className="modalContent">
+                    {props.hasSteps && (
+                        <div className="modalSteps">
+                            {steps}
+                        </div>
+                    )}
                     <div className="titleModal">{props.title}</div>
                     <div className="text" dangerouslySetInnerHTML={{ __html: props.text }} />
                     <div>{props.children && (

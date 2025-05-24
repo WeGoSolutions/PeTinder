@@ -16,6 +16,7 @@ function Login() {
     const [errors, setErrors] = useState({});
     const [openModal, setOpenModal] = useState(false);
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
+    const [loginType, setLoginType] = useState("usuario");
 
     const setErrorStyle = (id) => {
         const inputElement = document.getElementById(id);
@@ -73,7 +74,7 @@ function Login() {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const loginUser = async (e) => {
         e.preventDefault();
 
         if (!validateForm()) {
@@ -91,6 +92,7 @@ function Login() {
                     console.log(data);
                     sessionStorage.setItem("userId", data.id);
                     sessionStorage.setItem('authToken', data.token);
+                    sessionStorage.setItem('userName', data.nome);
                     sessionStorage.setItem('isNew', data.userNovo)
 
                     setToast({
@@ -128,6 +130,68 @@ function Login() {
         }
     };
 
+    const loginOng = async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            url.post("/ongs/login", {
+                email: formValues.email,
+                senha: formValues.senha
+            }).then(response => {
+                if (response.status === 200) {
+                    const data = response.data;
+                    sessionStorage.setItem("ongId", data.id);
+                    sessionStorage.setItem('userName', data.nome);
+
+                    setToast({
+                        mensagem: 'Login realizado com sucesso!',
+                        tipo: 'sucesso'
+                    });
+
+                    setTimeout(() => {
+                        Navigate('/ong/home');
+                    }, 1000);
+                } else {
+                    setToast({
+                        mensagem: 'Ops! Ocorreu um erro interno.',
+                        tipo: 'erro'
+                    });
+                    return;
+                }
+            })
+                .catch((error) => {
+                    setToast({
+                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        tipo: 'erro'
+                    });
+                    console.error("Erro ao fazer login:", error);
+                    setToast({
+                        mensagem: 'Conta não encontrada.',
+                        tipo: 'erro'
+                    });
+                });
+        } catch (error) {
+            setToast({
+                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                tipo: 'erro'
+            });
+        }
+    };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (loginType === "usuario") {
+            await loginUser(e);
+        } else {
+            await loginOng(e);
+        }
+    }
+
     return (
         <>
             <div className="toastContainer">
@@ -145,6 +209,24 @@ function Login() {
                     <div className={styles.closeButtonWrapper}>
                         <div className={styles.closeButton} onClick={() => Navigate("/")}>
                             <img src="./assets/closeButton.png" alt="" />
+                        </div>
+                    </div>
+                    <div className={styles.switchWrapper}>
+                        <div className={styles.switchContainer}>
+                            <button
+                                className={`${styles.switchButton} ${loginType === "usuario" ? styles.active : ""}`}
+                                onClick={() => setLoginType("usuario")}
+                                type="button"
+                            >
+                                Usuário
+                            </button>
+                            <button
+                                className={`${styles.switchButton} ${loginType === "ong" ? styles.active : ""}`}
+                                onClick={() => setLoginType("ong")}
+                                type="button"
+                            >
+                                ONG
+                            </button>
                         </div>
                     </div>
                     <form className={styles.loginForm} onSubmit={handleSubmit}>

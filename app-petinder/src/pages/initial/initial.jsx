@@ -12,6 +12,8 @@ import PrimaryButton from "../../components/PrimaryButton";
 import DropDown from "../../components/DropDown";
 import { formatarCEP, capitalizar } from "../../utils";
 import { url } from "../../provider/apiInstance"; // Certifique-se de importar a instância axios
+import ImageInput from "../../components/ImageInput";
+import { convertImagesToBase64 } from "../../utils"; // ajuste o caminho se necessário
 
 function Initial() {
     const Navigate = useNavigate();
@@ -27,6 +29,84 @@ function Initial() {
 
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
     const [showModal, setShowModal] = useState(false);
+    const [modalStep, setModalStep] = useState(1); // 1: primeiro modal, 2: segundo modal
+    const [profileImage, setProfileImage] = useState(null); // File
+    const [profileImageBase64, setProfileImageBase64] = useState(""); // string
+    const userName = sessionStorage.getItem("userName") || "";
+    const firstName = userName.split(" ")[0];
+
+    const handleProfileImageChange = async (file) => {
+        setProfileImage(file);
+        if (file) {
+            const [base64] = await convertImagesToBase64([file]);
+            setProfileImageBase64(base64);
+        } else {
+            setProfileImageBase64("");
+        }
+    };
+
+    const openModal = () => {
+        setShowModal(true);
+        setModalStep(1);
+    };
+
+    const signImage = async () => {
+        // Verifica se há imagem selecionada
+        if (!profileImage) {
+            alert("Selecione uma imagem de perfil.");
+            return;
+        }
+
+        const userId = sessionStorage.getItem("userId");
+        const authToken = sessionStorage.getItem("authToken");
+
+        try {
+            const [base64Image] = await convertImagesToBase64([profileImage]);
+            await url.post(`/users/${userId}/imagem`, {
+                imagemUsuario: base64Image
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`,
+                },
+            });
+            setModalStep(2); // Só avança se a requisição der certo
+        } catch (error) {
+            alert("Erro ao enviar a imagem de perfil.");
+            console.error(error);
+        }
+    };
+
+    const handleNextModal = () => {
+        setModalStep(2);
+    };
+
+    const handleCloseModalAndReset = async () => {
+        setShowModal(false);
+        setModalStep(1);
+        await handleCloseModal();
+    };
+
+    useEffect(() => {
+        const isNew = sessionStorage.getItem("isNew");
+        if (isNew === "true") {
+            openModal();
+        }
+    }, []);
+
+    function verificar() {
+        if (sessionStorage.getItem("userId") === null) {
+            Navigate('/login');
+        }
+    }
+
+    const handlePrevModal = () => {
+        setModalStep(1);
+    };
+
+    useEffect(() => {
+        verificar();
+    }, []);
 
     const checkIsNewUser = () => {
         const isNew = sessionStorage.getItem("isNew");
@@ -179,6 +259,29 @@ function Initial() {
         }
     };
 
+    const handleAdotarPet = async () => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        if (!userId || !pet.id) {
+            alert("Usuário ou pet não identificado.");
+            return;
+        }
+
+        try {
+            await url.post("/status", {
+                petId: pet.id,
+                userId: userId,
+                status: "PENDING",
+                curtidas: pet.curtidas,
+            });
+            alert("Solicitação de adoção enviada!");
+            // Você pode chamar aumentarIndex() aqui se quiser passar para o próximo pet automaticamente
+            aumentarIndex();
+        } catch (error) {
+            console.error("Erro ao enviar solicitação de adoção:", error);
+            alert("Erro ao enviar solicitação de adoção.");
+        }
+    };
+
     return (
         <div className={styles.container}>
             <SideMenu />
@@ -186,7 +289,7 @@ function Initial() {
             <div className="appArea">
                 <PetActions
                     images={pet.images}
-                    adotar={aumentarIndex}
+                    adotar={handleAdotarPet}
                     passar={aumentarIndex} />
                 <PetInfo
                     petId={pet.id}
@@ -204,13 +307,28 @@ function Initial() {
             {/* Modal para novos usuários */}
             {showModal && (
                 <GenericModal
-                    height="37rem"
+                    height={modalStep === 1 ? "32rem" : "37rem"}
                     isOpen={showModal}
                     onClose={() => setShowModal(false)}
                     title="Complete seu Perfil"
-                    hideCloseButton={true}
+                    hideCloseButton={modalStep !== 2}
+                    step={modalStep}
+                    totalSteps={2}
+                    onClick={modalStep === 2 ? handlePrevModal : undefined} // Passa a função só no modal 2
                 >
-                    <div className={styles.extraContent}>
+                    {modalStep === 1 ? (
+                        <div className={styles.extraContent}>
+                            <h3>Olá! {firstName} escolha a sua foto de perfil:</h3>
+                            <div className={styles.imageContainer}>
+                                <ImageInput
+                                    value={profileImage}
+                                    preview={profileImageBase64}
+                                    onChange={handleProfileImageChange}
+                                />
+                            </div>
+                        </div>
+
+                    ) : (<div className={styles.extraContent}>
                         <h3>Informações pessoais:</h3>
                         <FormInput
                             id="cpf"
@@ -293,9 +411,10 @@ function Initial() {
                             </div>
                         </div>
                     </div>
+                    )}
                     <div className={styles.footerModal}>
                         <div className={styles.link}
-                            onClick={handleCloseModal}>
+                            onClick={modalStep === 1 ? handleNextModal : handleCloseModal}>
                             <HiperLink
                                 href="#"
                                 label="Fazer Depois"
@@ -303,17 +422,17 @@ function Initial() {
                             />
                         </div>
                         <div className={styles.button}
-                            onClick={handleSubmit}>
+                            onClick={modalStep === 1 ? signImage : handleSubmit}>
                             <PrimaryButton
                                 className={styles.primaryButton}
                                 type="button"
-                                text="Finalizar"
+                                text={modalStep === 1 ? "Próximo" : "Finalizar"}
                             />
                         </div>
                     </div>
                 </GenericModal>
             )}
-        </div>
+        </div >
     );
 }
 
