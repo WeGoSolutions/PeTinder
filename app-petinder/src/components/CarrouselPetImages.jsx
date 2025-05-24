@@ -37,8 +37,12 @@ function CarrouselPetImages({ images }) {
                 ) : (
                     <p>Carregando imagens...</p>
                 )}
-                <button className="navButton left" onClick={goToPrevious}></button>
-                <button className="navButton right" onClick={goToNext}></button>
+                {Array.isArray(images) && images.length > 1 && (
+                    <>
+                        <button className="navButton left" onClick={goToPrevious}></button>
+                        <button className="navButton right" onClick={goToNext}></button>
+                    </>
+                )}
             </div>
         </div>
     );

@@ -2,7 +2,7 @@ import { CgProfile } from "react-icons/cg";
 
 function UserImage({ src, alt = "Foto do usuário", size = 180 }) {
     return (
-        <div className="imageWrapper" style={{ width: size, height: size }}>
+        <div className="userImageWrapper" style={{ width: size, height: size }}>
             {src ? (
                 <img src={src} alt={alt} className="image" />
             ) : (
