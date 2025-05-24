@@ -259,6 +259,29 @@ function Initial() {
         }
     };
 
+    const handleAdotarPet = async () => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        if (!userId || !pet.id) {
+            alert("Usuário ou pet não identificado.");
+            return;
+        }
+
+        try {
+            await url.post("/status", {
+                petId: pet.id,
+                userId: userId,
+                status: "PENDING",
+                curtidas: pet.curtidas,
+            });
+            alert("Solicitação de adoção enviada!");
+            // Você pode chamar aumentarIndex() aqui se quiser passar para o próximo pet automaticamente
+            aumentarIndex();
+        } catch (error) {
+            console.error("Erro ao enviar solicitação de adoção:", error);
+            alert("Erro ao enviar solicitação de adoção.");
+        }
+    };
+
     return (
         <div className={styles.container}>
             <SideMenu />
@@ -266,7 +289,7 @@ function Initial() {
             <div className="appArea">
                 <PetActions
                     images={pet.images}
-                    adotar={aumentarIndex}
+                    adotar={handleAdotarPet}
                     passar={aumentarIndex} />
                 <PetInfo
                     petId={pet.id}

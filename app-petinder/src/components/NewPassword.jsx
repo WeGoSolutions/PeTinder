@@ -93,8 +93,9 @@ export default function NewPassword(props) {
         if (!validatePasswords()) return;
 
         try {
-            await url.patch(`/users/senha?email=${props.emailReset}`, {
+            await url.patch(`/users/senha`, {
                 senha: formNewValues.novaSenha,
+                email: props.emailReset
             });
 
             setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });

@@ -8,14 +8,17 @@ export default function GenericModal(props) {
         height: props.height || "550px"
     };
 
-    const steps = [];
-    for (let i = 1; i <= (props.totalSteps || 1); i++) {
-        steps.push(
-            <div
-                key={i}
-                className={`step${props.step === i ? " on" : ""}`}
-            ></div>
-        );
+    let steps = null;
+    if (props.hasSteps) {
+        steps = [];
+        for (let i = 1; i <= (props.totalSteps || 1); i++) {
+            steps.push(
+                <div
+                    key={i}
+                    className={`step${props.step === i ? " on" : ""}`}
+                ></div>
+            );
+        }
     }
 
     return (
@@ -29,9 +32,11 @@ export default function GenericModal(props) {
                 )}
 
                 <div className="modalContent">
-                    <div className="modalSteps">
-                        {steps}
-                    </div>
+                    {props.hasSteps && (
+                        <div className="modalSteps">
+                            {steps}
+                        </div>
+                    )}
                     <div className="titleModal">{props.title}</div>
                     <div className="text" dangerouslySetInnerHTML={{ __html: props.text }} />
                     <div>{props.children && (

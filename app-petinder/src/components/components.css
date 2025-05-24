@@ -1834,7 +1834,7 @@
     left: 0;
 }
 
-.imageWrapper {
+.userImageWrapper {
   border-radius: 50%;
   overflow: hidden;
   background-color: #ccc;

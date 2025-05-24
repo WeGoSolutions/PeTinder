@@ -130,12 +130,65 @@ function Login() {
         }
     };
 
+    const loginOng = async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        try {
+            url.post("/ongs/login", {
+                email: formValues.email,
+                senha: formValues.senha
+            }).then(response => {
+                if (response.status === 200) {
+                    const data = response.data;
+                    sessionStorage.setItem("ongId", data.id);
+                    sessionStorage.setItem('userName', data.nome);
+
+                    setToast({
+                        mensagem: 'Login realizado com sucesso!',
+                        tipo: 'sucesso'
+                    });
+
+                    setTimeout(() => {
+                        Navigate('/ong/home');
+                    }, 1000);
+                } else {
+                    setToast({
+                        mensagem: 'Ops! Ocorreu um erro interno.',
+                        tipo: 'erro'
+                    });
+                    return;
+                }
+            })
+                .catch((error) => {
+                    setToast({
+                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        tipo: 'erro'
+                    });
+                    console.error("Erro ao fazer login:", error);
+                    setToast({
+                        mensagem: 'Conta não encontrada.',
+                        tipo: 'erro'
+                    });
+                });
+        } catch (error) {
+            setToast({
+                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                tipo: 'erro'
+            });
+        }
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (loginType === "usuario") {
             await loginUser(e);
         } else {
-           alert("Login ONG");
+            await loginOng(e);
         }
     }
 
