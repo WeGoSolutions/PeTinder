@@ -3,6 +3,8 @@ import { MdPermPhoneMsg } from "react-icons/md";
 import { LuChartNoAxesColumnIncreasing } from "react-icons/lu";
 import Mensagens from "../../../components/ong/Mensagens";
 import SemMensagensdeInteressados from "../../../components/ong/SemMensagensdeInteressados";
+import DashboardMaioresCurtidos from "../../../components/ong/DashboardMaioresCurtidos";
+import DashboardAdotadosENao from "../../../components/ong/DashboardAdotadosENao";
 
 
 export default function HomeContent() {
@@ -45,12 +47,12 @@ export default function HomeContent() {
             <div className="titles">
                 <div className="left">
                     <h2>Pets mais curtidos:</h2>
-                    {graph === 0 ? ("") : (
+                    {/* {graph === 0 ? ("") : (
                         <div className="chartTitle">
                             <LuChartNoAxesColumnIncreasing size={25} />
                             <p>Menor ao maior</p>
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 <h2 className="right">Quantidade de pets adotados:</h2>
@@ -63,13 +65,13 @@ export default function HomeContent() {
                     <div className="chartContainer">
                         <div className="chartLikes">
                             <div className="chartLikeContent">
-                                Chart aqui
+                                <DashboardMaioresCurtidos/>
                             </div>
                         </div>
 
                         <div className="chartAdoptions">
                             <div className="chartAdoptContent">
-                                Chart aqui
+                                <DashboardAdotadosENao top={true}/>
                             </div>
                         </div>
                     </div>
