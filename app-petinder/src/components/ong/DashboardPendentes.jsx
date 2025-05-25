@@ -43,7 +43,7 @@ export default function DashboardPendentes() {
     return (
         <div className="dash-container-pendentes">
             {pendentes.length === 0 ? (
-                <SemMensagensdeInteressados mensagem={mensagemPendentes} icon="normal"/>
+                <SemMensagensdeInteressados mensagem={mensagemPendentes} icon="heart"/>
             ) : (
                 pendentes.map((pet, idx) => (
                     <div className="container-pendencia" key={idx}>
