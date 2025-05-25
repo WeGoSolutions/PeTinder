@@ -15,9 +15,9 @@ function PerfilArea() {
             setUserImageSrc(false);
             return;
         }
-        axios.get(`http://localhost:8080/users/${userId}/imagens/0`)
+        axios.get(`http://localhost:8080/users/${userId}/imagem`)
             .then(response => {
-                setUserImageSrc(response.data);
+                setUserImageSrc(response.data.imageUrl);
             })
             .catch(error => {
                 if (error.response && error.response.status === 404) {
