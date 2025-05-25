@@ -1735,16 +1735,10 @@
                     .chartLikeContent {
                         width: 100%;
                         height: 100%;
-                        padding: 20px;
-                        /*APAGAR DAQUI*/
-                        border: solid 2px #6060647a;
                         border-radius: 15px;
-                        /* background-color: #1c19cc; */
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        font-size: 40px;
-                        /* ATÉ AQUI */
                     }
                 }
 
@@ -1755,16 +1749,10 @@
                     .chartAdoptContent {
                         width: 100%;
                         height: 100%;
-                        padding: 20px;
-                        /*APAGAR DAQUI*/
-                        border: solid 2px #6060647a;
                         border-radius: 15px;
-                        /* background-color: #1c19cc; */
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        font-size: 40px;
-                        /* ATÉ AQUI */
                     }
                 }
             }

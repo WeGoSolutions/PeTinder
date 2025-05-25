@@ -15,16 +15,9 @@ function PetInfo(props) {
     const handleLikeClick = async () => {
         const petId = props.petId;
         const userId = Number(sessionStorage.getItem("userId"));
-        const curtidas = props.likes;
-        const status = "LIKED";
 
         try {
-            await axios.post("http://localhost:8080/status", {
-                petId,
-                userId,
-                status,
-                curtidas,
-            });
+            await axios.post(`http://localhost:8080/status/liked/${petId}/${userId}`);
 
             setIsLiked(true);
             setLikes((prev) => prev + 1);

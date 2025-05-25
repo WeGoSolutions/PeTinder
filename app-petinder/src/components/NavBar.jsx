@@ -14,6 +14,10 @@ function NavBar(props) {
         Navigate("/login");
     }
 
+    function config() {
+        Navigate("/config");
+    }
+
     return (
         <div className="navContainer">
             <div onClick={() => Navigate("/")} style={{ cursor: "pointer" }}>
@@ -29,7 +33,7 @@ function NavBar(props) {
                     </button>
                 )}
                 {(props.showButtonIndex === 2 || props.showButtonIndex === undefined) && (
-                    <button className="configButton">
+                    <button className="configButton" onClick={config}>
                         <img src="../../config.svg" alt="" />
                     </button>
                 )}

@@ -166,7 +166,8 @@ function Initial() {
     };
 
     useEffect(() => {
-        fetch("http://localhost:8080/pets")
+        const userId = sessionStorage.getItem("userId");
+        fetch(`http://localhost:8080/status/default/${userId}`)
             .then(response => response.json())
             .then(json => setPets(json))
             .catch(error => console.error("Error fetching pets:", error));

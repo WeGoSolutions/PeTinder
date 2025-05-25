@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from './config.module.css';
@@ -8,6 +10,45 @@ import UserImage from "../../components/UserImage";
 
 function Config() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
+
+    const [formValues, setFormValues] = useState({
+        nome: "",
+        email: "",
+        cpf: "",
+        dataNasc: "",
+        cep: "",
+        rua: "",
+        complemento: "",
+        numero: "",
+        cidade: "",
+        uf: "",
+        imagemUrl: ""
+    });
+
+    useEffect(() => {
+        const userId = sessionStorage.getItem("userId");
+        if (!userId) return;
+        axios.get(`http://localhost:8080/users/${userId}`)
+            .then(res => {
+                const data = res.data;
+                setFormValues({
+                    nome: data.nome || "",
+                    email: data.email || "",
+                    cpf: data.cpf || "",
+                    dataNasc: data.dataNasc || "",
+                    cep: data.cep || "",
+                    rua: data.rua || "",
+                    complemento: data.complemento || "",
+                    numero: data.numero || "",
+                    cidade: data.cidade || "",
+                    uf: data.uf || "",
+                    imagemUrl: data.imagemUrl || ""
+                });
+            })
+            .catch(err => {
+                console.error("Erro ao buscar dados do usuário:", err);
+            });
+    }, []);
 
     return (
         <div className={styles.background}>
@@ -27,7 +68,7 @@ function Config() {
                 <div className={styles.configInfos}>
                     <h2>Conta</h2>
                     <div className={styles.img}>
-                         <UserImage size={180} /> {/*AQUI QUE PASSA O VALOR DA IMAGEM, src={aaaaa...}*/}
+                        <UserImage size={180} src={formValues.imagemUrl} />
                     </div>
                     <div className={styles.containerForm}>
                         <div className={styles.configTextInfo1}>
@@ -36,16 +77,22 @@ function Config() {
                                 id="nome"
                                 name="nome"
                                 label="Nome Completo"
+                                value={formValues.nome}
+                            // onChange={...}
                             />
                             <FormInput
                                 id="email"
                                 name="email"
                                 label="Email"
+                                value={formValues.email}
+                            // onChange={...}
                             />
                             <FormInput
                                 id="cpf"
                                 name="cpf"
                                 label="CPF"
+                                value={formValues.cpf}
+                            // onChange={...}
                             />
                             <div className={styles.registerFormRow}>
                                 <FormInput
@@ -54,9 +101,8 @@ function Config() {
                                     label="Data de Nascimento"
                                     type="date"
                                     required
-                                // value={formValues.dataNasc}
-                                // onChange={handleInputChange}
-                                // error={errors.dataNasc}
+                                    value={formValues.dataNasc}
+                                // onChange={...}
                                 />
                             </div>
                         </div>
@@ -67,11 +113,15 @@ function Config() {
                                 id="cep"
                                 name="cep"
                                 label="CEP"
+                                value={formValues.cep}
+                            // onChange={...}
                             />
                             <FormInput
                                 id="rua"
                                 name="rua"
                                 label="Rua"
+                                value={formValues.rua}
+                            // onChange={...}
                             />
                             <div className={styles.inputDif}>
                                 <div className={styles.bigInput}>
@@ -79,11 +129,15 @@ function Config() {
                                         id="complemento"
                                         name="complemento"
                                         label="Complemento"
+                                        value={formValues.complemento}
+                                    // onChange={...}
                                     />
                                     <FormInput
                                         id="cidade"
                                         name="cidade"
                                         label="Cidade"
+                                        value={formValues.cidade}
+                                    // onChange={...}
                                     />
                                 </div>
                                 <div className={styles.litInput}>
@@ -91,20 +145,16 @@ function Config() {
                                         id="numero"
                                         name="numero"
                                         label="Número"
+                                        value={formValues.numero}
+                                    // onChange={...}
                                     />
                                     <DropDown
                                         id="uf"
                                         name="uf"
                                         label="UF"
                                         options={ufs}
-                                    // value={formValues.uf}
-                                    // onChange={(e) => {
-                                    //     const { value } = e.target;
-                                    //     setFormValues((prevValues) => ({
-                                    //         ...prevValues,
-                                    //         uf: value,
-                                    //     }));
-                                    // }}
+                                        value={formValues.uf}
+                                    // onChange={...}
                                     />
                                 </div>
                             </div>
