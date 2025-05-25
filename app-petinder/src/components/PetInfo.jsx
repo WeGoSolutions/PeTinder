@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./components.css";
 import Tag from "./Tag";
+import axios from "axios";
 
 function PetInfo(props) {
     const [likes, setLikes] = useState(props.likes);
@@ -12,22 +13,14 @@ function PetInfo(props) {
     }, [props.likes, props.isLiked]);
 
     const handleLikeClick = async () => {
-        const id = props.petId;
-        const newIsLiked = !isLiked;
+        const petId = props.petId;
+        const userId = Number(sessionStorage.getItem("userId"));
 
         try {
-            await fetch(`http://localhost:8080/pet/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    isLiked: newIsLiked,
-                }),
-            });
+            await axios.post(`http://localhost:8080/status/liked/${petId}/${userId}`);
 
-            setIsLiked(newIsLiked);
-            setLikes(newLikes);
+            setIsLiked(true);
+            setLikes((prev) => prev + 1);
         } catch (error) {
             console.error("Erro ao atualizar o like:", error);
             alert("Não foi possível atualizar o like.");

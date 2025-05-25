@@ -34,6 +34,8 @@ function Initial() {
     const [profileImageBase64, setProfileImageBase64] = useState(""); // string
     const userName = sessionStorage.getItem("userName") || "";
     const firstName = userName.split(" ")[0];
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
+    const handleOpenSideMenu = () => setIsSideMenuOpen(true);
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -63,14 +65,14 @@ function Initial() {
         try {
             const [base64Image] = await convertImagesToBase64([profileImage]);
             await url.post(`/users/${userId}/imagem`, {
-                imagemBase64: base64Image
+                imagemUsuario: base64Image
             }, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
                 },
             });
-            setModalStep(2); // Só avança se a requisição der certo
+            setModalStep(2);
         } catch (error) {
             alert("Erro ao enviar a imagem de perfil.");
             console.error(error);
@@ -164,7 +166,8 @@ function Initial() {
     };
 
     useEffect(() => {
-        fetch("http://localhost:8080/pets")
+        const userId = sessionStorage.getItem("userId");
+        fetch(`http://localhost:8080/status/default/${userId}`)
             .then(response => response.json())
             .then(json => setPets(json))
             .catch(error => console.error("Error fetching pets:", error));
@@ -259,14 +262,37 @@ function Initial() {
         }
     };
 
+    const handleAdotarPet = async () => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        if (!userId || !pet.id) {
+            alert("Usuário ou pet não identificado.");
+            return;
+        }
+
+        try {
+            await url.post("/status", {
+                petId: pet.id,
+                userId: userId,
+                status: "PENDING",
+                curtidas: pet.curtidas,
+            });
+            alert("Solicitação de adoção enviada!");
+            setIsSideMenuOpen(true);
+            aumentarIndex();
+        } catch (error) {
+            console.error("Erro ao enviar solicitação de adoção:", error);
+            alert("Erro ao enviar solicitação de adoção.");
+        }
+    };
+
     return (
         <div className={styles.container}>
-            <SideMenu />
+            <SideMenu isOpen={isSideMenuOpen} setIsOpen={setIsSideMenuOpen} />
             <NavBar />
             <div className="appArea">
                 <PetActions
                     images={pet.images}
-                    adotar={aumentarIndex}
+                    adotar={handleAdotarPet}
                     passar={aumentarIndex} />
                 <PetInfo
                     petId={pet.id}
