@@ -1401,7 +1401,6 @@
         padding: 15px;
         gap: 20px;
         position: relative;
-        /*tirar talvez*/
 
         .burgButton {
             border: 3px solid var(--primaryColor);
@@ -1419,7 +1418,7 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.4s;
-            bottom: 140px;
+            bottom: 170px;
 
             .menuIcon {
                 transition: transform 0.5s ease;
@@ -1461,13 +1460,11 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            /* background-color: #6578B7; */
             position: relative;
 
             .buttonsContainer {
                 width: 100%;
                 min-height: 54px;
-                /* background-color: pink; */
                 border-radius: 15px;
                 gap: 10px;
                 display: flex;
@@ -1490,13 +1487,11 @@
                 }
 
                 &:hover {
-                    background-color: rgba(255, 192, 217, 0.5);
+                    background-color: #FADAE7;
                 }
 
                 &.activeButton {
-                    /* background-color: rgba(255, 192, 217, 0.5); */
                     background-color: #FADAE7;
-                    /*tirar a transparencia pro botao de segurança*/
                 }
             }
         }
@@ -1508,21 +1503,13 @@
             border-radius: 100px;
         }
 
-        /* .configButton {
-            display: flex;
-            height: 100%;
-            align-items: flex-end;
-        } */
-
         .configButton {
             position: absolute;
             width: 100%;
             bottom: 0;
-            /* ou 0, se quiser colado na borda */
             width: 100%;
             display: flex;
             justify-content: center;
-            /* centraliza horizontalmente */
         }
 
     }
@@ -1544,7 +1531,6 @@
             img {
                 width: 50px;
                 transition: width 0.3s ease-in-out;
-                /* margin-top: 15px; */
             }
 
             span {
@@ -1557,8 +1543,6 @@
 
         .sideButtons {
             .buttonsContainer {
-                /* min-width: 44px;
-                min-height: 54px; */
                 min-height: 44px;
                 gap: 0;
                 padding-left: 0;
@@ -1567,12 +1551,10 @@
 
                 .test {
                     width: 0;
-                    /* transition: width 2s ease; */
                 }
             }
         }
     }
-
     /* PAINEL LATERAL - FIM */
 
 
@@ -1789,18 +1771,7 @@
         }
     }
 }
-
 /* CONTEUDO PRINCIPAL - FIM*/
-
-
-
-
-
-
-
-
-
-/* ADAPTANDO A PARTE DA LAISE - CONFIGURAÇÕES */
 
 .configContainer {
     background-color: var(--backgroundColor);
@@ -1847,8 +1818,6 @@
         align-items: center;
         justify-content: center;
         padding: 0 50px;
-        /* margin-left: 90px; */
-        /* padding: 70px; */
 
         .title {
             font-size: 20px;
@@ -1906,21 +1875,13 @@
 
 .aboveButtonDiv {
     padding: 10px;
-    background: #FFC0D9;
-    background: #E6D9DE;
-    border-radius: 6px 6px 0 0;
-    border: 1px solid var(--secondaryColor);
-    border-bottom: none;
+    background: #FADAE7;
     text-align: center;
     font-weight: bold;
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 54px;
-    width: 88%;
+    width: 100%;
     height: 40px;
     cursor: pointer;
 
@@ -1947,6 +1908,12 @@
         min-width: 24px;
         text-align: center;
     }
+
+    
+}
+
+.no-rounded {
+  border-radius: 0 0 15px 15px !important;
 }
 
 .modalSteps {
@@ -1961,7 +1928,6 @@
         background-color: var(--secondaryColor);
         border: none;
         transition: 200ms;
-
     }
 }
 
@@ -2105,4 +2071,8 @@
         background: var(--secondaryColor);
         transition: background 0.7s;
     }
+}
+
+.derived-hovered {
+    background-color: #FF8FBB;
 }
