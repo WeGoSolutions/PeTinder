@@ -62,26 +62,29 @@ export default function DashboardMaioresCurtidos() {
                             y: {
                                 beginAtZero: true,
                                 grid: {
-                                    display: false,
+                                    display: true,
+                                    color: "#000",
+                                    lineWidth: (ctx) => (ctx.tick.value === 0 ? 1 : 0),
                                 },
                                 ticks: {
                                     stepSize: 1,
+                                    color: "#000",
                                     callback: function (value) {
                                         return Number.isInteger(value) ? value : null;
                                     },
                                     font: {
-                                        color: "#000",
                                         size: 12
                                     }
                                 }
                             },
                             x: {
                                 grid: {
-                                    display: false,
+                                    display: true,
+                                    color: "#000",
                                 },
                                 ticks: {
+                                    color: "#000",
                                     font: {
-                                        color: "#000",
                                         size: 12
                                     }
                                 }

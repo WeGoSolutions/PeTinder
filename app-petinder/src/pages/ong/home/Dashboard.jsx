@@ -6,34 +6,44 @@ import DashboardMaioresCurtidos from "../../../components/ong/DashboardMaioresCu
 import DashboardAdotadosENao from "../../../components/ong/DashboardAdotadosENao";
 import DashboardPendentes from "../../../components/ong/DashboardPendentes";
 import SemMensagensdeInteressados from '../../../components/ong/SemMensagensdeInteressados';
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
     const [pets, setPets] = useState([]);
-    const mensagem = `Pelo visto você não cadastrou nenhum Pet, clique aqui para cadastrar!`;
 
-    // useEffect(() => {
-    //     const ongId = sessionStorage.getItem("ongId");
-    //     if (!ongId) return;
+    const mensagemDashboard = (
+        <>
+            Pelo visto você não cadastrou nenhum Pet,{" "}
+            <Link to="/ong/pets" style={{ color: "#FF8FBB", textDecoration: "underline", cursor: "pointer" }}>
+                clique aqui
+            </Link> para cadastrar!
+        </>
+    );
 
-    //     axios.get(`http://localhost:8080/pets/${ongId}`)
-    //         .then(response => {
-    //             setPets(response.data);
-    //             console.log(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Erro ao buscar pets:', error);
-    //         });
-    // }, []);
+    useEffect(() => {
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
 
-    const tamanho = 1;
+        axios.get(`http://localhost:8080/ongs/${ongId}/pets`)
+            .then(response => {
+                setPets(response.data);
+            })
+            .catch(error => {
+                if (error.response && error.response.status === 404) {
+                    setPets([]);
+                } else {
+                    console.error('Erro ao buscar pets:', error);
+                }
+            });
+    }, []);
 
     return (
         <div style={{ width: "100%", justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
             <div className="containerFull">
                 <h1>Dashboards</h1>
-                <div className="englobe" style={{gap: "20px", overflow: "hidden"}}>
-                    {tamanho === 0 ? (
-                        <SemMensagensdeInteressados mensagem={mensagem} icon="normal" />
+                <div className="englobe" style={{ gap: "20px", overflow: "hidden" }}>
+                    {pets.length === 0 ? (
+                        <SemMensagensdeInteressados mensagem={mensagemDashboard} icon="heart" />
                     ) : (
                         <>
                             <div className="dash-container">
