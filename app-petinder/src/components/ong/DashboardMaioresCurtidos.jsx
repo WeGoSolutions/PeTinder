@@ -58,6 +58,16 @@ export default function DashboardMaioresCurtidos() {
                     options={{
                         responsive: true,
                         maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: "#000",
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        },
                         scales: {
                             y: {
                                 beginAtZero: true,
