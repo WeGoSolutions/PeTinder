@@ -26,7 +26,7 @@ function formatPendencias(pendencias) {
     });
 }
 
-const mensagemPendentes = "Aparentemente, seus Pets não necessitam de nenhum cuidado no momento"
+const mensagemPendentes = "Aparentemente, seus Pets não necessitam de nenhum cuidado no momento."
 
 export default function DashboardPendentes() {
     const [pendentes, setPendentes] = useState([]);

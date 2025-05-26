@@ -753,6 +753,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    transition: 300ms;
 }
 
 .sidebar-container.open {
@@ -943,7 +944,7 @@
 }
 
 .ativo {
-    border-bottom: 4px solid;
+    border-bottom: 4px solid black !important;
 }
 
 .chatsArea {
@@ -2131,4 +2132,37 @@
         align-items: flex-end;
         justify-content: flex-end;
     }
+}
+
+.likedArea {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
+.likedContainer{
+    cursor: pointer;
+}
+
+.likedCard {
+    width: 150px;
+    height: 175px;
+    border-radius: 10px;
+    border: solid 2px var(--secondaryColor);
+
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+.likedName {
+    display: flex;
+    justify-content: center;
 }
