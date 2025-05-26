@@ -44,6 +44,16 @@ export default function SideButtonsConfig({ nameButton, icon, path, sidePanelOpe
                 </div>
             )}
             <div
+                className={`aboveButtonDiv${location.pathname === "/ong/configuracao/seguranca" ? " activeButton" : ""}`}
+                onClick={handleSegurancaClick}
+                style={sidePanelOpen ? { bottom: "37px", height: "40px" } : { bottom: "54px" }}
+            >
+                <GoShieldCheck size={24} className="iconFixed" />
+                <span className={sidePanelOpen ? "span-hidden" : "span-visible"}>
+                    Segurança
+                </span>
+            </div>
+            <div
                 className={`buttonsContainer${isActive ? " activeButton" : ""}`}
                 onClick={() => navigate(path)}
             // style={{ background: "#FADAE7" }}
