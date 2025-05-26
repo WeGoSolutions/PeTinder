@@ -15,7 +15,6 @@ function ChatsArea(props) {
             <ChatCard />
             <ChatCard />
             <ChatCard />
-
         </div>
     )
 }

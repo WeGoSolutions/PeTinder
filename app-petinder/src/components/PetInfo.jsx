@@ -12,20 +12,20 @@ function PetInfo(props) {
         setIsLiked(props.isLiked);
     }, [props.likes, props.isLiked]);
 
-    const handleLikeClick = async () => {
-        const petId = props.petId;
-        const userId = Number(sessionStorage.getItem("userId"));
+    // const handleLikeClick = async () => {
+    //     const petId = props.petId;
+    //     const userId = Number(sessionStorage.getItem("userId"));
 
-        try {
-            await axios.post(`http://localhost:8080/status/liked/${petId}/${userId}`);
+    //     try {
+    //         await axios.post(`http://localhost:8080/status/liked/${petId}/${userId}`);
 
-            setIsLiked(true);
-            setLikes((prev) => prev + 1);
-        } catch (error) {
-            console.error("Erro ao atualizar o like:", error);
-            alert("Não foi possível atualizar o like.");
-        }
-    };
+    //         setIsLiked(true);
+    //         setLikes((prev) => prev + 1);
+    //     } catch (error) {
+    //         console.error("Erro ao atualizar o like:", error);
+    //         alert("Não foi possível atualizar o like.");
+    //     }
+    // };
 
     const formatPetAge = (age) => {
         if (age < 1) {
@@ -43,7 +43,7 @@ function PetInfo(props) {
                 <div className="petTitle">
                     <div className="leftSection">
                         <h1>{props.petName}</h1>
-                        <div className="likes" onClick={handleLikeClick}>
+                        <div className="likes" onClick={props.onLike}>
                             <img
                                 className="like"
                                 alt="like icon"
