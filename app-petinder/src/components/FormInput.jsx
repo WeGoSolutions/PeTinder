@@ -16,7 +16,7 @@ function FormInput(props) {
                 name={props.name}
                 placeholder=" "
                 required={props.required}
-                value={props.value}
+                defaultValue={props.value}
                 onChange={props.onChange}
                 disabled={props.disabled}
             />
