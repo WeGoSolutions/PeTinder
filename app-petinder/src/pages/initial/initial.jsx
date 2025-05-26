@@ -163,7 +163,7 @@ function Initial() {
     const aumentarIndex = () => {
         setPetIndex((prevIndex) => {
             if (pets.length <= 1) return 0;
-            return (prevIndex + 1) % (pets.length - 1);
+            return (prevIndex + 1) % pets.length;
         });
     };
 
