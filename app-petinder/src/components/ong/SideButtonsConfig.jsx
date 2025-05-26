@@ -1,8 +1,8 @@
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlineSecurity } from "react-icons/md";
 import { GoShieldCheck } from "react-icons/go";
+import { VscAccount } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const iconMap = {
     Config: IoSettingsOutline
@@ -12,18 +12,43 @@ export default function SideButtonsConfig({ nameButton, icon, path, sidePanelOpe
     const navigate = useNavigate();
     const location = useLocation();
     const [hovered, setHovered] = useState(false);
+    const [derivedHovered, setDerivedHovered] = useState(false);
+    const [derivedClicked, setDerivedClicked] = useState(false);
 
-    // Ativo se for a rota do botão OU a rota de segurança
-    const isActive = location.pathname === path || location.pathname === "/ong/configuracao/seguranca";
+    const isActive =
+        location.pathname === path ||
+        location.pathname === "/ong/configuracao/seguranca" ||
+        location.pathname === "/ong/configuracao" ||
+        hovered ||
+        derivedHovered;
+
     const IconComponent = iconMap[icon];
-
-    // Segurança visível se o botão estiver ativo
-    const showSeguranca = isActive;
 
     const handleSegurancaClick = (e) => {
         e.stopPropagation();
+        setDerivedClicked(true);
         navigate("/ong/configuracao/seguranca");
     };
+
+    const handleContaClick = (e) => {
+        e.stopPropagation();
+        setDerivedClicked(true);
+        navigate("/ong/configuracao");
+    };
+
+    useEffect(() => {
+        if (
+            location.pathname !== "/ong/configuracao" &&
+            location.pathname !== "/ong/configuracao/seguranca"
+        ) {
+            setDerivedClicked(false);
+        }
+    }, [location.pathname]);
+
+    const showDerivedButtons = hovered || derivedClicked;
+
+    const isSegurancaActive = location.pathname === "/ong/configuracao/seguranca";
+    const isContaActive = location.pathname === "/ong/configuracao";
 
     return (
         <div
@@ -31,32 +56,39 @@ export default function SideButtonsConfig({ nameButton, icon, path, sidePanelOpe
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {showSeguranca && (
-                <div
-                    className={`aboveButtonDiv${location.pathname === "/ong/configuracao/seguranca" ? " activeButton" : ""}`}
-                    onClick={handleSegurancaClick}
-                    style={sidePanelOpen ? { bottom: "37px", height: "40px" } : { bottom: "54px" }}
-                >
-                    <GoShieldCheck size={24} className="iconFixed" />
-                    <span className={sidePanelOpen ? "span-hidden" : "span-visible"}>
-                        Segurança
-                    </span>
-                </div>
-            )}
-            <div
-                className={`aboveButtonDiv${location.pathname === "/ong/configuracao/seguranca" ? " activeButton" : ""}`}
-                onClick={handleSegurancaClick}
-                style={sidePanelOpen ? { bottom: "37px", height: "40px" } : { bottom: "54px" }}
-            >
-                <GoShieldCheck size={24} className="iconFixed" />
-                <span className={sidePanelOpen ? "span-hidden" : "span-visible"}>
-                    Segurança
-                </span>
+            <div>
+                {showDerivedButtons && (
+                    <>
+                        <div
+                            className={`aboveButtonDiv${derivedHovered === 'seguranca' || isSegurancaActive ? ' derived-hovered' : ''}`}
+                            onClick={handleSegurancaClick}
+                            onMouseEnter={() => setDerivedHovered('seguranca')}
+                            onMouseLeave={() => setDerivedHovered(false)}
+                            style={{ borderRadius: "15px 15px 0 0" }}
+                        >
+                            <GoShieldCheck size={24} className="iconFixed" />
+                            <span className={sidePanelOpen ? "span-hidden" : "span-visible"}>
+                                Segurança
+                            </span>
+                        </div>
+
+                        <div
+                            className={`aboveButtonDiv${derivedHovered === 'conta' || isContaActive ? ' derived-hovered' : ''}`}
+                            onClick={handleContaClick}
+                            onMouseEnter={() => setDerivedHovered('conta')}
+                            onMouseLeave={() => setDerivedHovered(false)}
+                        >
+                            <VscAccount size={24} className="iconFixed" />
+                            <span className={sidePanelOpen ? "span-hidden" : "span-visible"}>
+                                Conta
+                            </span>
+                        </div>
+                    </>
+                )}
             </div>
+
             <div
-                className={`buttonsContainer${isActive ? " activeButton" : ""}`}
-                onClick={() => navigate(path)}
-            // style={{ background: "#FADAE7" }}
+                className={`buttonsContainer${isActive ? " activeButton" : ""} no-rounded`}
             >
                 {IconComponent && <IconComponent size={24} className="iconFixed" />}
                 <span className="test">{nameButton}</span>
