@@ -25,7 +25,6 @@ export default function Mensagens({nome, mensagem, data, telefone, email, imgSrc
             <div className="contact">
                 {(telefone || email) && showBaloon && (
                     <div className="baloon">
-                        {telefone && <p>Telefone: {telefone}</p>}
                         {email && <p>E-mail: {email}</p>}
                     </div>
                 )}
