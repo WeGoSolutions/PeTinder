@@ -55,7 +55,7 @@ export default function Configuracao() {
                 let cpfFormatado = "";
                 let cnpjFormatado = "";
 
-                 if (endereco.cep) {
+                if (endereco.cep) {
                     let value = endereco.cep.replace(/\D/g, "");
                     if (value.length > 8) value = value.slice(0, 8);
                     cepFormatado = formatarCEP(value);
@@ -94,7 +94,34 @@ export default function Configuracao() {
             });
     }, []);
 
-    // FAZER A LÓGICA DE ATUALIZAÇÃO DOS DADOS DA ONG
+    const handleSave = async () => {
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
+
+        const payload = {
+            nome: formValues.nomeOng,
+            email: formValues.email,
+            cnpj: tipoDocumento === "CNPJ" ? cpfCnpj.replace(/\D/g, "") : formValues.cnpj.replace(/\D/g, ""),
+            cpf: tipoDocumento === "CPF" ? cpfCnpj.replace(/\D/g, "") : formValues.cpf.replace(/\D/g, ""),
+            link: formValues.link,
+            endereco: {
+                cep: formValues.cep.replace(/\D/g, ""),
+                rua: formValues.rua,
+                numero: formValues.numero,
+                cidade: formValues.cidade,
+                uf: formValues.uf,
+                complemento: formValues.complemento,
+            }
+        };
+
+        try {
+            await axios.patch(`http://localhost:8080/ongs/${ongId}`, payload);
+            alert("Dados atualizados com sucesso!");
+        } catch (error) {
+            console.error("Erro ao atualizar dados da ONG:", error);
+            alert("Erro ao atualizar dados da ONG.");
+        }
+    };
 
     return (
         <div className="configContainer">
@@ -109,15 +136,17 @@ export default function Configuracao() {
                     <span className="title">Informações pessoais</span>
                     <FormInput
                         id="nome"
-                        name="nome"
+                        name="nomeOng"
                         label="Nome da ONG"
                         value={formValues.nomeOng}
+                        onChange={e => setFormValues({ ...formValues, nomeOng: e.target.value })}
                     />
                     <FormInput
                         id="email"
                         name="email"
                         label="Email"
                         value={formValues.email}
+                        onChange={e => setFormValues({ ...formValues, email: e.target.value })}
                     />
                     <div className="configTextInfo2">
                         <div className="inputDif">
@@ -151,6 +180,8 @@ export default function Configuracao() {
                         name="link"
                         label="Link de Contato"
                         value={formValues.link}
+                        onChange={e => setFormValues({ ...formValues, link: e.target.value })}
+
                     />
                 </div>
 
@@ -161,12 +192,16 @@ export default function Configuracao() {
                         name="cep"
                         label="CEP"
                         value={formValues.cep}
+                        onChange={e => setFormValues({ ...formValues, cep: e.target.value })}
+
                     />
                     <FormInput
                         id="rua"
                         name="rua"
                         label="Rua"
                         value={formValues.rua}
+                        onChange={e => setFormValues({ ...formValues, rua: e.target.value })}
+
                     />
                     <div className="inputDif">
                         <div className="bigInput">
@@ -175,12 +210,16 @@ export default function Configuracao() {
                                 name="complemento"
                                 label="Complemento"
                                 value={formValues.complemento}
+                                onChange={e => setFormValues({ ...formValues, complemento: e.target.value })}
+
                             />
                             <FormInput
                                 id="cidade"
                                 name="cidade"
                                 label="Cidade"
                                 value={formValues.cidade}
+                                onChange={e => setFormValues({ ...formValues, cidade: e.target.value })}
+
                             />
                         </div>
                         <div className="litInput">
@@ -189,6 +228,8 @@ export default function Configuracao() {
                                 name="numero"
                                 label="Número"
                                 value={formValues.numero}
+                                onChange={e => setFormValues({ ...formValues, numero: e.target.value })}
+
                             />
                             <DropDown
                                 id="uf"
@@ -196,12 +237,14 @@ export default function Configuracao() {
                                 label="UF"
                                 options={ufs}
                                 value={formValues.uf}
+                                onChange={e => setFormValues({ ...formValues, uf: e.target.value })}
+
                             />
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="buttonsAct">
+            <div className="buttonsAct" onClick={handleSave}>
                 <PrimaryButton text="Salvar" />
             </div>
         </div>
