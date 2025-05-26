@@ -1852,9 +1852,9 @@
         display: flex;
         flex-direction: row;
         gap: 7px;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
-        padding-left: 52%;
+        padding: 0 50px;
 
         .secondaryButton {
             margin-top: 15px;
@@ -2039,8 +2039,6 @@
     flex-direction: column;
     gap: 10px;
 }
-
-.perfilAreaName {}
 
 .perfilAreaButton {
 

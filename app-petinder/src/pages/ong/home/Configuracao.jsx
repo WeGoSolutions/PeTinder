@@ -99,7 +99,7 @@ export default function Configuracao() {
     return (
         <div className="configContainer">
             {/* <h2>Atualize suas informações de conta</h2> */}
-            <h2>Atualize seus dados cadastrais</h2>
+            <h1 style={{paddingLeft: "5%"}}>Conta</h1>
             <div className="imgUser">
                 <UserImage size={160} src="/aumigosLogo.svg" />
                 {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}
@@ -203,9 +203,6 @@ export default function Configuracao() {
             </div>
             <div className="buttonsAct">
                 <PrimaryButton text="Salvar" />
-                <div className="secondaryButton">
-                    <SecondaryButton text="Cancelar" />
-                </div>
             </div>
         </div>
     )

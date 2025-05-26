@@ -181,7 +181,6 @@ function Config() {
                         </div>
 
                         <div className={styles.buttonsAct}>
-                            {/* <PrimaryButton type="submit" text="Cancelar" /> */}
                             <div onClick={handleSubmit}>
                     <SecondaryButton type="button" text="Salvar"/>
                 </div>
@@ -285,9 +284,6 @@ function Config() {
                         </div>
                         <div className={styles.buttons}>
                             <PrimaryButton text="Salvar" />
-                            <div className={styles.secondaryButton}>
-                                <SecondaryButton text="Cancelar" />
-                            </div>
                         </div>
                     </div>
                 )}
