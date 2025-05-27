@@ -13,10 +13,10 @@ function PetCard(props) {
                 )}
             </div>
             <div className="nameOptions">
-                <span>{props.nomePet}</span>{/*tem q ver no back como q ta o nome*/}
+                <span>{props.nome}</span>
                 <div className="options">
-                    <button className="edit"><MdModeEdit /></button>
-                    <button className="delete"><MdDelete /> </button>
+                    <button className="edit" onClick={props.onEdit}><MdModeEdit /></button>
+                    <button className="delete" onClick={props.onDelete}><MdDelete /> </button>
                 </div>
             </div>
         </div>
