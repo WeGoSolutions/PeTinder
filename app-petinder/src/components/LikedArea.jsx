@@ -11,7 +11,7 @@ function LikedArea(props) {
             .then(res => res.json())
             .then(data => setLikedPets(data))
             .catch(err => console.error("Erro ao buscar pets curtidos:", err));
-    }, []);
+    }, [props.refreshKey]);
 
     return (
         <div className="likedArea">
