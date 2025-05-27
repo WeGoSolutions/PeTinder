@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChatCard from "./ChatCard";
-import axios from "axios";
+import { url } from "../../provider/apiInstance";
 
 function ChatsArea(props) {
     const [pendingChats, setPendingChats] = useState([]);
@@ -8,7 +8,7 @@ function ChatsArea(props) {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        axios.get(`http://localhost:8080/status/pending/ong/${userId}`)
+        url.get(`/status/pending/ong/${userId}`)
             .then(res => setPendingChats(Array.isArray(res.data) ? res.data : []))
             .catch(err => {
                 console.error("Erro ao buscar chats pendentes:", err);
