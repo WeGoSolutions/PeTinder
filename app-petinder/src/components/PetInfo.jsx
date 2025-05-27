@@ -12,21 +12,6 @@ function PetInfo(props) {
         setIsLiked(props.isLiked);
     }, [props.likes, props.isLiked]);
 
-    // const handleLikeClick = async () => {
-    //     const petId = props.petId;
-    //     const userId = Number(sessionStorage.getItem("userId"));
-
-    //     try {
-    //         await axios.post(`http://localhost:8080/status/liked/${petId}/${userId}`);
-
-    //         setIsLiked(true);
-    //         setLikes((prev) => prev + 1);
-    //     } catch (error) {
-    //         console.error("Erro ao atualizar o like:", error);
-    //         alert("Não foi possível atualizar o like.");
-    //     }
-    // };
-
     const formatPetAge = (age) => {
         if (age < 1) {
             return `${Math.round(age * 100)} Meses`;
@@ -51,6 +36,17 @@ function PetInfo(props) {
                             />
                             <p>{likes}</p>
                         </div>
+                    </div>
+                    <div className="middleSection">
+                        {props.isCastrado && (
+                            <img src="./isCastrado.svg" alt="Castrado" title="Castrado" />
+                        )}
+                        {props.isVermifugo && (
+                            <img src="./isVermifugo.svg" alt="Vermifugado" title="Vermifugado" />
+                        )}
+                        {props.isVacinado && (
+                            <img src="./isVacinado.svg" alt="Vacinado" title="Vacinado" />
+                        )}
                     </div>
                     <div className="rightSection">
                         <h1>{formatPetAge(props.petAge)}</h1>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./components.css";
 import Chat from "./chat/Chat";
 import ChatsArea from "./chat/ChatsArea";
-import LikedArea from "./LikedArea.jsx"; // Importe o componente LikedArea
+import LikedArea from "./LikedArea.jsx";
 import { IoChatbubblesOutline } from "react-icons/io5";
 
 function SideMenu(props) {
@@ -10,6 +10,37 @@ function SideMenu(props) {
     const setIsOpen = props.setIsOpen;
 
     const [activeTab, setActiveTab] = useState("chats"); // "chats" ou "liked"
+    const [selectedChat, setSelectedChat] = useState(null);
+    const [pendingChats, setPendingChats] = useState([]);
+
+    useEffect(() => {
+        if (props.activeTab) setActiveTab(props.activeTab);
+    }, [props.activeTab]);
+
+    useEffect(() => {
+        if (props.selectedChat) setSelectedChat(props.selectedChat);
+    }, [props.selectedChat]);
+
+    // Busca os chats pendentes sempre que o menu abrir e a aba for "chats"
+    useEffect(() => {
+        if (isOpen && activeTab === "chats") {
+            const userId = sessionStorage.getItem("userId");
+            if (!userId) return;
+            fetch(`http://localhost:8080/status/pending/ong/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    setPendingChats(Array.isArray(data) ? data : []);
+                })
+                .catch(() => {
+                    setPendingChats([]);
+                    setSelectedChat({
+                        ongNome: "",
+                        petNome: "",
+                        ongLink: ""
+                    });
+                });
+        }
+    }, [isOpen, activeTab]);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -38,7 +69,13 @@ function SideMenu(props) {
                             : undefined
                     }
                 >
-                    {activeTab === "chats" && <Chat />}
+                    {activeTab === "chats" && selectedChat && (
+                        <Chat
+                            ongName={selectedChat.ongNome}
+                            petName={selectedChat.petNome}
+                            ongLink={selectedChat.ongLink}
+                        />
+                    )}
                     <div className="menuContent">
                         <div className="menuButtons">
                             <button
@@ -54,7 +91,17 @@ function SideMenu(props) {
                                 Curtidos
                             </button>
                         </div>
-                        {activeTab === "chats" ? <ChatsArea /> : <LikedArea onLikedPetClick={props.onLikedPetClick} />}
+                        {activeTab === "chats" ? (
+                            <ChatsArea
+                                onSelectChat={setSelectedChat}
+                                refreshKey={props.refreshKey}
+                            />
+                        ) : (
+                            <LikedArea
+                                onLikedPetClick={props.onLikedPetClick}
+                                refreshKey={props.refreshKey}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
