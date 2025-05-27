@@ -6,18 +6,18 @@ import { useState } from "react";
 
 function SecondPetEdit(props) {
     const [images, setImages] = useState([]);
-        const addImage = (event) => {
-            const file = event.target.files[0];
-            if (file && images.length < 5) {
-                const previewUrl = URL.createObjectURL(file);
-                setImages((prevImages) => [...prevImages, { file, url: previewUrl }]);
-            }
-        };
-        const removeImage = (indexToRemove) => {
-            setImages((prevImages) =>
-                prevImages.filter((_, index) => index !== indexToRemove)
-            );
-        };
+    const addImage = (event) => {
+        const file = event.target.files[0];
+        if (file && images.length < 5) {
+            const previewUrl = URL.createObjectURL(file);
+            setImages((prevImages) => [...prevImages, { file, url: previewUrl }]);
+        }
+    };
+    const removeImage = (indexToRemove) => {
+        setImages((prevImages) =>
+            prevImages.filter((_, index) => index !== indexToRemove)
+        );
+    };
     return (
         <div className="editPetModal">
             <div className="header">
@@ -49,49 +49,52 @@ function SecondPetEdit(props) {
                 <div className="division"></div>
 
                 <div className="petInfosVac">
-                    <img src="../../public/isCastrado.svg" alt="é Castrado?" />
+                    <img src="/public/isCastrado.svg" alt="é Castrado?" />
                     <span>Castrado</span>
-                    <img src="../../public/isVermifugo.svg" alt="é Vermifugado?" />
+                    <img src="/public/isVermifugo.svg" alt="é Vermifugado?" />
                     <span>Vermifugado</span>
-                    <img src="../../public/isVacinado.svg" alt="é Vacinado?" />
+                    <img src="/public/isVacinado.svg" alt="é Vacinado?" />
                     <span>Vacinado</span>
                 </div>
+                <div>
+                    <span>Fotos do pet:</span>
+                    <div className="imagePreviewWrapper">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <div key={i} className="previewBox">
+                                {images[i] && (
+                                    <>
+                                        <img src={images[i].url} alt={`preview-${i}`} />
+                                        <button
+                                            className="removeBtn"
+                                            onClick={() => removeImage(i)}
+                                            type="button"
+                                        >
+                                            ✕
+                                        </button>
+                                    </>
+                                )}
+                            </div>
+                        ))}
 
-                <div className="imagePreviewWrapper">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="previewBox">
-                            {images[i] && (
-                                <>
-                                    <img src={images[i].url} alt={`preview-${i}`} />
-                                    <button
-                                        className="removeBtn"
-                                        onClick={() => removeImage(i)}
-                                        type="button"
-                                    >
-                                        ✕
-                                    </button>
-                                </>
-                            )}
-                        </div>
-                    ))}
-
-                    <label className="uploadBtn">
-                        +
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={addImage}
-                            hidden
-                        />
-                    </label>
+                        <label className="uploadBtn">
+                            +
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={addImage}
+                                hidden
+                            />
+                        </label>
+                    </div>
                 </div>
+
             </div>
             <div className="bottomOpt">
                 <button className="button2"></button>
                 <button className="button1"></button>
             </div>
-            <div className="next">
-                <div className="back">
+            <div className="next2">
+                <div className="back" onClick={props.onBack}>
                     <SecondaryButton text="Voltar" />
                 </div>
                 <PrimaryButton text="Salvar" />

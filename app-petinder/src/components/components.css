@@ -2421,6 +2421,11 @@
             }
         }
 
+        #descricao {
+            min-height: 130px;
+            max-height: 130px;
+        }
+
         .petInfosTags {
             display: flex;
             flex-direction: column;
@@ -2447,7 +2452,8 @@
     }
 
     .petInfosCheckbox {
-        margin-top: 20px;
+        margin-top: 10px;
+        /* margin-bottom: 10px; */
         gap: 7px;
 
         .title {
@@ -2459,6 +2465,16 @@
             flex-direction: row;
             align-items: center;
             gap: 5px;
+
+            input[type="radio"] {
+                accent-color: var(--primaryColor);
+                /* muda a cor da bolinha */
+                cursor: pointer;
+            }
+
+            input[type="radio"]:checked {
+                color: var(--primaryColor);
+            }
         }
     }
 
@@ -2566,8 +2582,26 @@
     .next {
         display: flex;
         flex-direction: row;
+        margin-left: 410px;
+        gap: 210px;
+        margin-top: -20px;
+
+        button {
+            width: 160px;
+        }
+
+        .back {
+            margin-top: 15px;
+            /* margin-left: -300px; */
+        }
+    }
+
+    .next2 {
+        display: flex;
+        flex-direction: row;
         margin-left: 40px;
         gap: 210px;
+        margin-top: -20px;
 
         button {
             width: 160px;
