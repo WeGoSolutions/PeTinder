@@ -4,11 +4,14 @@ function HiperLink(props) {
     };
 
     return (
-        <>
-            <a href={props.href} style={linkStyle}>
-                {props.label}
-            </a>
-        </>
+        <a
+            href={props.href}
+            style={linkStyle}
+            {...(props.target ? { target: props.target } : {})}
+            {...(props.rel ? { rel: props.rel } : {})}
+        >
+            {props.label}
+        </a>
     );
 }
 
