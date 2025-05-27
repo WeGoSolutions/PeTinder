@@ -2,7 +2,7 @@ import UserImage from "./UserImage";
 import SecondaryButton from "./SecondaryButton";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { url } from "../provider/apiInstance";
 
 function PerfilArea() {
     const Navigate = useNavigate();
@@ -15,7 +15,7 @@ function PerfilArea() {
             setUserImageSrc(false);
             return;
         }
-        axios.get(`http://localhost:8080/users/${userId}/imagem`)
+        url.get(`/users/${userId}/imagem`)
             .then(response => {
                 setUserImageSrc(response.data.imageUrl);
             })

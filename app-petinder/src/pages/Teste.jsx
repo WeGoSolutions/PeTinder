@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styles from './teste.module.css';
 import FormInput from '../components/FormInput';
 import { convertImagesToBase64 } from '../utils';
+import { url } from '../provider/apiInstance';
 
 function Teste() {
     const [formData, setFormData] = useState({
@@ -35,27 +35,27 @@ function Teste() {
         }
     };
 
-    const handleSubmit = async () => {
-        const payload = {
-            idade: 3, // Valor fixo para este exemplo
-            nome: formData.nome,
-            peso: parseFloat(formData.peso),
-            altura: parseFloat(formData.altura),
-            curtidas: parseInt(formData.curtidas, 10),
-            tags: tags, // Tags fixas para este exemplo
-            descricao: formData.descricao,
-            imagemBase64: formData.imagemBase64, // Agora é enviado como lista
-        };
-
-        try {
-            const response = await axios.post('http://localhost:8080/pets', payload);
-            console.log('Pet cadastrado com sucesso:', response.data);
-            alert('Pet cadastrado com sucesso!');
-        } catch (error) {
-            console.error('Erro ao cadastrar o pet:', error);
-            alert('Erro ao cadastrar o pet.');
-        }
+const handleSubmit = async () => {
+    const payload = {
+        idade: 3,
+        nome: formData.nome,
+        peso: parseFloat(formData.peso),
+        altura: parseFloat(formData.altura),
+        curtidas: parseInt(formData.curtidas, 10),
+        tags: tags,
+        descricao: formData.descricao,
+        imagemBase64: formData.imagemBase64,
     };
+
+    try {
+        const response = await url.post('/pets', payload);
+        console.log('Pet cadastrado com sucesso:', response.data);
+        alert('Pet cadastrado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao cadastrar o pet:', error);
+        alert('Erro ao cadastrar o pet.');
+    }
+};
 
     return (
         <div className={styles.container}>

@@ -7,7 +7,7 @@ import DropDown from "../../../components/DropDown";
 import UserImage from "../../../components/UserImage";
 import { formatarCPF, formatarCNPJ, formatarCEP } from "../../../utils";
 import axios from "axios";
-
+import { url } from "../../../provider/apiInstance";
 
 export default function Configuracao() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
@@ -46,7 +46,7 @@ export default function Configuracao() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        axios.get(`http://localhost:8080/ongs/${ongId}`)
+        url.get(`/ongs/${ongId}`)
             .then(res => {
                 const data = res.data;
                 const endereco = data.endereco || {};
@@ -115,7 +115,7 @@ export default function Configuracao() {
         };
 
         try {
-            await axios.patch(`http://localhost:8080/ongs/${ongId}`, payload);
+            await url.patch(`/ongs/${ongId}`, payload);
             alert("Dados atualizados com sucesso!");
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
@@ -126,7 +126,7 @@ export default function Configuracao() {
     return (
         <div className="configContainer">
             {/* <h2>Atualize suas informações de conta</h2> */}
-            <h1 style={{paddingLeft: "5%"}}>Conta</h1>
+            <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">
                 <UserImage size={160} src="/aumigosLogo.svg" />
                 {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}

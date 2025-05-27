@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LikedCard from "./LikedCard";
+import { url } from "../provider/apiInstance";
 
 function LikedArea(props) {
     const [likedPets, setLikedPets] = useState([]);
@@ -7,9 +8,8 @@ function LikedArea(props) {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        fetch(`http://localhost:8080/status/${userId}/LIKED`)
-            .then(res => res.json())
-            .then(data => setLikedPets(data))
+        url.get(`/status/${userId}/LIKED`)
+            .then(res => setLikedPets(Array.isArray(res.data) ? res.data : []))
             .catch(err => console.error("Erro ao buscar pets curtidos:", err));
     }, [props.refreshKey]);
 

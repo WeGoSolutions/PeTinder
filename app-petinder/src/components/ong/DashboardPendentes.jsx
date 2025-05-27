@@ -1,7 +1,7 @@
 import "./css/DashboardPendentes.css";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import SemMensagensdeInteressados from "./SemMensagensdeInteressados";
+import { url } from "../../provider/apiInstance";
 
 function formatPendencias(pendencias) {
     const colorMap = {
@@ -31,14 +31,14 @@ const mensagemPendentes = "Aparentemente, seus Pets não necessitam de nenhum cu
 export default function DashboardPendentes() {
     const [pendentes, setPendentes] = useState([]);
 
-    useEffect(() => {
-        const ongId = sessionStorage.getItem("ongId");
-        if (!ongId) return;
+useEffect(() => {
+    const ongId = sessionStorage.getItem("ongId");
+    if (!ongId) return;
 
-        axios.get(`http://localhost:8080/dashs/pendencias/${ongId}`)
-            .then(res => setPendentes(res.data))
-            .catch(err => console.error(err));
-    }, []);
+    url.get(`/dashs/pendencias/${ongId}`)
+        .then(res => setPendentes(res.data))
+        .catch(err => console.error(err));
+}, []);
 
     return (
         <div className="dash-container-pendentes">
