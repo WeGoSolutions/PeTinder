@@ -2207,8 +2207,8 @@
         text-align: center;
         font-size: 18px;
 
-        a{
-            font-size: 18px !important;	
+        a {
+            font-size: 18px !important;
         }
     }
 }
@@ -2237,6 +2237,7 @@
         cursor: pointer;
     }
 }
+
 /* .imageWrapper {
     border-radius: 50%;
     overflow: hidden;
@@ -2273,7 +2274,8 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-evenly;
-        .searchIcon{
+
+        .searchIcon {
             position: absolute;
             width: 25px;
             height: 25px;
@@ -2297,7 +2299,8 @@
             border: none;
             background-color: #fff;
         }
-        button:hover{
+
+        button:hover {
             cursor: pointer;
             background-color: var(--primaryColor);
             transition: ease-in-out 0.3s;
@@ -2351,7 +2354,8 @@
                 border: none;
                 font-size: 20px;
             }
-            button:hover{
+
+            button:hover {
                 cursor: pointer;
             }
         }
@@ -2369,57 +2373,88 @@
   z-index: 999;
 } */
 
-.editPetModal{
+.editPetModal {
     background-color: var(--backgroundColor);
     width: 40%;
-    height: 75%;
+    height: 80%;
     margin-top: -40px;
     margin-left: 200px;
     position: absolute;
     border-radius: 20px;
     box-shadow: 6px 6px rgb(0, 0, 0);
 
-    .header{
+    .header {
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 10px;
-        .closeButton{
+
+        .closeButton {
             height: 60px;
             width: 60px;
         }
-        .closeButton:hover{
+
+        .closeButton:hover {
             cursor: pointer;
         }
-        .title{
+
+        .title {
             font-size: 25px;
             margin-left: 26%;
         }
     }
 
-    .petInfos{
+    .petInfos {
         display: flex;
         flex-direction: column;
         padding: 40px;
         gap: 7px;
-        .dropDownQuestions{
+
+        .dropDownQuestions {
             display: flex;
             flex-direction: row;
             gap: 7px;
-            .petAge{
+
+            .petAge {
                 display: flex;
                 flex-direction: row;
             }
         }
+
+        .petInfosTags {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 7px;
+            margin-top: -30px;
+
+            .containerTag {
+                width: 120px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+        }
     }
 
-    .petInfosCheckbox{
+    .division {
+        background-color: #000;
+        height: 2px;
+        width: 60%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .petInfosCheckbox {
         margin-top: 20px;
         gap: 7px;
-        .title{
+
+        .title {
             font-size: 18px;
         }
-        .checkbox{
+
+        .checkbox {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -2427,39 +2462,118 @@
         }
     }
 
-    .bottomOpt{
+    .petInfosVac {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        span {
+            margin-right: 15px;
+            margin-left: 5px;
+            font-weight: 600;
+        }
+    }
+
+    .imagePreviewWrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .previewBox {
+        width: 92px;
+        height: 100px;
+        border: 2px solid #000;
+        border-radius: 10px;
+        background-color: #f7f7f7;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .previewBox img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+
+    .removeBtn {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        background-color: #ff4d4d;
+        border: none;
+        border-radius: 50%;
+        color: white;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+
+    .uploadBtn {
+        width: 42px;
+        height: 50px;
+        border: 2px dashed #000;
+        border-radius: 10px;
+        font-size: 24px;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+
+    .bottomOpt {
         display: flex;
         flex-direction: row;
         gap: 5px;
         justify-content: center;
         margin-top: -10px;
-        .button1{
+
+        .button1 {
             background-color: var(--secondaryColor);
             border: none;
             height: 15px;
             width: 15px;
             border-radius: 100%;
         }
-        .button2{
+
+        .button2 {
             background-color: var(--backgroundColor);
             border: black 2px solid;
             height: 15px;
             width: 15px;
             border-radius: 100%;
         }
-        .button:hover{
+
+        .button:hover {
             cursor: pointer;
         }
     }
-    .next{
+
+    .next {
         display: flex;
         flex-direction: row;
         margin-left: 40px;
         gap: 210px;
-        button{
-                width: 160px;
+
+        button {
+            width: 160px;
         }
-        .back{
+
+        .back {
             margin-top: 15px;
             /* margin-left: -300px; */
         }
