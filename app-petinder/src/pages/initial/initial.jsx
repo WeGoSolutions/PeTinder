@@ -36,6 +36,8 @@ function Initial() {
     const firstName = userName.split(" ")[0];
     const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
     const handleOpenSideMenu = () => setIsSideMenuOpen(true);
+    const [sideMenuTab, setSideMenuTab] = useState("chats");
+    const [selectedChat, setSelectedChat] = useState(null);
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -196,6 +198,11 @@ function Initial() {
                 descricao: currentPet.descricao,
                 tags: currentPet.tags,
                 qntdTags: quantTags,
+                nomeOng: currentPet.nomeOng,
+                linkOng: currentPet.linkOng,
+                isCastrado: currentPet.isCastrado,
+                isVermifugo: currentPet.isVermifugo,
+                isVacinado: currentPet.isVacinado,
             });
         }
     }, [pets, petIndex]);
@@ -271,12 +278,13 @@ function Initial() {
         }
 
         try {
-            await url.post("/status", {
-                petId: pet.id,
-                userId: userId,
-                status: "PENDING",
-                curtidas: pet.curtidas,
+            await url.post(`/status/pending/${pet.id}/${userId}`);
+            setSelectedChat({
+                ongNome: pet.nomeOng,
+                petNome: pet.nome,
+                ongLink: pet.linkOng
             });
+            setSideMenuTab("chats");
             setIsSideMenuOpen(true);
             removerPetAtualEDepois();
         } catch (error) {
@@ -309,11 +317,16 @@ function Initial() {
                 nome: data.nome,
                 idade: data.idade,
                 curtidas: data.curtidas,
-                isLiked: true, // já está curtido
+                isLiked: true,
                 descricao: data.descricao,
                 tags: data.tags,
                 qntdTags: data.tags.length,
                 images: data.imagens || [],
+                nomeOng: data.nomeOng,
+                linkOng: data.linkOng,
+                isCastrado: data.isCastrado,
+                isVermifugo: data.isVermifugo,
+                isVacinado: data.isVacinado,
             });
             setIsSideMenuOpen(false);
         } catch (error) {
@@ -326,7 +339,12 @@ function Initial() {
             <SideMenu
                 isOpen={isSideMenuOpen}
                 setIsOpen={setIsSideMenuOpen}
-                onLikedPetClick={handleLoadPetById} // Passe a função para o SideMenu
+                onLikedPetClick={handleLoadPetById}
+                refreshKey={isSideMenuOpen ? Date.now() : null}
+                activeTab={sideMenuTab}
+                setActiveTab={setSideMenuTab}
+                selectedChat={selectedChat}
+                setSelectedChat={setSelectedChat}
             />
             <NavBar />
             <div className="appArea">
@@ -340,12 +358,15 @@ function Initial() {
                     likes={pet.curtidas}
                     petAge={pet.idade}
                     petDesc={pet.descricao}
-                    ongLink="https://www.instagram.com/projetoaumigosdobem/"
-                    ongName="AUmigos Do Bem"
+                    ongLink={pet.linkOng}
+                    ongName={pet.nomeOng}
                     qntdTags={pet.qntdTags}
                     tags={pet.tags}
                     isLiked={pet.isLiked}
                     onLike={handleLikePet}
+                    isCastrado={pet.isCastrado}
+                    isVermifugo={pet.isVermifugo}
+                    isVacinado={pet.isVacinado}
                 />
             </div>
 
