@@ -753,6 +753,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    transition: 300ms;
 }
 
 .sidebar-container.open {
@@ -943,7 +944,7 @@
 }
 
 .ativo {
-    border-bottom: 4px solid;
+    border-bottom: 4px solid black !important;
 }
 
 .chatsArea {
@@ -1401,7 +1402,6 @@
         padding: 15px;
         gap: 20px;
         position: relative;
-        /*tirar talvez*/
 
         .burgButton {
             border: 3px solid var(--primaryColor);
@@ -1419,7 +1419,7 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.4s;
-            bottom: 140px;
+            bottom: 160px;
 
             .menuIcon {
                 transition: transform 0.5s ease;
@@ -1461,13 +1461,11 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            /* background-color: #6578B7; */
             position: relative;
 
             .buttonsContainer {
                 width: 100%;
                 min-height: 54px;
-                /* background-color: pink; */
                 border-radius: 15px;
                 gap: 10px;
                 display: flex;
@@ -1490,13 +1488,11 @@
                 }
 
                 &:hover {
-                    background-color: rgba(255, 192, 217, 0.5);
+                    background-color: #FADAE7;
                 }
 
                 &.activeButton {
-                    /* background-color: rgba(255, 192, 217, 0.5); */
                     background-color: #FADAE7;
-                    /*tirar a transparencia pro botao de segurança*/
                 }
             }
         }
@@ -1508,21 +1504,13 @@
             border-radius: 100px;
         }
 
-        /* .configButton {
-            display: flex;
-            height: 100%;
-            align-items: flex-end;
-        } */
-
         .configButton {
             position: absolute;
             width: 100%;
             bottom: 0;
-            /* ou 0, se quiser colado na borda */
             width: 100%;
             display: flex;
             justify-content: center;
-            /* centraliza horizontalmente */
         }
 
     }
@@ -1544,7 +1532,6 @@
             img {
                 width: 50px;
                 transition: width 0.3s ease-in-out;
-                /* margin-top: 15px; */
             }
 
             span {
@@ -1557,8 +1544,6 @@
 
         .sideButtons {
             .buttonsContainer {
-                /* min-width: 44px;
-                min-height: 54px; */
                 min-height: 44px;
                 gap: 0;
                 padding-left: 0;
@@ -1567,12 +1552,10 @@
 
                 .test {
                     width: 0;
-                    /* transition: width 2s ease; */
                 }
             }
         }
     }
-
     /* PAINEL LATERAL - FIM */
 
 
@@ -1753,16 +1736,10 @@
                     .chartLikeContent {
                         width: 100%;
                         height: 100%;
-                        padding: 20px;
-                        /*APAGAR DAQUI*/
-                        border: solid 2px #6060647a;
                         border-radius: 15px;
-                        /* background-color: #1c19cc; */
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        font-size: 40px;
-                        /* ATÉ AQUI */
                     }
                 }
 
@@ -1773,34 +1750,17 @@
                     .chartAdoptContent {
                         width: 100%;
                         height: 100%;
-                        padding: 20px;
-                        /*APAGAR DAQUI*/
-                        border: solid 2px #6060647a;
                         border-radius: 15px;
-                        /* background-color: #1c19cc; */
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        font-size: 40px;
-                        /* ATÉ AQUI */
                     }
                 }
             }
         }
     }
 }
-
 /* CONTEUDO PRINCIPAL - FIM*/
-
-
-
-
-
-
-
-
-
-/* ADAPTANDO A PARTE DA LAISE - CONFIGURAÇÕES */
 
 .configContainer {
     background-color: var(--backgroundColor);
@@ -1847,8 +1807,6 @@
         align-items: center;
         justify-content: center;
         padding: 0 50px;
-        /* margin-left: 90px; */
-        /* padding: 70px; */
 
         .title {
             font-size: 20px;
@@ -1894,9 +1852,9 @@
         display: flex;
         flex-direction: row;
         gap: 7px;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
-        padding-left: 52%;
+        padding: 0 50px;
 
         .secondaryButton {
             margin-top: 15px;
@@ -1906,21 +1864,13 @@
 
 .aboveButtonDiv {
     padding: 10px;
-    background: #FFC0D9;
-    background: #E6D9DE;
-    border-radius: 6px 6px 0 0;
-    border: 1px solid var(--secondaryColor);
-    border-bottom: none;
+    background: #FADAE7;
     text-align: center;
     font-weight: bold;
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 54px;
-    width: 88%;
+    width: 100%;
     height: 40px;
     cursor: pointer;
 
@@ -1947,6 +1897,12 @@
         min-width: 24px;
         text-align: center;
     }
+
+    
+}
+
+.no-rounded {
+  border-radius: 0 0 15px 15px !important;
 }
 
 .modalSteps {
@@ -1961,7 +1917,6 @@
         background-color: var(--secondaryColor);
         border: none;
         transition: 200ms;
-
     }
 }
 
@@ -2090,8 +2045,6 @@
     gap: 10px;
 }
 
-.perfilAreaName {}
-
 .perfilAreaButton {
 
     .secondary-button {
@@ -2112,231 +2065,107 @@
     }
 }
 
-.imageWrapper {
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.derived-hovered {
+    background-color: #FF8FBB;
 }
 
-.image {
+.segurancaContainer{
     width: 100%;
     height: 100%;
-    object-fit: cover;
-}
+    padding: 0 50px ;
 
-.placeholder {
-    width: 100%;
-    height: 100%;
-}
+    h1{
+        font-size: 20px;
+    }
 
+    h2{
+        font-size: 16px;
+    }
 
-.petContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
+    h3{
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
 
-    .petHeader {
-        background-color: var(--secondaryColor);
+    .segurancaTitle{
         width: 100%;
-        height: 10%;
-        border-radius: 20px 20px 0 0;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-        .searchIcon{
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            margin-left: -1115px;
-        }
-
-        input {
-            height: 6vh;
-            width: 85%;
-            padding-left: 40px;
-            border-radius: 20px;
-            border: none;
-        }
-
-        button {
-            height: 6vh;
-            font-size: 16px;
-            padding-left: 15px;
-            padding-right: 15px;
-            border-radius: 20px;
-            border: none;
-            background-color: #fff;
-        }
-        button:hover{
-            cursor: pointer;
-            background-color: var(--primaryColor);
-            transition: ease-in-out 0.3s;
-        }
-    }
-
-    .pets {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        /* até 5 por linha */
-        gap: 20px;
-        /* espaçamento entre os cards */
-        padding: 20px;
-        height: 70vh;
-        /* ocupa o restante da tela abaixo do cabeçalho */
-        overflow-y: auto;
-    }
-}
-
-.petCard {
-    background-color: var(--secondaryColor);
-    width: 200px;
-    height: 240px;
-    border-radius: 10px;
-
-    .petImage {
-        width: 180px;
-        height: 180px;
-        border-radius: 10px;
-        margin: 10px 10px 10px 10px;
-    }
-
-    .nameOptions {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 0 14px 10px 14px;
-
-        span {
-            font-size: 17px;
-            font-weight: 600;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            button {
-                background-color: var(--secondaryColor);
-                border: none;
-                font-size: 20px;
-            }
-            button:hover{
-                cursor: pointer;
-            }
-        }
-
-    }
-}
-
-/* .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); 
-  z-index: 999;
-} */
-
-.editPetModal{
-    background-color: var(--backgroundColor);
-    width: 40%;
-    height: 75%;
-    margin-top: -40px;
-    margin-left: 200px;
-    position: absolute;
-    border-radius: 20px;
-    box-shadow: 6px 6px rgb(0, 0, 0);
-
-    .header{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 10px;
-        .closeButton{
-            height: 60px;
-            width: 60px;
-        }
-        .closeButton:hover{
-            cursor: pointer;
-        }
-        .title{
-            font-size: 25px;
-            margin-left: 26%;
-        }
-    }
-
-    .petInfos{
+        height: 15%;
         display: flex;
         flex-direction: column;
-        padding: 40px;
-        gap: 7px;
-        .dropDownQuestions{
-            display: flex;
-            flex-direction: row;
-            gap: 7px;
-            .petAge{
-                display: flex;
-                flex-direction: row;
-            }
-        }
+        gap: 8px;
     }
 
-    .petInfosCheckbox{
-        margin-top: 20px;
-        gap: 7px;
-        .title{
-            font-size: 18px;
-        }
-        .checkbox{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 5px;
-        }
-    }
-
-    .bottomOpt{
+    .senhaAtual{
+        width: 100%;
+        height: 20%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: 5px;
-        justify-content: center;
-        margin-top: -10px;
-        .button1{
-            background-color: var(--secondaryColor);
-            border: none;
-            height: 15px;
-            width: 15px;
-            border-radius: 100%;
-        }
-        .button2{
-            background-color: var(--backgroundColor);
-            border: black 2px solid;
-            height: 15px;
-            width: 15px;
-            border-radius: 100%;
-        }
-        .button:hover{
-            cursor: pointer;
+
+        a{
+            font-size: 12px;
         }
     }
-    .next{
+
+    .inputSenhas{
+        width: 100%;
+        height: 20%;
         display: flex;
-        flex-direction: row;
-        margin-left: 40px;
-        gap: 210px;
-        button{
-                width: 160px;
-        }
-        .back{
-            margin-top: 15px;
-            /* margin-left: -300px; */
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+
+        .inputSenha{
+            width: 100%;
+            height: 50px;
+            border-radius: 10px;
+            border: none;
+            padding-left: 15px;
+            font-size: 16px;
         }
     }
+
+    .buttonsAct{
+        width: 100%;
+        height: 16%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+}
+
+.likedArea {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+}
+
+.likedContainer{
+    cursor: pointer;
+}
+
+.likedCard {
+    width: 150px;
+    height: 175px;
+    border-radius: 10px;
+    border: solid 2px var(--secondaryColor);
+
+    img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+.likedName {
+    display: flex;
+    justify-content: center;
 }

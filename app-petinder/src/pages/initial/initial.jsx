@@ -10,7 +10,7 @@ import FormInput from "../../components/FormInput";
 import HiperLink from "../../components/HiperLink";
 import PrimaryButton from "../../components/PrimaryButton";
 import DropDown from "../../components/DropDown";
-import { formatarCEP, capitalizar } from "../../utils";
+import { formatarCEP, capitalizar, formatarCPF } from "../../utils";
 import { url } from "../../provider/apiInstance"; // Certifique-se de importar a instância axios
 import ImageInput from "../../components/ImageInput";
 import { convertImagesToBase64 } from "../../utils"; // ajuste o caminho se necessário
@@ -55,7 +55,6 @@ function Initial() {
     const signImage = async () => {
         // Verifica se há imagem selecionada
         if (!profileImage) {
-            alert("Selecione uma imagem de perfil.");
             return;
         }
 
@@ -74,7 +73,6 @@ function Initial() {
             });
             setModalStep(2);
         } catch (error) {
-            alert("Erro ao enviar a imagem de perfil.");
             console.error(error);
         }
     };
@@ -124,9 +122,12 @@ function Initial() {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
 
-        // Aplica a máscara no campo de CEP
-        const formattedValue = name === "cep" ? formatarCEP(value) : value;
-
+        let formattedValue = value;
+        if (name === "cep") {
+            formattedValue = formatarCEP(value);
+        } else if (name === "cpf") {
+            formattedValue = formatarCPF(value);
+        }
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: formattedValue,
@@ -144,8 +145,6 @@ function Initial() {
                             cidade: capitalizar(data.localidade || ""),
                             uf: data.uf || "",
                         }));
-                    } else {
-                        alert("CEP não encontrado.");
                     }
                 })
                 .catch((error) => console.error("Erro ao buscar o CEP:", error));
@@ -162,7 +161,18 @@ function Initial() {
     const [pets, setPets] = useState([]);
 
     const aumentarIndex = () => {
-        setPetIndex((prevIndex) => (prevIndex + 1) % pets.length);
+        setPetIndex((prevIndex) => {
+            if (pets.length <= 1) return 0;
+            return (prevIndex + 1) % pets.length;
+        });
+    };
+
+    const removerPetAtualEDepois = () => {
+        setPets((prevPets) => {
+            const novosPets = prevPets.filter((_, idx) => idx !== petIndex);
+            return novosPets;
+        });
+        setPetIndex(0); // Reinicia o índice para evitar problemas de overflow
     };
 
     useEffect(() => {
@@ -208,7 +218,6 @@ function Initial() {
         const authToken = sessionStorage.getItem("authToken");
 
         if (!userId) {
-            alert("Usuário não identificado.");
             return;
         }
 
@@ -223,12 +232,9 @@ function Initial() {
             if (response.status === 200) {
                 sessionStorage.setItem("isNew", "false");
                 setShowModal(false);
-            } else {
-                alert("Erro ao atualizar o status de novo usuário.");
             }
         } catch (error) {
             console.error("Erro ao atualizar o status de novo usuário:", error);
-            alert("Erro ao atualizar o status de novo usuário.");
         }
     };
 
@@ -238,7 +244,6 @@ function Initial() {
         const authToken = sessionStorage.getItem("authToken"); // Recupera o token do sessionStorage
 
         if (!userId) {
-            alert("Usuário não identificado.");
             return;
         }
 
@@ -251,21 +256,17 @@ function Initial() {
             });
 
             if (response.status === 200) {
-                alert("Dados atualizados com sucesso!");
                 await handleCloseModal(); // Chama a função para atualizar o status de novo usuário e fechar o modal
             } else {
-                alert("Erro ao atualizar os dados.");
             }
         } catch (error) {
             console.error("Erro ao enviar os dados:", error);
-            alert("Erro ao enviar os dados.");
         }
     };
 
     const handleAdotarPet = async () => {
         const userId = Number(sessionStorage.getItem("userId"));
         if (!userId || !pet.id) {
-            alert("Usuário ou pet não identificado.");
             return;
         }
 
@@ -276,18 +277,57 @@ function Initial() {
                 status: "PENDING",
                 curtidas: pet.curtidas,
             });
-            alert("Solicitação de adoção enviada!");
             setIsSideMenuOpen(true);
-            aumentarIndex();
+            removerPetAtualEDepois();
         } catch (error) {
             console.error("Erro ao enviar solicitação de adoção:", error);
-            alert("Erro ao enviar solicitação de adoção.");
+        }
+    };
+
+    const handleLikePet = async () => {
+        const userId = Number(sessionStorage.getItem("userId"));
+        if (!userId || !pet.id) {
+            return;
+        }
+
+        try {
+            await url.post(`/status/liked/${pet.id}/${userId}`);
+            removerPetAtualEDepois(); // Remove o pet curtido e avança para o próximo
+        } catch (error) {
+            console.error("Erro ao curtir o pet:", error);
+        }
+    };
+
+    const handleLoadPetById = async (petId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/pets/${petId}`);
+            if (!response.ok) throw new Error("Erro ao buscar pet");
+            const data = await response.json();
+
+            setPet({
+                id: data.id,
+                nome: data.nome,
+                idade: data.idade,
+                curtidas: data.curtidas,
+                isLiked: true, // já está curtido
+                descricao: data.descricao,
+                tags: data.tags,
+                qntdTags: data.tags.length,
+                images: data.imagens || [],
+            });
+            setIsSideMenuOpen(false);
+        } catch (error) {
+            console.error(error);
         }
     };
 
     return (
         <div className={styles.container}>
-            <SideMenu isOpen={isSideMenuOpen} setIsOpen={setIsSideMenuOpen} />
+            <SideMenu
+                isOpen={isSideMenuOpen}
+                setIsOpen={setIsSideMenuOpen}
+                onLikedPetClick={handleLoadPetById} // Passe a função para o SideMenu
+            />
             <NavBar />
             <div className="appArea">
                 <PetActions
@@ -304,7 +344,9 @@ function Initial() {
                     ongName="AUmigos Do Bem"
                     qntdTags={pet.qntdTags}
                     tags={pet.tags}
-                    isLiked={pet.isLiked} />
+                    isLiked={pet.isLiked}
+                    onLike={handleLikePet}
+                />
             </div>
 
             {/* Modal para novos usuários */}
