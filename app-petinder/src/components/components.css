@@ -1419,7 +1419,7 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.4s;
-            bottom: 160px;
+            bottom: 146px;
 
             .menuIcon {
                 transition: transform 0.5s ease;
@@ -2102,7 +2102,7 @@
 
     .senhaAtual {
         width: 100%;
-        height: 20%;
+        height: 23%;
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -2132,10 +2132,21 @@
 
     .buttonsAct {
         width: 100%;
-        height: 16%;
+        height: 20%;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+
+    /*VERIFIFCAR E APAGAR PROVAVELMENTE MAS PODE SER UTIL PRO TOAST GREEN*/
+    .toastContainer {
+        width: 75% !important;
+        height: 6rem !important;
+        position: absolute !important;
+        z-index: 2000 !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding: 0 !important;
     }
 }
 
@@ -2207,8 +2218,8 @@
         text-align: center;
         font-size: 18px;
 
-        a{
-            font-size: 18px !important;	
+        a {
+            font-size: 18px !important;
         }
     }
 }
@@ -2237,6 +2248,7 @@
         cursor: pointer;
     }
 }
+
 /* .imageWrapper {
     border-radius: 50%;
     overflow: hidden;
@@ -2273,7 +2285,8 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-evenly;
-        .searchIcon{
+
+        .searchIcon {
             position: absolute;
             width: 25px;
             height: 25px;
@@ -2297,7 +2310,8 @@
             border: none;
             background-color: #fff;
         }
-        button:hover{
+
+        button:hover {
             cursor: pointer;
             background-color: var(--primaryColor);
             transition: ease-in-out 0.3s;
@@ -2351,7 +2365,8 @@
                 border: none;
                 font-size: 20px;
             }
-            button:hover{
+
+            button:hover {
                 cursor: pointer;
             }
         }
@@ -2369,7 +2384,7 @@
   z-index: 999;
 } */
 
-.editPetModal{
+.editPetModal {
     background-color: var(--backgroundColor);
     width: 40%;
     height: 75%;
@@ -2379,47 +2394,54 @@
     border-radius: 20px;
     box-shadow: 6px 6px rgb(0, 0, 0);
 
-    .header{
+    .header {
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 10px;
-        .closeButton{
+
+        .closeButton {
             height: 60px;
             width: 60px;
         }
-        .closeButton:hover{
+
+        .closeButton:hover {
             cursor: pointer;
         }
-        .title{
+
+        .title {
             font-size: 25px;
             margin-left: 26%;
         }
     }
 
-    .petInfos{
+    .petInfos {
         display: flex;
         flex-direction: column;
         padding: 40px;
         gap: 7px;
-        .dropDownQuestions{
+
+        .dropDownQuestions {
             display: flex;
             flex-direction: row;
             gap: 7px;
-            .petAge{
+
+            .petAge {
                 display: flex;
                 flex-direction: row;
             }
         }
     }
 
-    .petInfosCheckbox{
+    .petInfosCheckbox {
         margin-top: 20px;
         gap: 7px;
-        .title{
+
+        .title {
             font-size: 18px;
         }
-        .checkbox{
+
+        .checkbox {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -2427,39 +2449,45 @@
         }
     }
 
-    .bottomOpt{
+    .bottomOpt {
         display: flex;
         flex-direction: row;
         gap: 5px;
         justify-content: center;
         margin-top: -10px;
-        .button1{
+
+        .button1 {
             background-color: var(--secondaryColor);
             border: none;
             height: 15px;
             width: 15px;
             border-radius: 100%;
         }
-        .button2{
+
+        .button2 {
             background-color: var(--backgroundColor);
             border: black 2px solid;
             height: 15px;
             width: 15px;
             border-radius: 100%;
         }
-        .button:hover{
+
+        .button:hover {
             cursor: pointer;
         }
     }
-    .next{
+
+    .next {
         display: flex;
         flex-direction: row;
         margin-left: 40px;
         gap: 210px;
-        button{
-                width: 160px;
+
+        button {
+            width: 160px;
         }
-        .back{
+
+        .back {
             margin-top: 15px;
             /* margin-left: -300px; */
         }

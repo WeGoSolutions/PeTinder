@@ -20,7 +20,7 @@ export default function Interessados() {
                     <>
                         <Mensagens
                             nome="Cauan Araruna"
-                            mensagem="Estou interessado em adotar o Kenny!"
+                            mensagem="Estou interessado(a) em adotar o(a) Kenny!"
                             data="19/04/2025 - 13:14"
                             telefone="(11) 98804-1111"
                             email="cauan.araruna@sptech.school"
@@ -29,14 +29,14 @@ export default function Interessados() {
 
                         <Mensagens
                             nome="Gisele Mendes"
-                            mensagem="Estou interessada em adotar a Dolores!"
+                            mensagem="Estou interessado em adotar o(a) Dolores!"
                             data="19/04/2025 - 13:15"
                             imgSrc="/gisele.svg"
                         />
 
                         <Mensagens
                             nome="Camile Oliveira"
-                            mensagem="Estou interessada em adotar a Dolores!"
+                            mensagem="Estou interessado em adotar o(a) Dolores!"
                             data="19/04/2025 - 13:20"
                             imgSrc="/camile.svg"
                         />

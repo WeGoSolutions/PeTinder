@@ -3,13 +3,10 @@ import "../components.css";
 import { IoIosMenu } from "react-icons/io";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
-import { url } from "../../provider/apiInstance";
 import SideButtonsConfig from "./SideButtonsConfig";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
-
-    // const response = url.get(`/users/${email}/validar-email`);
    
     return (
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
@@ -29,7 +26,6 @@ export default function SidePanel() {
                 <SideButtons nameButton="Pets" icon="Pets" path="/ong/pets" />
 
                 <div className="configButton">
-                    {/* <SideButtons nameButton="Configurações" icon="Config" path="/ong/configuracao" /> */}
                     <SideButtonsConfig nameButton="Configurações" icon="Config" path="/ong/configuracao" sidePanelOpen={open} />
                 </div>
             </div>

@@ -117,6 +117,7 @@ export default function Configuracao() {
         try {
             await axios.patch(`http://localhost:8080/ongs/${ongId}`, payload);
             alert("Dados atualizados com sucesso!");
+            
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
             alert("Erro ao atualizar dados da ONG.");
@@ -126,7 +127,7 @@ export default function Configuracao() {
     return (
         <div className="configContainer">
             {/* <h2>Atualize suas informações de conta</h2> */}
-            <h1 style={{paddingLeft: "5%"}}>Conta</h1>
+            <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">
                 <UserImage size={160} src="/aumigosLogo.svg" />
                 {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}
@@ -244,8 +245,10 @@ export default function Configuracao() {
                     </div>
                 </div>
             </div>
-            <div className="buttonsAct" onClick={handleSave}>
-                <PrimaryButton text="Salvar" />
+            <div className="buttonsAct" >
+                <div onClick={handleSave}>
+                    <PrimaryButton text="Salvar" />
+                </div>
             </div>
         </div>
     )
