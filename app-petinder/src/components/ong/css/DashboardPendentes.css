@@ -1,0 +1,43 @@
+.dash-container-pendentes{
+    max-height: 90%;
+    padding: 2px;
+    overflow-y: auto;
+}
+
+.dash-container-pendentes::-webkit-scrollbar {
+    width: 10px;
+    background: #F5E9ED; /* Cor de fundo da barra */
+}
+
+.dash-container-pendentes::-webkit-scrollbar-thumb {
+    background: #FF8FBB; /* Cor do "thumb" (a parte que arrasta) */
+    border-radius: 8px;
+    border: 2px solid #F5E9ED;
+}
+
+.dash-container-pendentes::-webkit-scrollbar-thumb:hover {
+    background: #E06C9F; /* Cor ao passar o mouse */
+}
+
+.container-pendencia{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    background-color: #E6D9DE;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    height: 80px;
+
+    p{
+        margin-left: 15px;
+        font-weight: 500;
+    }
+}
+
+.imagem-pet{
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    border: #FF8FBB solid 3px;
+}
