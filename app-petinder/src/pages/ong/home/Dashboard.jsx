@@ -7,6 +7,7 @@ import DashboardAdotadosENao from "../../../components/ong/DashboardAdotadosENao
 import DashboardPendentes from "../../../components/ong/DashboardPendentes";
 import SemMensagensdeInteressados from '../../../components/ong/SemMensagensdeInteressados';
 import { Link } from "react-router-dom";
+import { url } from "../../../provider/apiInstance";
 
 export default function Dashboard() {
     const [pets, setPets] = useState([]);
@@ -20,22 +21,22 @@ export default function Dashboard() {
         </>
     );
 
-    useEffect(() => {
-        const ongId = sessionStorage.getItem("ongId");
-        if (!ongId) return;
+useEffect(() => {
+    const ongId = sessionStorage.getItem("ongId");
+    if (!ongId) return;
 
-        axios.get(`http://localhost:8080/ongs/${ongId}/pets`)
-            .then(response => {
-                setPets(response.data);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    setPets([]);
-                } else {
-                    console.error('Erro ao buscar pets:', error);
-                }
-            });
-    }, []);
+    url.get(`/ongs/${ongId}/pets`)
+        .then(response => {
+            setPets(response.data);
+        })
+        .catch(error => {
+            if (error.response && error.response.status === 404) {
+                setPets([]);
+            } else {
+                console.error('Erro ao buscar pets:', error);
+            }
+        });
+}, []);
 
     return (
         <div style={{ width: "100%", justifyContent: "space-between", display: "flex", flexDirection: "column" }}>

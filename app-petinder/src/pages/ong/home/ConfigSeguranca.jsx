@@ -5,6 +5,7 @@ import SecondaryButton from "../../../components/SecondaryButton";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import axios from "axios";
+import { url } from "../../../provider/apiInstance";
 
 export default function ConfigSeguranca() {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function ConfigSeguranca() {
         }));
     };
 
-    const handleSubmit = () => {
+        const handleSubmit = () => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
@@ -32,7 +33,7 @@ export default function ConfigSeguranca() {
             return;
         }
 
-        axios.patch(`http://localhost:8080/ongs/${ongId}/senha`, {
+        url.patch(`/ongs/${ongId}/senha`, {
             senhaAtual: formValues.senhaAtual,
             novaSenha: formValues.novaSenha
         })

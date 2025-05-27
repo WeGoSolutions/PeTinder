@@ -177,13 +177,12 @@ function Initial() {
         setPetIndex(0); // Reinicia o índice para evitar problemas de overflow
     };
 
-    useEffect(() => {
-        const userId = sessionStorage.getItem("userId");
-        fetch(`http://localhost:8080/status/default/${userId}`)
-            .then(response => response.json())
-            .then(json => setPets(json))
-            .catch(error => console.error("Error fetching pets:", error));
-    }, []);
+   useEffect(() => {
+    const userId = sessionStorage.getItem("userId");
+    url.get(`/status/default/${userId}`)
+        .then(response => setPets(response.data))
+        .catch(error => console.error("Error fetching pets:", error));
+}, []);
 
     useEffect(() => {
         if (pets.length > 0 && petIndex < pets.length) {
@@ -207,18 +206,17 @@ function Initial() {
         }
     }, [pets, petIndex]);
 
-    useEffect(() => {
-        if (pet.id) {
-            fetch(`http://localhost:8080/pets/${pet.id}/imagens`)
-                .then(response => response.json())
-                .then(json => setPet(prevPet => ({
-                    ...prevPet, // Mantém as propriedades existentes do estado `pet`
-                    images: json // Atualiza apenas a propriedade `images`
-
-                })))
-                .catch(error => console.error("Error fetching pet images:", error));
-        }
-    }, [pet.id]);
+    
+useEffect(() => {
+    if (pet.id) {
+        url.get(`/pets/${pet.id}/imagens`)
+            .then(response => setPet(prevPet => ({
+                ...prevPet,
+                images: response.data
+            })))
+            .catch(error => console.error("Error fetching pet images:", error));
+    }
+}, [pet.id]);
 
     const handleCloseModal = async () => {
         const userId = sessionStorage.getItem("userId");
@@ -306,33 +304,32 @@ function Initial() {
         }
     };
 
-    const handleLoadPetById = async (petId) => {
-        try {
-            const response = await fetch(`http://localhost:8080/pets/${petId}`);
-            if (!response.ok) throw new Error("Erro ao buscar pet");
-            const data = await response.json();
+const handleLoadPetById = async (petId) => {
+    try {
+        const response = await url.get(`/pets/${petId}`);
+        const data = response.data;
 
-            setPet({
-                id: data.id,
-                nome: data.nome,
-                idade: data.idade,
-                curtidas: data.curtidas,
-                isLiked: true,
-                descricao: data.descricao,
-                tags: data.tags,
-                qntdTags: data.tags.length,
-                images: data.imagens || [],
-                nomeOng: data.nomeOng,
-                linkOng: data.linkOng,
-                isCastrado: data.isCastrado,
-                isVermifugo: data.isVermifugo,
-                isVacinado: data.isVacinado,
-            });
-            setIsSideMenuOpen(false);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+        setPet({
+            id: data.id,
+            nome: data.nome,
+            idade: data.idade,
+            curtidas: data.curtidas,
+            isLiked: true,
+            descricao: data.descricao,
+            tags: data.tags,
+            qntdTags: data.tags.length,
+            images: data.imagens || [],
+            nomeOng: data.nomeOng,
+            linkOng: data.linkOng,
+            isCastrado: data.isCastrado,
+            isVermifugo: data.isVermifugo,
+            isVacinado: data.isVacinado,
+        });
+        setIsSideMenuOpen(false);
+    } catch (error) {
+        console.error(error);
+    }
+};
 
     return (
         <div className={styles.container}>
