@@ -9,6 +9,7 @@ import DropDown from "../../components/DropDown";
 import UserImage from "../../components/UserImage";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { url } from "../../provider/apiInstance";
 
 function Config() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
@@ -30,7 +31,7 @@ function Config() {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        axios.get(`http://localhost:8080/users/${userId}`)
+        url.get(`/users/${userId}`)
             .then(res => {
                 const data = res.data;
                 setFormValues({
@@ -89,7 +90,7 @@ function Config() {
             return;
         }
 
-        axios.patch(`http://localhost:8080/users/${userId}/senha`, {
+        url.patch(`/users/${userId}/senha`, {
             senhaAtual: formValuesSenha.senhaAtual,
             novaSenha: formValuesSenha.novaSenha
         })
@@ -108,9 +109,6 @@ function Config() {
                 alert("Erro ao atualizar senha. Verifique se a senha atual está correta.");
             });
     };
-
-
-    // FAZER A LÓGICA DE ATUALIZAÇÃO DOS DADOS DA ONG
 
     return (
         <div className={styles.background}>

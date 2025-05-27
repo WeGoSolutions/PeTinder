@@ -5,17 +5,19 @@ import { MdDelete } from "react-icons/md";
 function PetCard(props) {
     return (
         <div className="petCard">
-            <div style={{ width: props.size, height: props.size }}>
+            <div className="petImage">
                 {props.src ? (
                     <img src={props.src} className="image" />
                 ) : (
                     <CiImageOn className="placeholder" />
                 )}
             </div>
-            <div>
-                <span>{props.nomePet}</span>{/*tem q ver no back como q ta o nome*/}
-                <button><MdModeEdit /></button>
-                <button><MdDelete /> </button>
+            <div className="nameOptions">
+                <span>{props.nome}</span>
+                <div className="options">
+                    <button className="edit" onClick={props.onEdit}><MdModeEdit /></button>
+                    <button className="delete" onClick={props.onDelete}><MdDelete /> </button>
+                </div>
             </div>
         </div>
     );

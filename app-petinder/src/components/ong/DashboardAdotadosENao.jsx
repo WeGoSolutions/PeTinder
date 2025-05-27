@@ -1,7 +1,7 @@
 import "./css/DashboardAdotadosENao.css";
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
-import axios from "axios";
+import { url } from "../../provider/apiInstance";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -17,35 +17,34 @@ export default function DashboardAdotadosENao(props) {
         datasets: [],
     });
 
-    useEffect(() => {
-        const ongId = sessionStorage.getItem("ongId");
-        if (!ongId) return;
+useEffect(() => {
+    const ongId = sessionStorage.getItem("ongId");
+    if (!ongId) return;
 
-        axios
-            .get(`http://localhost:8080/dashs/adotados-ou-nao/${ongId}`)
-            .then((response) => {
-                setChartData({
-                    labels: ["Adotados", "Não Adotados"],
-                    datasets: [
-                        {
-                            data: [response.data.adotados, response.data.naoAdotados],
-                            backgroundColor: [
-                                "rgba(128, 70, 93, 0.6)",
-                                "rgba(255, 113, 169, 0.6)"
-                            ],
-                            borderColor: [
-                                "rgba(128, 70, 93, 1)",
-                                "rgba(255, 113, 169, 1)"
-                            ],
-                            borderWidth: 3,
-                        },
-                    ],
-                });
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar dados:", error);
+    url.get(`/dashs/adotados-ou-nao/${ongId}`)
+        .then((response) => {
+            setChartData({
+                labels: ["Adotados", "Não Adotados"],
+                datasets: [
+                    {
+                        data: [response.data.adotados, response.data.naoAdotados],
+                        backgroundColor: [
+                            "rgba(128, 70, 93, 0.6)",
+                            "rgba(255, 113, 169, 0.6)"
+                        ],
+                        borderColor: [
+                            "rgba(128, 70, 93, 1)",
+                            "rgba(255, 113, 169, 1)"
+                        ],
+                        borderWidth: 3,
+                    },
+                ],
             });
-    }, []);
+        })
+        .catch((error) => {
+            console.error("Erro ao buscar dados:", error);
+        });
+}, []);
 
     return (
         <div className="dash-container-pie">
