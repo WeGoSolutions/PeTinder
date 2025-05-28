@@ -2582,7 +2582,6 @@
         cursor: pointer;
     }
 
-
     .bottomOpt {
         display: flex;
         flex-direction: row;
@@ -2643,5 +2642,50 @@
             margin-top: 15px;
             /* margin-left: -300px; */
         }
+    }
+}
+
+.locali {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.userImageContainer {
+    display: flex;
+}
+
+.userImageEdit {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    border: 2px solid black;
+    border-radius: 50px;
+    position: absolute;
+    margin-top: 8rem;
+    margin-left: 8rem;
+    background: var(--backgroundColor);
+    cursor: pointer;
+    transition: 300ms;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    p {
+        display: none;
+    }
+}
+
+.userImageEdit:hover {
+    width: 150px;
+
+    p {
+        display: block;
+    }
+}
+
+.userImageHandleButton {
+    button {
+        margin: 0px !important;
     }
 }
