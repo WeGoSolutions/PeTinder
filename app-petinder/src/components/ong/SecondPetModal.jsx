@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function SecondPetEdit(props) {
     const [images, setImages] = useState([]);
+
     const addImage = (event) => {
         const file = event.target.files[0];
         if (file && images.length < 5) {
@@ -18,6 +19,25 @@ function SecondPetEdit(props) {
             prevImages.filter((_, index) => index !== indexToRemove)
         );
     };
+    const allTags = [
+        ["Ativo", "Calmo", "Brincalhão", "Carinhoso"],
+        ["Curioso", "Independente", "Protetor", "Sociável"],
+        ["Medroso", "Territorial", "Obediente", "Teimoso"]
+    ];
+
+    const handleTagClick = (tagName) => {
+        setDisabledTags(prev => ({
+            ...prev,
+            [tagName]: !prev[tagName]
+        }));
+    };
+
+    const [disabledTags, setDisabledTags] = useState(() => {
+        // Inicializa todas como true (desabilitadas)
+        const obj = {};
+        allTags.flat().forEach(tag => { obj[tag] = true; });
+        return obj;
+    });
     return (
         <div className="editPetModal">
             <div className="header">
@@ -27,36 +47,30 @@ function SecondPetEdit(props) {
             <div className="petInfos">
                 <div className="petInfosTags">
                     <span >Selecione as seguintes características:</span>
-                    <div className="petTags">
-                        <Tag color="#979797" tagName="Ativo" />
-                        <Tag color="#979797" tagName="Calmo" />
-                        <Tag color="#979797" tagName="Brincalhão" />
-                        <Tag color="#979797" tagName="Carinhoso" />
-                    </div>
-                    <div className="petTags">
-                        <Tag color="#979797" tagName="Curioso" />
-                        <Tag color="#979797" tagName="Independente" />
-                        <Tag color="#979797" tagName="Protetor" />
-                        <Tag color="#979797" tagName="Sociável" />
-                    </div>
-                    <div className="petTags">
-                        <Tag color="#979797" tagName="Medroso" />
-                        <Tag color="#979797" tagName="Territorial" />
-                        <Tag color="#979797" tagName="Obediente" />
-                        <Tag color="#979797" tagName="Teimoso" />
-                    </div>
+                    {allTags.map((row, rowIdx) => (
+                        <div className="petTags" key={rowIdx}>
+                            {row.map(tag => (
+                                <Tag
+                                    key={tag}
+                                    tagName={tag}
+                                    isDisabled={disabledTags[tag]}
+                                    onClick={() => handleTagClick(tag)}
+                                />
+                            ))}
+                        </div>
+                    ))}
                 </div>
                 <div className="division"></div>
 
                 <div className="petInfosVac">
-                    <img src="/public/isCastrado.svg" alt="é Castrado?" />
+                    <img src="/isCastrado.svg" alt="é Castrado?" />
                     <span>Castrado</span>
-                    <img src="/public/isVermifugo.svg" alt="é Vermifugado?" />
+                    <img src="/isVermifugo.svg" alt="é Vermifugado?" />
                     <span>Vermifugado</span>
-                    <img src="/public/isVacinado.svg" alt="é Vacinado?" />
+                    <img src="/isVacinado.svg" alt="é Vacinado?" />
                     <span>Vacinado</span>
                 </div>
-                <div>
+                <div className="imgAdd">
                     <span>Fotos do pet:</span>
                     <div className="imagePreviewWrapper">
                         {Array.from({ length: 5 }).map((_, i) => (
