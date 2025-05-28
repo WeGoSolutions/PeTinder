@@ -6,7 +6,7 @@ import SideButtons from "./SideButtons";
 import SideButtonsConfig from "./SideButtonsConfig";
 
 const sessionName = sessionStorage.getItem("userName");
-const ongNome = sessionName || "undefined :(";
+const ongNome = sessionName || "Undefined";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);

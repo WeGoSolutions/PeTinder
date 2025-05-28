@@ -203,7 +203,7 @@ function Config() {
         }
     };
 
-//NAO ESTA FUNCIONANDO, TEM DADO 409 - CONFLITO NESSA ETAPA DE ATUALIZAÇÃO
+    //NAO ESTA FUNCIONANDO, TEM DADO 409 - CONFLITO NESSA ETAPA DE ATUALIZAÇÃO
     const handleSave = async () => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
@@ -234,6 +234,14 @@ function Config() {
         }
     };
 
+    // Função para atualizar os campos do formulário de informações pessoais e endereço
+    const handleFormChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     return (
         <div className={styles.background}>
@@ -321,7 +329,19 @@ function Config() {
                         </div>
                     </div>
                 ) : (
+
                     <div className={styles.configInfos}>
+                        <div className={styles.toast}>
+                            <div className="toastContainer">
+                                {toast.mensagem && (
+                                    <Toast
+                                        mensagem={toast.mensagem}
+                                        tipo={toast.tipo}
+                                        onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                                    />
+                                )}
+                            </div>
+                        </div>
                         <h2>Conta</h2>
                         <div className={styles.img}>
                             <UserImage size={180} src={formValues.imagemUrl} />
@@ -334,21 +354,21 @@ function Config() {
                                     name="nome"
                                     label="Nome Completo"
                                     value={formValues.nome}
-                                // onChange={...}
+                                    disabled={true}
                                 />
                                 <FormInput
                                     id="email"
                                     name="email"
                                     label="Email"
                                     value={formValues.email}
-                                // onChange={...}
+                                    disabled={true}
                                 />
                                 <FormInput
                                     id="cpf"
                                     name="cpf"
                                     label="CPF"
                                     value={formValues.cpf}
-                                // onChange={...}
+                                    disabled={true}
                                 />
                                 <div className={styles.registerFormRow}>
                                     <FormInput
@@ -358,7 +378,7 @@ function Config() {
                                         type="date"
                                         required
                                         value={formValues.dataNasc}
-                                    // onChange={...}
+                                        disabled={true}
                                     />
                                 </div>
                             </div>
@@ -370,14 +390,14 @@ function Config() {
                                     name="cep"
                                     label="CEP"
                                     value={formValues.cep}
-                                // onChange={...}
+                                    onChange={handleFormChange}
                                 />
                                 <FormInput
                                     id="rua"
                                     name="rua"
                                     label="Rua"
                                     value={formValues.rua}
-                                // onChange={...}
+                                    onChange={handleFormChange}
                                 />
                                 <div className={styles.inputDif}>
                                     <div className={styles.bigInput}>
@@ -386,14 +406,14 @@ function Config() {
                                             name="complemento"
                                             label="Complemento"
                                             value={formValues.complemento}
-                                        // onChange={...}
+                                            onChange={handleFormChange}
                                         />
                                         <FormInput
                                             id="cidade"
                                             name="cidade"
                                             label="Cidade"
                                             value={formValues.cidade}
-                                        // onChange={...}
+                                            onChange={handleFormChange}
                                         />
                                     </div>
                                     <div className={styles.litInput}>
@@ -402,7 +422,7 @@ function Config() {
                                             name="numero"
                                             label="Número"
                                             value={formValues.numero}
-                                        // onChange={...}
+                                            onChange={handleFormChange}
                                         />
                                         <DropDown
                                             id="uf"
@@ -410,7 +430,7 @@ function Config() {
                                             label="UF"
                                             options={ufs}
                                             value={formValues.uf}
-                                        // onChange={...}
+                                            onChange={handleFormChange}
                                         />
                                     </div>
                                 </div>

@@ -11,7 +11,8 @@ import { Link } from "react-router-dom";
 import { url } from "../../../provider/apiInstance";
 
 export default function HomeContent() {
-    const tamanho = 1;
+
+    let tamanho = 1;
     const [pets, setPets] = useState([]);
 
     const mensagemInteressados = "Ainda não temos nenhum interessado, mas não se preocupe, em pouco tempo irão aparecer!"
@@ -33,7 +34,7 @@ export default function HomeContent() {
                 setPets(response.data);
             })
             .catch(error => {
-                if(error.response && error.response.status === 404) {
+                if (error.response && error.response.status === 404) {
                     setPets([]);
                 } else {
                     console.error('Erro ao buscar pets:', error);
