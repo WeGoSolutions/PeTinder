@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function CarrouselPetImages({ images }) {
+function CarrouselPetImages({ pet, images }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const goToPrevious = () => {
@@ -25,7 +25,7 @@ function CarrouselPetImages({ images }) {
     return (
         <div className="carrouselPetImages">
             <div className="imageWrapper">
-                {Array.isArray(images) && images.length > 0 ? (
+                {images?.length > 0 ? (
                     images.map((image, index) => (
                         <img
                             key={index}
