@@ -180,15 +180,15 @@ function Config() {
 
                         <div className={styles.buttonsAct}>
                             <div onClick={handleSubmit}>
-                    <SecondaryButton type="button" text="Salvar"/>
-                </div>
+                                <SecondaryButton type="button" text="Salvar" />
+                            </div>
                         </div>
                     </div>
                 ) : (
                     <div className={styles.configInfos}>
                         <h2>Conta</h2>
                         <div className={styles.img}>
-                            <UserImage size={180} src={formValues.imagemUrl} />
+                            <UserImage size={180} src={formValues.imagemUrl} hasEdit={true} />
                         </div>
                         <div className={styles.containerForm}>
                             <div className={styles.configTextInfo1}>

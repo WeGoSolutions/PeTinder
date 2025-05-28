@@ -128,7 +128,7 @@ export default function Configuracao() {
             {/* <h2>Atualize suas informações de conta</h2> */}
             <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">
-                <UserImage size={160} src="/aumigosLogo.svg" />
+                <UserImage size={160} src="/aumigosLogo.svg" hasEdit={true} />
                 {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}
             </div>
             <div className="containerForm">
