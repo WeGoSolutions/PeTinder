@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import "../../../components/components.css";
 import FormInput from "../../../components/FormInput";
-import SecondaryButton from "../../../components/SecondaryButton";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import axios from "axios";
+import { url } from "../../../provider/apiInstance";
 import Toast from "../../../components/Toast";
+import PrimaryButton from "../../../components/PrimaryButton";
 
 export default function ConfigSeguranca() {
     const navigate = useNavigate();
     const [errors, setErrors] = useState({});
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
-
 
     const [formValues, setFormValues] = useState({
         senhaAtual: "",
@@ -104,37 +104,38 @@ export default function ConfigSeguranca() {
         if (!ongId) return;
 
         if (formValues.novaSenha !== formValues.confirmarSenha) {
-            alert("A nova senha e a confirmação não coincidem.");
+            setErrors(prev => ({
+                ...prev,
+                confirmarSenha: "A nova senha e a confirmação não coincidem."
+            }));
+            setErrorStyle("novaSenha");
+            setErrorStyle("confirmarSenha");
             return;
         }
 
         try {
-            await axios.patch(`http://localhost:8080/ongs/${ongId}/senha`, {
+            await url.patch(`/ongs/${ongId}/senha`, {
                 senhaAtual: formValues.senhaAtual,
                 novaSenha: formValues.novaSenha
-            })
-                .then(() => {
-                    setFormValues({
-                        senhaAtual: "",
-                        novaSenha: "",
-                        confirmarSenha: ""
-                    })
-                })
+            });
 
             setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });
+            setFormValues({
+                senhaAtual: "",
+                novaSenha: "",
+                confirmarSenha: ""
+            });
 
             setTimeout(() => {
                 navigate('/login');
             }, 2000);
-
         } catch (error) {
             console.error("Erro ao atualizar a senha:", error);
-            const newErrors = {};
 
+            let newErrors = {};
             if (error.response && error.response.status === 409) {
                 newErrors.senhaAtual = "Senha atual incorreta.";
                 setErrorStyle("senhaAtual");
-                // setToast({ mensagem: 'Erro ao atualizar a senha. Tente novamente.', tipo: 'erro' }); /* remover o toast ou o errorStyle */
             }
 
             setErrors(prev => ({
@@ -143,8 +144,6 @@ export default function ConfigSeguranca() {
             }));
         }
     };
-
-    /* mexendo */
 
     return (
         <>
@@ -205,7 +204,7 @@ export default function ConfigSeguranca() {
 
                 <div className="buttonsAct">
                     <div onClick={changePassword}>
-                        <SecondaryButton type="button" text="Salvar" />
+                        <PrimaryButton type="button" text="Salvar" />
                     </div>
                 </div>
             </div>

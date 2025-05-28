@@ -1,7 +1,6 @@
 import "./css/DashboardMaioresCurtidos.css";
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import axios from "axios";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,6 +11,7 @@ import {
     Legend,
 } from "chart.js";
 
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function DashboardMaioresCurtidos() {
@@ -20,35 +20,34 @@ export default function DashboardMaioresCurtidos() {
         datasets: [],
     });
 
-    useEffect(() => {
-        const ongId = sessionStorage.getItem("ongId");
-        if (!ongId) return;
+useEffect(() => {
+    const ongId = sessionStorage.getItem("ongId");
+    if (!ongId) return;
 
-        axios
-            .get(`http://localhost:8080/dashs/ranking/${ongId}`)
-            .then((response) => {
-                const labels = response.data.map((item) => item.nome);
-                const data = response.data.map((item) => item.curtidas);
+    url.get(`/dashs/ranking/${ongId}`)
+        .then((response) => {
+            const labels = response.data.map((item) => item.nome);
+            const data = response.data.map((item) => item.curtidas);
 
-                setChartData({
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Curtidas",
-                            backgroundColor: "rgba(128, 70, 93, 0.6)",
-                            borderColor: "rgba(128, 70, 93, 1)",
-                            borderWidth: 3,
-                            hoverBackgroundColor: "rgba(255, 113, 169, 0.6)",
-                            hoverBorderColor: "rgba(255, 113, 169, 1)",
-                            data: data,
-                        },
-                    ],
-                });
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar dados:", error);
+            setChartData({
+                labels: labels,
+                datasets: [
+                    {
+                        label: "Curtidas",
+                        backgroundColor: "rgba(128, 70, 93, 0.6)",
+                        borderColor: "rgba(128, 70, 93, 1)",
+                        borderWidth: 3,
+                        hoverBackgroundColor: "rgba(255, 113, 169, 0.6)",
+                        hoverBorderColor: "rgba(255, 113, 169, 1)",
+                        data: data,
+                    },
+                ],
             });
-    }, []);
+        })
+        .catch((error) => {
+            console.error("Erro ao buscar dados:", error);
+        });
+}, []);
 
     return (
         <div className="dash-container-bar">

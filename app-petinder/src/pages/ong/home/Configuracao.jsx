@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import PrimaryButton from "../../../components/PrimaryButton";
 import "../../../components/components.css";
-import SecondaryButton from "../../../components/SecondaryButton";
 import DropDown from "../../../components/DropDown";
 import UserImage from "../../../components/UserImage";
 import { formatarCPF, formatarCNPJ, formatarCEP } from "../../../utils";
 import axios from "axios";
+import { url } from "../../../provider/apiInstance";
+import Toast from "../../../components/Toast";
 
 
 export default function Configuracao() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
-
     const [tipoDocumento, setTipoDocumento] = useState("CNPJ");
-
+    const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
     const [cpfCnpj, setCpfCnpj] = useState("");
 
     const handleCpfCnpjChange = (e) => {
@@ -46,7 +46,7 @@ export default function Configuracao() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        axios.get(`http://localhost:8080/ongs/${ongId}`)
+        url.get(`/ongs/${ongId}`)
             .then(res => {
                 const data = res.data;
                 const endereco = data.endereco || {};
@@ -98,6 +98,7 @@ export default function Configuracao() {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
+        
         const payload = {
             nome: formValues.nomeOng,
             email: formValues.email,
@@ -115,17 +116,29 @@ export default function Configuracao() {
         };
 
         try {
-            await axios.patch(`http://localhost:8080/ongs/${ongId}`, payload);
-            alert("Dados atualizados com sucesso!");
-            
+            await url.patch(`/ongs/${ongId}`, payload);
+            sessionStorage.setItem("userName", formValues.nomeOng);
+            setToast({ mensagem: 'Dados atualizados com sucesso!', tipo: 'sucesso' });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
-            alert("Erro ao atualizar dados da ONG.");
+            setToast({ mensagem: 'Erro ao atualizar dados.', tipo: 'erro' });
         }
     };
 
     return (
         <div className="configContainer">
+            <div className="toastContainer">
+                    {toast.mensagem && (
+                        <Toast
+                            mensagem={toast.mensagem}
+                            tipo={toast.tipo}
+                            onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                        />
+                    )}
+                </div>
             {/* <h2>Atualize suas informações de conta</h2> */}
             <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">

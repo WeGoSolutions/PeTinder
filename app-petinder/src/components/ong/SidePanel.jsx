@@ -5,6 +5,9 @@ import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
 import SideButtonsConfig from "./SideButtonsConfig";
 
+const sessionName = sessionStorage.getItem("userName");
+const ongNome = sessionName || "undefined :(";
+
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
    
@@ -13,7 +16,7 @@ export default function SidePanel() {
 
             <div className="ongInfos">
                 <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" />
-                <span>AUmigos do bem</span>
+                <span>{ongNome}</span>
             </div>
 
             {/* <div className="line"></div> */}

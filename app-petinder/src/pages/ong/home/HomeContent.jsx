@@ -8,6 +8,7 @@ import SemMensagensdeInteressados from "../../../components/ong/SemMensagensdeIn
 import DashboardMaioresCurtidos from "../../../components/ong/DashboardMaioresCurtidos";
 import DashboardAdotadosENao from "../../../components/ong/DashboardAdotadosENao";
 import { Link } from "react-router-dom";
+import { url } from "../../../provider/apiInstance";
 
 export default function HomeContent() {
     const tamanho = 1;
@@ -27,7 +28,7 @@ export default function HomeContent() {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        axios.get(`http://localhost:8080/ongs/${ongId}/pets`)
+        url.get(`/ongs/${ongId}/pets`)
             .then(response => {
                 setPets(response.data);
             })
