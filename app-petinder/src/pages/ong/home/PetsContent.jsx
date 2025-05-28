@@ -34,8 +34,22 @@ export default function PetsContent() {
     const [pets, setPets] = useState([
         { id: 1, nome: "Francisco", src: "https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2025/05/16144407/cachorro-com-protetor-para-patas.jpg" },
         { id: 2, nome: "Robson", src: "https://adimax.com.br/wp-content/uploads/2022/05/cuidados-filhote-de-cachorro.jpg" },
-        { id: 3, nome: "Albert", src: "https://super.abril.com.br/wp-content/uploads/2019/04/si_cachorroinstagram_home.png?crop=1&resize=1212,909" }
+        { id: 3, nome: "Albert", src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfs_9UG6h9RZ25WyxRdYosOGqwe6EqFlb5qQ&s" },
+        { id: 4, nome: "Jõao", src: "https://media.istockphoto.com/id/1443562748/pt/foto/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=OqlMF3bysUX6cVux5kKc1gqCGMghQpGc5ukyw1qG82s=" },
+        { id: 5, nome: "Carlos", src: "https://blog-static.petlove.com.br/wp-content/uploads/2020/10/Gato-ansiedade-Petlove.jpg" },
+        { id: 6, nome: "Roberto", src: "https://super.abril.com.br/wp-content/uploads/2019/04/si_cachorroinstagram_home.png?crop=1&resize=1212,909" },
+        { id: 7, nome: "Anderson", src: "https://saude.abril.com.br/wp-content/uploads/2020/04/gato-coronavc3adrus.jpg?crop=1&resize=1212,909" }
     ]);
+
+    // const [selectedTags, setSelectedTags] = useState([]);
+
+    // const toggleTag = (tagName) => {
+    //     setSelectedTags((prev) =>
+    //         prev.includes(tagName)
+    //             ? prev.filter((tag) => tag !== tagName)
+    //             : [...prev, tag]
+    //     );
+    // };
 
     return (
         <div className="petContainer">
@@ -61,6 +75,8 @@ export default function PetsContent() {
                             onBack={goBackToFirstStep}
                             mode={modalMode}
                             modo={modo}
+                            // selectedTags={selectedTags}
+                            // toggleTag={toggleTag}
                         />
                     )}
                 </>

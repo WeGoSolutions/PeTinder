@@ -47,15 +47,11 @@ function FirstPetEdit(props) {
                         />
                     </div>
                 </div>
-
-                <FormInput
-                    id="descricao"
-                    name="descricao"
-                    label="Descrição"
-                    required
-                    type="textarea"
-                // value={formValues.nome}
-                />
+                <div className="desc">
+                    <span>Descrição</span>
+                    <textarea id="descricao" placeholder="DESCRIÇÃO"></textarea>
+                </div>
+            
                 <div className="petInfosCheckbox">
                     <span className="title">Sexo</span>
                     <div className="checkbox">
@@ -85,7 +81,7 @@ function FirstPetEdit(props) {
                     console.log("Botão próximo clicado");
                     props.onNext();
                 }}>
-                    <PrimaryButton text="Próximo"/>
+                    <PrimaryButton text="Próximo" />
                 </div>
 
             </div>
