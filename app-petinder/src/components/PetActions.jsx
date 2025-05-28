@@ -14,7 +14,7 @@ function PetActions(props) {
                     <span>Passar</span>
                 </button>
             </div>
-            <CarrouselPetImages images={props.images} />
+            <CarrouselPetImages pet={props.pet} images={props.images} />
         </div>
     );
 }
