@@ -212,13 +212,14 @@ function Initial() {
         if (pets.length > 0 && petIndex < pets.length) {
             const currentPet = pets[petIndex];
             const quantTags = currentPet.tags.length;
-            setPet({
+            const pet = {
                 id: currentPet.id,
                 nome: currentPet.nome,
                 idade: currentPet.idade,
                 curtidas: currentPet.curtidas,
                 isLiked: currentPet.isLiked,
                 descricao: currentPet.descricao,
+                images: currentPet.imagens || [],
                 tags: currentPet.tags,
                 qntdTags: quantTags,
                 nomeOng: currentPet.nomeOng,
@@ -227,7 +228,9 @@ function Initial() {
                 isVermifugo: currentPet.isVermifugo,
                 isVacinado: currentPet.isVacinado,
                 endereco: currentPet.endereco, // <-- Adicione esta linha
-            });
+            }
+
+            setPet(pet);
         }
     }, [pets, petIndex]);
 
@@ -333,6 +336,7 @@ function Initial() {
         try {
             const response = await url.get(`/pets/${petId}`);
             const data = response.data;
+
             setPet({
                 id: data.id,
                 nome: data.nome,
@@ -371,6 +375,7 @@ function Initial() {
             <NavBar />
             <div className="appArea">
                 <PetActions
+                    pet={pet}
                     images={pet.images}
                     adotar={handleAdotarPet}
                     passar={aumentarIndex} />
