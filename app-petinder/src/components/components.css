@@ -1419,7 +1419,7 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.4s;
-            bottom: 160px;
+            bottom: 146px;
 
             .menuIcon {
                 transition: transform 0.5s ease;
@@ -1862,6 +1862,16 @@
             margin-top: 15px;
         }
     }
+
+     .toastContainer {
+        width: 85% !important;
+        height: 6rem !important;
+        position: absolute !important;
+        z-index: 2000 !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding: 0 !important;
+    }
 }
 
 .aboveButtonDiv {
@@ -2102,7 +2112,7 @@
 
     .senhaAtual {
         width: 100%;
-        height: 20%;
+        height: 23%;
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -2132,10 +2142,21 @@
 
     .buttonsAct {
         width: 100%;
-        height: 16%;
+        height: 20%;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+
+    /*VERIFIFCAR E APAGAR PROVAVELMENTE MAS PODE SER UTIL PRO TOAST GREEN*/
+    .toastContainer {
+        width: 75% !important;
+        height: 6rem !important;
+        position: absolute !important;
+        z-index: 2000 !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding: 0 !important;
     }
 }
 
@@ -2238,6 +2259,7 @@
     }
 }
 
+
 /* .imageWrapper {
     border-radius: 50%;
     overflow: hidden;
@@ -2275,7 +2297,8 @@
         align-items: center;
         justify-content: space-evenly;
 
-        .searchIcon {
+
+        .searchIcon  {
             position: absolute;
             width: 25px;
             height: 25px;
@@ -2300,7 +2323,8 @@
             background-color: #fff;
         }
 
-        button:hover {
+
+        button:hover  {
             cursor: pointer;
             background-color: var(--primaryColor);
             transition: ease-in-out 0.3s;
@@ -2355,7 +2379,8 @@
                 font-size: 20px;
             }
 
-            button:hover {
+
+            button:hover  {
                 cursor: pointer;
             }
         }

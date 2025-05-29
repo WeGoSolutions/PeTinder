@@ -45,7 +45,10 @@ export default function SideButtonsConfig({ nameButton, icon, path, sidePanelOpe
         }
     }, [location.pathname]);
 
-    const showDerivedButtons = hovered || derivedClicked;
+    const showDerivedButtons =
+    hovered || derivedClicked ||
+    location.pathname === "/ong/configuracao" ||
+    location.pathname === "/ong/configuracao/seguranca";
 
     const isSegurancaActive = location.pathname === "/ong/configuracao/seguranca";
     const isContaActive = location.pathname === "/ong/configuracao";
