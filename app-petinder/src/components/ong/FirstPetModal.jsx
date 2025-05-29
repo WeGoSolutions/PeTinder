@@ -6,6 +6,7 @@ import PrimaryButton from "../PrimaryButton";
 function FirstPetEdit(props) {
     const idade = ["anos", "meses"];
     const porte = ["pequeno", "medio", "grande"];
+    
     return (
         <div className="editPetModal">
             <div className="header">

@@ -7,6 +7,21 @@ import { useState } from "react";
 function SecondPetEdit(props) {
     const [images, setImages] = useState([]);
 
+    // const [formValues, setFormValues] = useState({
+    //     nome: "",
+    //     idade: "",
+    //     porte: "",
+    //     curtidas: "0",
+    //     tags: "",
+    //     descricao: "",
+    //     isCastrado: "",
+    //     isVermifugo: "",
+    //     isVacinado: "",
+    //     sexo: "",
+    //     imagemBase64: ""
+    // });
+
+
     const addImage = (event) => {
         const file = event.target.files[0];
         if (file && images.length < 5) {
@@ -26,10 +41,20 @@ function SecondPetEdit(props) {
     ];
 
     const handleTagClick = (tagName) => {
-        setDisabledTags(prev => ({
-            ...prev,
-            [tagName]: !prev[tagName]
-        }));
+        const selectedCount = Object.values(disabledTags).filter(v => !v).length;
+        // Se a tag já está selecionada, permite desmarcar normalmente
+        if (!disabledTags[tagName]) {
+            setDisabledTags(prev => ({
+                ...prev,
+                [tagName]: true
+            }));
+        } else if (selectedCount < 7) {
+            // Só permite selecionar se ainda não atingiu o limite
+            setDisabledTags(prev => ({
+                ...prev,
+                [tagName]: false
+            }));
+        }
     };
 
     const [disabledTags, setDisabledTags] = useState(() => {
@@ -38,6 +63,23 @@ function SecondPetEdit(props) {
         allTags.flat().forEach(tag => { obj[tag] = true; });
         return obj;
     });
+
+    const vacStates = [
+        { key: "castrado", img: "/isCastrado.svg", label: "Castrado" },
+        { key: "vermifugado", img: "/isVermifugo.svg", label: "Vermifugado" },
+        { key: "vacinado", img: "/isVacinado.svg", label: "Vacinado" }
+    ];
+    const [vacStatus, setVacStatus] = useState({
+        castrado: false,
+        vermifugado: false,
+        vacinado: false
+    });
+    const handleVacClick = (key) => {
+        setVacStatus(prev => ({
+            ...prev,
+            [key]: !prev[key]
+        }));
+    };
     return (
         <div className="editPetModal">
             <div className="header">
@@ -63,12 +105,24 @@ function SecondPetEdit(props) {
                 <div className="division"></div>
 
                 <div className="petInfosVac">
-                    <img src="/isCastrado.svg" alt="é Castrado?" />
-                    <span>Castrado</span>
-                    <img src="/isVermifugo.svg" alt="é Vermifugado?" />
-                    <span>Vermifugado</span>
-                    <img src="/isVacinado.svg" alt="é Vacinado?" />
-                    <span>Vacinado</span>
+                    {vacStates.map(vac => (
+                        <div
+                            key={vac.key}
+                            style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                cursor: "pointer",
+                                marginRight: 12
+                            }} onClick={() => handleVacClick(vac.key)}
+                        >
+                            <img
+                                src={vacStatus[vac.key] ? vac.img : "/isNothing.svg"}
+                                alt={vac.label}
+                            />
+                            <span>{vac.label}</span>
+                        </div>
+                    ))}
                 </div>
                 <div className="imgAdd">
                     <span>Fotos do pet:</span>
