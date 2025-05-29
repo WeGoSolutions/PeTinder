@@ -321,6 +321,8 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 6px 6px rgb(0, 0, 0);
+
+
 }
 
 .petInfo {
@@ -337,11 +339,66 @@
 
 .petTitle {
     display: flex;
-    justify-content: space-between;
+    gap: 8px;
+
+    .leftSection {
+        max-width: 48%;
+
+        h1 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .middleSection {
+        max-width: 20%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        position: relative;
+        gap: 0;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    .middleSection img {
+        width: 32px;
+        margin-left: -10px;
+        border-radius: 8px;
+        z-index: 1;
+    }
+
+    .middleSection img:first-child {
+        margin-left: 0;
+        z-index: 3;
+    }
+
+    .middleSection img:nth-child(2) {
+        z-index: 2;
+    }
+
+    .middleSection img:nth-child(3) {
+        z-index: 1;
+    }
+}
+
+.petTitle .middleSection img {
+    width: 32px;
+    height: 52px;
+    margin-left: -10px;
+    border-radius: 8px;
+    z-index: 1;
+    transition: transform 0.2s, z-index 0.2s;
+}
+
+.petTitle .middleSection img:hover {
+    transform: scale(1.18);
+    z-index: 10;
 }
 
 .petTitle h1 {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
     margin: 0;
 }
@@ -1863,7 +1920,7 @@
         }
     }
 
-     .toastContainer {
+    .toastContainer {
         width: 85% !important;
         height: 6rem !important;
         position: absolute !important;
@@ -2298,7 +2355,7 @@
         justify-content: space-evenly;
 
 
-        .searchIcon  {
+        .searchIcon {
             position: absolute;
             width: 25px;
             height: 25px;
@@ -2324,7 +2381,7 @@
         }
 
 
-        button:hover  {
+        button:hover {
             cursor: pointer;
             background-color: var(--primaryColor);
             transition: ease-in-out 0.3s;
@@ -2380,7 +2437,7 @@
             }
 
 
-            button:hover  {
+            button:hover {
                 cursor: pointer;
             }
         }
