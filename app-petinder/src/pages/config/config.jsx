@@ -344,7 +344,7 @@ function Config() {
                         </div>
                         <h2>Conta</h2>
                         <div className={styles.img}>
-                            <UserImage size={180} src={formValues.imagemUrl} />
+                            <UserImage size={180} src={formValues.imagemUrl} hasEdit={true} />
                         </div>
                         <div className={styles.containerForm}>
                             <div className={styles.configTextInfo1}>

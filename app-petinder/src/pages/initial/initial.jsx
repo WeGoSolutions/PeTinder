@@ -38,6 +38,7 @@ function Initial() {
     const handleOpenSideMenu = () => setIsSideMenuOpen(true);
     const [sideMenuTab, setSideMenuTab] = useState("chats");
     const [selectedChat, setSelectedChat] = useState(null);
+    const [userEndereco, setUserEndereco] = useState(null);
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -88,6 +89,29 @@ function Initial() {
         setModalStep(1);
         await handleCloseModal();
     };
+
+    useEffect(() => {
+        const userId = sessionStorage.getItem("userId");
+        if (!userId) return;
+        url.get(`/users/${userId}`)
+            .then(response => {
+                const data = response.data;
+                if (data.cep) {
+                    setUserEndereco({
+                        cep: data.cep,
+                        rua: data.rua,
+                        numero: data.numero,
+                        cidade: data.cidade,
+                        uf: data.uf,
+                        complemento: data.complemento,
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar endereço do usuário:", error);
+                setUserEndereco(null);
+            });
+    }, []);
 
     useEffect(() => {
         const isNew = sessionStorage.getItem("isNew");
@@ -177,24 +201,25 @@ function Initial() {
         setPetIndex(0); // Reinicia o índice para evitar problemas de overflow
     };
 
-   useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
-    url.get(`/status/default/${userId}`)
-        .then(response => setPets(response.data))
-        .catch(error => console.error("Error fetching pets:", error));
-}, []);
+    useEffect(() => {
+        const userId = sessionStorage.getItem("userId");
+        url.get(`/status/default/${userId}`)
+            .then(response => setPets(response.data))
+            .catch(error => console.error("Error fetching pets:", error));
+    }, []);
 
     useEffect(() => {
         if (pets.length > 0 && petIndex < pets.length) {
             const currentPet = pets[petIndex];
             const quantTags = currentPet.tags.length;
-            setPet({
+            const pet = {
                 id: currentPet.id,
                 nome: currentPet.nome,
                 idade: currentPet.idade,
                 curtidas: currentPet.curtidas,
                 isLiked: currentPet.isLiked,
                 descricao: currentPet.descricao,
+                images: currentPet.imagens || [],
                 tags: currentPet.tags,
                 qntdTags: quantTags,
                 nomeOng: currentPet.nomeOng,
@@ -202,21 +227,24 @@ function Initial() {
                 isCastrado: currentPet.isCastrado,
                 isVermifugo: currentPet.isVermifugo,
                 isVacinado: currentPet.isVacinado,
-            });
+                endereco: currentPet.endereco, // <-- Adicione esta linha
+            }
+
+            setPet(pet);
         }
     }, [pets, petIndex]);
 
-    
-useEffect(() => {
-    if (pet.id) {
-        url.get(`/pets/${pet.id}/imagens`)
-            .then(response => setPet(prevPet => ({
-                ...prevPet,
-                images: response.data
-            })))
-            .catch(error => console.error("Error fetching pet images:", error));
-    }
-}, [pet.id]);
+
+    useEffect(() => {
+        if (pet.id) {
+            url.get(`/pets/${pet.id}/imagens`)
+                .then(response => setPet(prevPet => ({
+                    ...prevPet,
+                    images: response.data
+                })))
+                .catch(error => console.error("Error fetching pet images:", error));
+        }
+    }, [pet.id]);
 
     const handleCloseModal = async () => {
         const userId = sessionStorage.getItem("userId");
@@ -304,32 +332,33 @@ useEffect(() => {
         }
     };
 
-const handleLoadPetById = async (petId) => {
-    try {
-        const response = await url.get(`/pets/${petId}`);
-        const data = response.data;
+    const handleLoadPetById = async (petId) => {
+        try {
+            const response = await url.get(`/pets/${petId}`);
+            const data = response.data;
 
-        setPet({
-            id: data.id,
-            nome: data.nome,
-            idade: data.idade,
-            curtidas: data.curtidas,
-            isLiked: true,
-            descricao: data.descricao,
-            tags: data.tags,
-            qntdTags: data.tags.length,
-            images: data.imagens || [],
-            nomeOng: data.nomeOng,
-            linkOng: data.linkOng,
-            isCastrado: data.isCastrado,
-            isVermifugo: data.isVermifugo,
-            isVacinado: data.isVacinado,
-        });
-        setIsSideMenuOpen(false);
-    } catch (error) {
-        console.error(error);
-    }
-};
+            setPet({
+                id: data.id,
+                nome: data.nome,
+                idade: data.idade,
+                curtidas: data.curtidas,
+                isLiked: true,
+                descricao: data.descricao,
+                tags: data.tags,
+                qntdTags: data.tags.length,
+                images: data.imagens || [],
+                nomeOng: data.nomeOng,
+                linkOng: data.linkOng,
+                isCastrado: data.isCastrado,
+                isVermifugo: data.isVermifugo,
+                isVacinado: data.isVacinado,
+                endereco: data.endereco, // <-- Adicione esta linha
+            });
+            setIsSideMenuOpen(false);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -346,6 +375,7 @@ const handleLoadPetById = async (petId) => {
             <NavBar />
             <div className="appArea">
                 <PetActions
+                    pet={pet}
                     images={pet.images}
                     adotar={handleAdotarPet}
                     passar={aumentarIndex} />
@@ -364,6 +394,8 @@ const handleLoadPetById = async (petId) => {
                     isCastrado={pet.isCastrado}
                     isVermifugo={pet.isVermifugo}
                     isVacinado={pet.isVacinado}
+                    endereco={pet.endereco} // <-- Passe o endereço aqui
+                    userEndereco={userEndereco} // <-- Passe o endereço do usuário aqui
                 />
             </div>
 

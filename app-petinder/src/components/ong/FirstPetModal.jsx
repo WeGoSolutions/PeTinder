@@ -10,7 +10,7 @@ function FirstPetEdit(props) {
         <div className="editPetModal">
             <div className="header">
                 <IoCloseOutline onClick={props.onClose} className="closeButton" />
-                <span className="title">Edição de Pet</span>
+                <span className="title">{props.modo} do Pet</span>
             </div>
             <div className="petInfos">
                 <FormInput
@@ -47,32 +47,28 @@ function FirstPetEdit(props) {
                         />
                     </div>
                 </div>
-
-                <FormInput
-                    id="descricao"
-                    name="descricao"
-                    label="Descrição"
-                    required
-                    type="textarea"
-                // value={formValues.nome}
-                />
+                <div className="desc">
+                    <span>Descrição</span>
+                    <textarea id="descricao" placeholder="DESCRIÇÃO"></textarea>
+                </div>
+            
                 <div className="petInfosCheckbox">
                     <span className="title">Sexo</span>
                     <div className="checkbox">
                         <input
                             type="radio"
-                            name="femea"
+                            name="sexo"
                             value="femea"
                         />
-                        <label>Fêmea</label>
+                        <label htmlFor="femea">Fêmea</label>
                     </div>
                     <div className="checkbox">
                         <input
                             type="radio"
-                            name="macho"
+                            name="sexo"
                             value="macho"
                         />
-                        <label>Macho</label>
+                        <label htmlFor="macho">Macho</label>
                     </div>
                 </div>
             </div>
@@ -81,7 +77,13 @@ function FirstPetEdit(props) {
                 <button className="button2"></button>
             </div>
             <div className="next">
-                <PrimaryButton text="Próximo" />
+                <div onClick={() => {
+                    console.log("Botão próximo clicado");
+                    props.onNext();
+                }}>
+                    <PrimaryButton text="Próximo" />
+                </div>
+
             </div>
         </div>
     );

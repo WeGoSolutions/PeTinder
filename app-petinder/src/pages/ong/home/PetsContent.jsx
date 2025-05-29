@@ -6,59 +6,82 @@ import { IoSearch } from "react-icons/io5";
 
 
 export default function PetsContent() {
-    const [isEditing, setIsEditing] = useState(false);
+
+    const [editStep, setEditStep] = useState(0);
+    const [modalMode, setModalMode] = useState("edit");
+    const [modo, setModo] = useState("editar");
+
+    const openAddModal = () => {
+        setModalMode("add");
+        setModo("Adicionar");
+        setEditStep(1);
+    };
 
     const openEditModal = () => {
-        setIsEditing(true);
+        setModalMode("edit");
+        setModo("Editar");
+        setEditStep(1);
     };
 
-    const closeEditModal = () => {
-        setIsEditing(false);
-    };
+    const closeEditModal = () => setEditStep(0);
+    const goToSecondStep = () => setEditStep(2);
+    const goBackToFirstStep = () => setEditStep(1);
 
     const deletePet = (idToDelete) => {
         setPets((prevPets) => prevPets.filter((pet) => pet.id !== idToDelete));
     };
 
     const [pets, setPets] = useState([
-        {
-            id: 1,
-            nome: "Francisco",
-            src: "https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2025/05/16144407/cachorro-com-protetor-para-patas.jpg"
-        },
-        {
-            id: 2,
-            nome: "Robson",
-            src: "https://adimax.com.br/wp-content/uploads/2022/05/cuidados-filhote-de-cachorro.jpg"
-        },
-        {
-            id: 3,
-            nome: "Albert",
-            src: "https://super.abril.com.br/wp-content/uploads/2019/04/si_cachorroinstagram_home.png?crop=1&resize=1212,909",
-        },
-        {
-            id: 4,
-            nome: "Eduardo",
-            src: "https://blog-static.petlove.com.br/wp-content/uploads/2020/10/Gato-ansiedade-Petlove.jpg"
-        }
+        { id: 1, nome: "Francisco", src: "https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2025/05/16144407/cachorro-com-protetor-para-patas.jpg" },
+        { id: 2, nome: "Robson", src: "https://adimax.com.br/wp-content/uploads/2022/05/cuidados-filhote-de-cachorro.jpg" },
+        { id: 3, nome: "Albert", src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfs_9UG6h9RZ25WyxRdYosOGqwe6EqFlb5qQ&s" },
+        { id: 4, nome: "Jõao", src: "https://media.istockphoto.com/id/1443562748/pt/foto/cute-ginger-cat.jpg?s=612x612&w=0&k=20&c=OqlMF3bysUX6cVux5kKc1gqCGMghQpGc5ukyw1qG82s=" },
+        { id: 5, nome: "Carlos", src: "https://blog-static.petlove.com.br/wp-content/uploads/2020/10/Gato-ansiedade-Petlove.jpg" },
+        { id: 6, nome: "Roberto", src: "https://super.abril.com.br/wp-content/uploads/2019/04/si_cachorroinstagram_home.png?crop=1&resize=1212,909" },
+        { id: 7, nome: "Anderson", src: "https://saude.abril.com.br/wp-content/uploads/2020/04/gato-coronavc3adrus.jpg?crop=1&resize=1212,909" }
     ]);
+
+    // const [selectedTags, setSelectedTags] = useState([]);
+
+    // const toggleTag = (tagName) => {
+    //     setSelectedTags((prev) =>
+    //         prev.includes(tagName)
+    //             ? prev.filter((tag) => tag !== tagName)
+    //             : [...prev, tag]
+    //     );
+    // };
 
     return (
         <div className="petContainer">
             <div className="petHeader">
                 <IoSearch className="searchIcon" />
                 <input type="text" className="searchBar" />
-                <button className="addPet">Adicionar +</button>
+                <button className="addPet" onClick={openAddModal}>Adicionar +</button>
             </div>
-            {/* Se o modal estiver ativo, renderiza o fundo escuro + modal - NAO TA FUNCIONANDO DIREITO*/}
-            {isEditing && (
+            {editStep > 0 && (
                 <>
                     <div className="modal-overlay" onClick={closeEditModal}></div>
-                    <FirstPetEdit onClose={closeEditModal} />
+                    {editStep === 1 && (
+                        <FirstPetEdit
+                            onClose={closeEditModal}
+                            onNext={goToSecondStep}
+                            mode={modalMode}
+                            modo={modo}
+                        />
+                    )}
+                    {editStep === 2 && (
+                        <SecondPetEdit
+                            onClose={closeEditModal}
+                            onBack={goBackToFirstStep}
+                            mode={modalMode}
+                            modo={modo}
+                            // selectedTags={selectedTags}
+                            // toggleTag={toggleTag}
+                        />
+                    )}
                 </>
             )}
 
-            <SecondPetEdit/>
 
             <div className="pets">
                 {pets.map((pet) => (
