@@ -9,7 +9,6 @@ export default function Interessados() {
 
     const mensagemInteressados = "Ainda não temos nenhum interessado, mas não se preocupe, em pouco tempo irão aparecer!";
 
-    // O estado agora é um array
     const [infosMensagens, setInfosMensagens] = useState([]);
     
     useEffect(() => {
@@ -20,14 +19,12 @@ export default function Interessados() {
             .then(response => {
                 const dados = response.data;
                 setInfosMensagens(Array.isArray(dados) ? dados : []);
-                // console.log(dados);
             })
             .catch(error => {
                 console.error('Erro ao buscar mensagens:', error);
             });
     }, []);
 
-    // Função para formatar a data no padrão brasileiro
     function formatarData(dataHora) {
         if (!dataHora) return '';
         const data = new Date(dataHora);
