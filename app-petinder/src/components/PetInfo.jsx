@@ -89,7 +89,7 @@ function PetInfo(props) {
             <div className="petInfo">
                 <div className="petTitle">
                     <div className="leftSection">
-                        <h1>{props.petName}</h1>
+                        <h1 title={props.petName}>{props.petName}</h1>
                         <div className="likes" onClick={props.onLike}>
                             <img
                                 className="like"
