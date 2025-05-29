@@ -159,7 +159,6 @@ function Initial() {
             [name]: formattedValue,
         }));
 
-        // Busca os dados do endereço ao preencher o CEP
         if (name === "cep" && formattedValue.length === 9) {
             fetch(`https://viacep.com.br/ws/${formattedValue.replace("-", "")}/json/`)
                 .then((response) => response.json())
@@ -198,7 +197,7 @@ function Initial() {
             const novosPets = prevPets.filter((_, idx) => idx !== petIndex);
             return novosPets;
         });
-        setPetIndex(0); // Reinicia o índice para evitar problemas de overflow
+        setPetIndex(0);
     };
 
     useEffect(() => {
@@ -227,7 +226,7 @@ function Initial() {
                 isCastrado: currentPet.isCastrado,
                 isVermifugo: currentPet.isVermifugo,
                 isVacinado: currentPet.isVacinado,
-                endereco: currentPet.endereco, // <-- Adicione esta linha
+                endereco: currentPet.endereco,
             }
 
             setPet(pet);
@@ -258,7 +257,7 @@ function Initial() {
             const response = await url.patch(`/users/${userId}/user-novo`, null, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${authToken}`, // Adiciona o token no cabeçalho
+                    "Authorization": `Bearer ${authToken}`,
                 },
             });
 
@@ -272,9 +271,9 @@ function Initial() {
     };
 
     const handleSubmit = async () => {
-        console.log("handleSubmit foi chamado"); // Adicione esta linha para depuração
+        console.log("handleSubmit foi chamado");
         const userId = sessionStorage.getItem("userId");
-        const authToken = sessionStorage.getItem("authToken"); // Recupera o token do sessionStorage
+        const authToken = sessionStorage.getItem("authToken");
 
         if (!userId) {
             return;
@@ -284,12 +283,13 @@ function Initial() {
             const response = await url.put(`/users/${userId}/optional`, formValues, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${authToken}`, // Adiciona o token no cabeçalho
+                    "Authorization": `Bearer ${authToken}`,
                 },
             });
 
             if (response.status === 200) {
-                await handleCloseModal(); // Chama a função para atualizar o status de novo usuário e fechar o modal
+                await handleCloseModal();
+                window.location.reload();
             } else {
             }
         } catch (error) {
