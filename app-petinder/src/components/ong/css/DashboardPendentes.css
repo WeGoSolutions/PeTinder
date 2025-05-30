@@ -40,4 +40,5 @@
     width: 60px;
     border-radius: 100%;
     border: #FF8FBB solid 3px;
+    object-fit: cover;
 }
