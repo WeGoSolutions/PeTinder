@@ -227,6 +227,8 @@ export default function PetsContent() {
                                     name="nome"
                                     label="Nome do Pet"
                                     required
+                                    value={formStep1.nome}
+                                    onChange={handleStep1Change}
                                 />
                                 <div className={styles.dropDownQuestions}>
                                     <DropDown
@@ -235,6 +237,8 @@ export default function PetsContent() {
                                         label="Porte"
                                         options={porte}
                                         required
+                                        value={formStep1.porte}
+                                        onChange={handleStep1Change}
                                     />
                                     <div className={styles.petAge}>
                                         <FormInput
@@ -243,18 +247,29 @@ export default function PetsContent() {
                                             label="Idade"
                                             type="number"
                                             required
+                                            value={formStep1.idade}
+                                            onChange={handleStep1Change}
                                         />
                                         <DropDown
                                             id="Anos"
+                                            name="idadeTipo"
                                             label="Anos"
                                             options={idade}
                                             required
+                                            value={formStep1.idadeTipo}
+                                            onChange={handleStep1Change}
                                         />
                                     </div>
                                 </div>
                                 <div className={styles.desc}>
                                     <span>Descrição</span>
-                                    <textarea id="descricao" placeholder="DESCRIÇÃO"></textarea>
+                                    <textarea
+                                        id="descricao"
+                                        name="descricao"
+                                        placeholder="DESCRIÇÃO"
+                                        value={formStep1.descricao}
+                                        onChange={e => setFormStep1(prev => ({ ...prev, descricao: e.target.value }))}
+                                    />
                                 </div>
                                 <div className={styles.petInfosCheckbox}>
                                     <span className={styles.title}>Sexo</span>
@@ -263,6 +278,8 @@ export default function PetsContent() {
                                             type="radio"
                                             name="sexo"
                                             value="femea"
+                                            checked={formStep1.sexo === "femea"}
+                                            onChange={handleStep1Change}
                                         />
                                         <label htmlFor="femea">Fêmea</label>
                                     </div>
@@ -271,6 +288,8 @@ export default function PetsContent() {
                                             type="radio"
                                             name="sexo"
                                             value="macho"
+                                            checked={formStep1.sexo === "macho"}
+                                            onChange={handleStep1Change}
                                         />
                                         <label htmlFor="macho">Macho</label>
                                     </div>
