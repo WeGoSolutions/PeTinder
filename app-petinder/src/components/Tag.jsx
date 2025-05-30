@@ -18,19 +18,22 @@ const tagColors = {
 function Tag(props) {
     const isDisabled = props.isDisabled;
 
-    const style = isDisabled
-        ? {
-            border: "4px solid #979797",
-            color: "#979797",
-            background: "#EDEDED"
-        }
-        : tagColors[props.tagName]
+    const style = {
+        ...(isDisabled
             ? {
-                border: `4px solid ${tagColors[props.tagName].border}`,
-                color: tagColors[props.tagName].color,
-                background: tagColors[props.tagName].background
+                border: "4px solid #979797",
+                color: "#979797",
+                background: "#EDEDED"
             }
-            : {};
+            : tagColors[props.tagName]
+                ? {
+                    border: `4px solid ${tagColors[props.tagName].border}`,
+                    color: tagColors[props.tagName].color,
+                    background: tagColors[props.tagName].background
+                }
+                : {}),
+        cursor: props.cursor || "default"
+    };
 
     return (
         <div className="containerTag" style={style} onClick={props.onClick}>
