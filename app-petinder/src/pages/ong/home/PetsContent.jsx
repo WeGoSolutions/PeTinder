@@ -15,8 +15,8 @@ import SecondaryButton from "../../../components/SecondaryButton";
 import { convertImagesToBase64 } from "../../../utils";
 
 export default function PetsContent() {
+    const [editingPetId, setEditingPetId] = useState(null);
     const [editStep, setEditStep] = useState(0);
-    const [modalMode, setModalMode] = useState("edit");
     const [modo, setModo] = useState("editar");
     const [pets, setPets] = useState([]);
     const idade = ["anos", "meses"];
@@ -96,9 +96,13 @@ export default function PetsContent() {
         };
 
         try {
-            await url.post("/pets", payload);
+            if (modo === "Editar") {
+                await url.put(`/pets/${editingPetId}`, payload);
+            } else {
+                await url.post("/pets", payload);
+            }
             closeEditModal();
-            window.location.reload(); // Recarrega a página para atualizar a lista de pets
+            window.location.reload();
         } catch (error) {
             console.error(error);
         }
@@ -182,15 +186,57 @@ export default function PetsContent() {
     }, []);
 
     const openAddModal = () => {
-        setModalMode("add");
         setModo("Adicionar");
         setEditStep(1);
     };
 
-    const openEditModal = () => {
-        setModalMode("edit");
+    const openEditModal = async (petId) => {
         setModo("Editar");
-        setEditStep(1);
+        setEditingPetId(petId);
+        try {
+            const res = await url.get(`/pets/${petId}`);
+            const pet = res.data;
+            setFormStep1({
+                nome: pet.nome || "",
+                idade: pet.idade
+                    ? pet.idade < 1
+                        ? String(Math.round(pet.idade * 100))
+                        : String(Math.floor(pet.idade))
+                    : "",
+                idadeTipo: pet.idade && pet.idade < 1 ? "meses" : "anos",
+                porte: pet.porte || "",
+                descricao: pet.descricao || "",
+                sexo: pet.sexo ? pet.sexo.toLowerCase() : "",
+                peso: pet.peso || "",
+                altura: pet.altura || "",
+            });
+            // Preenche tags
+            const tagsObj = {};
+            allTags.flat().forEach(tag => {
+                tagsObj[tag] = !pet.tags?.includes(tag);
+            });
+            setDisabledTags(tagsObj);
+            // Preenche vacinas
+            setVacStatus({
+                castrado: !!pet.isCastrado,
+                vermifugado: !!pet.isVermifugo,
+                vacinado: !!pet.isVacinado,
+            });
+            // Preenche imagens
+            if (pet.imagens && pet.imagens.length > 0) {
+                setImages(
+                    pet.imagens.map(url => ({
+                        file: null,
+                        url,
+                    }))
+                );
+            } else {
+                setImages([]);
+            }
+            setEditStep(1);
+        } catch (err) {
+            console.error("Erro ao buscar pet para edição:", err);
+        }
     };
 
     const closeEditModal = () => setEditStep(0);
@@ -394,7 +440,7 @@ export default function PetsContent() {
                         id={pet.id}
                         nome={pet.nome}
                         src={pet.src}
-                        onEdit={openEditModal}
+                        onEdit={() => openEditModal(pet.id)}
                         onDelete={() => deletePet(pet.id)}
                     />
                 ))}
