@@ -2,6 +2,7 @@
     --backgroundColor: #F4F4F4;
     --primaryColor: #FFC0D9;
     --secondaryColor: #80465D;
+    --tercearyColor: #FF8FBB;
 }
 
 .input-container {
@@ -2354,19 +2355,60 @@
     height: 100%;
 }
 
-
-
 .petCard {
-    background-color: var(--secondaryColor);
+    background-color: var(--tercearyColor);
     width: 200px;
     height: 240px;
-    border-radius: 10px;
+    border-radius: 10px !important;
 
     .petImage {
+        position: relative;
         width: 180px;
         height: 180px;
         border-radius: 10px;
         margin: 10px 10px 10px 10px;
+
+        .menu3p {
+            background-color: var(--tercearyColor);
+            bottom: 90%;
+            left: 90%;
+            position: absolute;
+            z-index: 5;
+            cursor: pointer;
+            border-radius: 0 0 0 10px;
+        }
+
+        .baloonPet {
+            position: absolute;
+            right: -15%;
+            top: 20%;
+            border: white solid 2px;
+            background: var(--tercearyColor);
+            border-radius: 10px;
+            width: 220px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            color: #F4F4F4;
+            font-weight: 500;
+            font-size: 12px;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .baloonPet::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 80%;
+            border-width: 0 12px 18px 12px;
+            border-style: solid;
+            border-color: transparent transparent var(--tercearyColor) transparent;
+            width: 0;
+            height: 0;
+        }
     }
 
     .nameOptions {
@@ -2374,10 +2416,16 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 0 14px 10px 14px;
+        max-height: 17%;
 
         span {
+            color: white;
             font-size: 17px;
             font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 74%;
         }
 
         .options {
@@ -2386,18 +2434,34 @@
             justify-content: space-between;
 
             button {
-                background-color: var(--secondaryColor);
+                background-color: var(--tercearyColor);
                 border: none;
                 font-size: 20px;
             }
-
 
             button:hover {
                 cursor: pointer;
             }
         }
-
     }
+}
+
+.petCard.adopted,
+.petCard.adopted .petImage,
+.petCard.adopted .menu3p,
+.petCard.adopted .nameOptions,
+.petCard.adopted .options button,
+.petCard.adopted .baloonPet {
+    background-color: var(--secondaryColor) !important;
+    border-radius: 10px !important;
+}
+
+.petCard.adopted .menu3p {
+    border-radius: 0 0 0 10px !important
+}
+
+.petCard.adopted .baloonPet::after {
+    border-color: transparent transparent var(--secondaryColor) transparent;
 }
 
 /* .modal-overlay {
