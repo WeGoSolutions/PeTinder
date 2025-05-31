@@ -176,6 +176,7 @@ export default function PetsContent() {
                     id: pet.petId,
                     nome: pet.petNome,
                     src: pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : "",
+                    isAdopted: Array.isArray(pet.status) && pet.status.includes('ADOPTED'),
                 })) : [];
                 setPets(petsData);
             })
@@ -439,6 +440,7 @@ export default function PetsContent() {
                         key={pet.id}
                         id={pet.id}
                         nome={pet.nome}
+                        isAdopted={pet.isAdopted}
                         src={pet.src}
                         onEdit={() => openEditModal(pet.id)}
                         onDelete={() => deletePet(pet.id)}
