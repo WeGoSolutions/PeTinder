@@ -480,6 +480,8 @@
 .petDesc {
     font-size: 18px;
     font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .ong {
@@ -1496,7 +1498,7 @@
 
         .ongInfos {
             width: 100%;
-            height: 25%;
+            height: 30%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1687,6 +1689,7 @@
                     border-radius: 10px;
                     display: flex;
                     align-items: center;
+                    justify-content: space-between;
                     gap: 18px;
 
                     .imgPerfil {
@@ -1700,7 +1703,7 @@
                     }
 
                     .textos {
-                        width: 60%;
+                        width: 85%;
 
                         h1 {
                             font-size: 18px;
@@ -1710,9 +1713,10 @@
                         p {
                             font-size: 16px;
                             font-weight: 500;
-                            word-break: break-word;
                             max-height: 45px;
-                            overflow-y: auto;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
                         }
 
                         span {
@@ -1722,8 +1726,8 @@
                     }
 
                     .contact {
+                        width: 8%;
                         position: relative;
-                        width: 100%;
                         min-height: 100px;
                     }
 
@@ -2235,10 +2239,10 @@
 
 .likedContainer {
     cursor: pointer;
+    max-width: 150px;
 }
 
 .likedCard {
-    width: 150px;
     height: 175px;
     border-radius: 10px;
     border: solid 2px var(--secondaryColor);
@@ -2255,6 +2259,12 @@
 .likedName {
     display: flex;
     justify-content: center;
+
+    h3 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .middleSection {
