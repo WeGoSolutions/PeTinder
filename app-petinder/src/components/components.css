@@ -343,10 +343,12 @@
 
     .leftSection {
         max-width: 48%;
+        min-width: 15%;
 
         h1 {
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
@@ -380,6 +382,11 @@
 
     .middleSection img:nth-child(3) {
         z-index: 1;
+    }
+
+    .rightSection {
+        position: fixed;
+        right: 9.5%;
     }
 }
 
@@ -2439,8 +2446,8 @@
                 display: flex;
                 flex-direction: row;
 
-                .input-container{
-                    input{
+                .input-container {
+                    input {
                         border-radius: 0px !important;
                     }
                 }
