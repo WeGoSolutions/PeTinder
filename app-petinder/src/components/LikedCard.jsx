@@ -5,7 +5,7 @@ function LikedCard(props) {
                 <img src={props.imageSrc} alt={props.imageAlt} />
             </div>
             <div className="likedName">
-                <h3>{props.nomePet}</h3>
+                <h3 title={props.nomePet}>{props.nomePet}</h3>
             </div>
         </div>
     )
