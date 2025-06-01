@@ -40,12 +40,13 @@ function Config() {
         url.get(`/users/${userId}`)
             .then(res => {
                 const data = res.data;
+                const cepFormatado = data.cep?.replace(/^(\d{5})(\d{3})$/, '$1-$2') || "";
                 setFormValues({
                     nome: data.nome || "",
                     email: data.email || "",
                     cpf: data.cpf || "",
                     dataNasc: data.dataNasc || "",
-                    cep: data.cep || "",
+                    cep: cepFormatado,
                     rua: data.rua || "",
                     complemento: data.complemento || "",
                     numero: data.numero || "",
@@ -208,12 +209,14 @@ function Config() {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
 
+        const cepLimpo = formValues.cep?.replace(/\D/g, '');
+
         const payload = {
             nome: formValues.nome,
             email: formValues.email,
             cpf: formValues.cpf,
             dataNasc: formValues.dataNasc,
-            cep: formValues.cep,
+            cep: cepLimpo,
             rua: formValues.rua,
             numero: formValues.numero,
             cidade: formValues.cidade,
@@ -236,7 +239,24 @@ function Config() {
 
     // Função para atualizar os campos do formulário de informações pessoais e endereço
     const handleFormChange = (e) => {
-        const { name, value } = e.target;
+        const { name } = e.target;
+        let value = e.target.value;
+
+        if (name === 'cep') {
+            // Remove tudo que não for número
+            value = value.replace(/\D/g, '');
+
+            // Limita a 8 números
+            value = value.slice(0, 8);
+
+            // Aplica a máscara 00000-000
+            if (value.length > 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5);
+            }
+
+            // Força o novo valor diretamente no input, já que o componente usa defaultValue
+            e.target.value = value;
+        }
         setFormValues((prev) => ({
             ...prev,
             [name]: value
@@ -391,6 +411,7 @@ function Config() {
                                     label="CEP"
                                     value={formValues.cep}
                                     onChange={handleFormChange}
+                                    // aaaaaaa
                                 />
                                 <FormInput
                                     id="rua"
