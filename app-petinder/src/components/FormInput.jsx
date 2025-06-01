@@ -18,11 +18,22 @@ function FormInput(props) {
             .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     };
 
+    const maskCEP = (value) => {
+        return value
+            .replace(/\D/g, "")
+            .slice(0, 8)
+            .replace(/(\d{5})(\d{1,3})$/, "$1-$2");
+    };
+
     const handleChange = (e) => {
         let value = e.target.value;
 
         if (props.name === "cpf" || props.id === "cpf") {
             value = maskCPF(value);
+        }
+
+        if (props.name === "cep" || props.id === "cep") {
+            value = maskCEP(value);
         }
 
         if (props.onChange) {
@@ -44,7 +55,7 @@ function FormInput(props) {
                 name={props.name}
                 placeholder=" "
                 required={props.required}
-                value={props.value}
+                value={props.value || ""}
                 onChange={handleChange}
                 disabled={props.disabled}
             />
