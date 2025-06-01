@@ -68,11 +68,26 @@ export default function PetsContent() {
 
         const vac = vacStatus;
 
-        let imagemBase64 = [];
-        if (images.length > 0) {
-            const files = images.map(img => img.file);
-            imagemBase64 = await convertImagesToBase64(files);
-        }
+        const imagemBase64 = await Promise.all(
+            images.map(async (img) => {
+                if (img.file) {
+                    // Nova imagem (file)
+                    const [base64] = await convertImagesToBase64([img.file]);
+                    return base64;
+                } else if (img.url) {
+                    // Imagem existente (url)
+                    const response = await fetch(img.url);
+                    const blob = await response.blob();
+                    return await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                    });
+                }
+                return null;
+            })
+        );
 
         let idadeFinal = Number(formStep1.idade);
         if (formStep1.idadeTipo === "meses") {
