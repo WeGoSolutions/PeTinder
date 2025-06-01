@@ -8,6 +8,34 @@ function FormInput(props) {
     const inputType = props.type === "password" ? (showPassword ? "text" : "password") : props.type;
     const hasError = !!props.error;
 
+    // Máscara de CPF
+    const maskCPF = (value) => {
+        return value
+            .replace(/\D/g, "")
+            .slice(0, 11)
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d)/, "$1.$2")
+            .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    };
+
+    const handleChange = (e) => {
+        let value = e.target.value;
+
+        if (props.name === "cpf" || props.id === "cpf") {
+            value = maskCPF(value);
+        }
+
+        if (props.onChange) {
+            // Repassa o evento com os campos corretos
+            props.onChange({
+                target: {
+                    name: props.name,
+                    value: value,
+                }
+            });
+        }
+    };
+
     return (
         <div className="input-container" style={{ position: "relative" }}>
             <input
@@ -16,16 +44,15 @@ function FormInput(props) {
                 name={props.name}
                 placeholder=" "
                 required={props.required}
-                defaultValue={props.value}
-                onChange={props.onChange}
+                value={props.value}
+                onChange={handleChange}
                 disabled={props.disabled}
             />
             <label htmlFor={props.name}>{props.label}</label>
             {hasError && <span className="error-message">{props.error}</span>}
 
-            {/* botão de olho só se for senha */}
             {props.type === "password" && (
-                <button 
+                <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     style={{

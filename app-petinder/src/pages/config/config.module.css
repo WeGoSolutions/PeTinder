@@ -50,9 +50,8 @@
         .sideMenu {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            margin: 0 3% 31% 3%;
+            margin: 1% 3% 31% 3%;
 
             .optionsTitle {
                 display: flex;

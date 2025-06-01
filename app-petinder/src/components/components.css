@@ -1854,7 +1854,7 @@
         align-items: center;
         padding-left: 5%;
 
-        img {
+        /* img {
             background-color: #80465D;
             border-radius: 50%;
             height: 160px;
@@ -1862,7 +1862,7 @@
             border: solid 3.5px var(--secondaryColor);
             object-fit: cover;
             object-position: center;
-        }
+        } */
     }
 
     .registerFormRow {
@@ -1934,7 +1934,7 @@
 
     .toastContainer {
         width: 85% !important;
-        height: 6rem !important;
+        height: 4rem !important;
         position: absolute !important;
         z-index: 2000 !important;
         display: flex !important;

@@ -192,6 +192,8 @@ function Login() {
         }
     }
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     return (
         <>
             <div className="toastContainer">
@@ -229,7 +231,14 @@ function Login() {
                             </button>
                         </div>
                     </div>
-                    <form className={styles.loginForm} onSubmit={handleSubmit}>
+                    <form
+                        className={styles.loginForm}
+                        onSubmit={async (e) => {
+                            setIsSubmitting(true);
+                            await handleSubmit(e);
+                            setIsSubmitting(false);
+                        }}
+                    >
                         <Logo />
                         <FormInput
                             id="email"
@@ -257,7 +266,7 @@ function Login() {
                         </div>
                         <div onClick={validateForm}
                             className={styles.loginButtonWrapper}>
-                            <PrimaryButton type="submit" text="Entrar" />
+                            <PrimaryButton type="submit" text="Entrar" disabled={isSubmitting} />
                         </div>
                         <div onClick={() => setOpenModal(true)}>
                             <SecondaryButton type="button" text="Esqueci a senha" />

@@ -203,7 +203,6 @@ function Config() {
         }
     };
 
-    //NAO ESTA FUNCIONANDO, TEM DADO 409 - CONFLITO NESSA ETAPA DE ATUALIZAÇÃO
     const handleSave = async () => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
@@ -225,9 +224,9 @@ function Config() {
             await url.patch(`/users/${userId}`, payload);
             sessionStorage.setItem("userName", formValues.nome);
             setToast({ mensagem: 'Dados atualizados com sucesso!', tipo: 'sucesso' });
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 1500);
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
             setToast({ mensagem: 'Erro ao atualizar dados.', tipo: 'erro' });
@@ -242,6 +241,17 @@ function Config() {
             [name]: value
         }));
     };
+
+    // Estado para controlar se o campo CPF está desabilitado
+    const [cpfDisabled, setCpfDisabled] = useState(false);
+
+    // useEffect(() => {
+    //     if (formValues.cpf && formValues.cpf.length === 14) {
+    //         setCpfDisabled(true);
+    //     } else {
+    //         setCpfDisabled(false);
+    //     }
+    // }, [formValues.cpf]);
 
     return (
         <div className={styles.background}>
@@ -368,8 +378,10 @@ function Config() {
                                     name="cpf"
                                     label="CPF"
                                     value={formValues.cpf}
-                                    disabled={true}
+                                    onChange={(e) => setFormValues({ ...formValues, cpf: e.target.value })}
+                                    disabled={cpfDisabled}
                                 />
+
                                 <div className={styles.registerFormRow}>
                                     <FormInput
                                         id="dataNasc"
@@ -437,7 +449,10 @@ function Config() {
                             </div>
                         </div>
                         <div className={styles.buttons}>
-                            <div onClick={handleSave}>
+                            <div onClick={async () => {
+                                await handleSave();
+                                setCpfDisabled(true);
+                            }}>
                                 <PrimaryButton text="Salvar" />
                             </div>
                         </div>
