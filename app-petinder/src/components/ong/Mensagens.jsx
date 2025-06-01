@@ -14,11 +14,9 @@ export default function Mensagens({nome, mensagem, data, telefone, email, imgSrc
                 <UserImage size={48} src={imgSrc}  /> 
             </div>
 
-            {/* <img src={imgSrc} className="imgPerfil" /> */}
-
             <div className="textos">
                 <h1>{nome}</h1>
-                <p>{mensagem}</p>
+                <p title={mensagem}>{mensagem}</p>
                 <span>{data}</span>
             </div>
 

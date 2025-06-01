@@ -1,6 +1,8 @@
 function ChatCard({ petNome, ongNome, descricao }) {
+    const titleTooltip = `${petNome} • ${ongNome}`
+
     return (
-        <div className="chatCardContainer" tabIndex="0">
+        <div className="chatCardContainer" tabIndex="0" title={titleTooltip}>
             <div className="cardLogoOng">
                 <img src="/aumigos.svg" alt={petNome} />
             </div>

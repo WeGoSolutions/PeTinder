@@ -2,6 +2,7 @@
     --backgroundColor: #F4F4F4;
     --primaryColor: #FFC0D9;
     --secondaryColor: #80465D;
+    --tercearyColor: #FF8FBB;
 }
 
 .input-container {
@@ -321,6 +322,8 @@
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 6px 6px rgb(0, 0, 0);
+
+
 }
 
 .petInfo {
@@ -337,11 +340,73 @@
 
 .petTitle {
     display: flex;
-    justify-content: space-between;
+    gap: 8px;
+
+    .leftSection {
+        max-width: 48%;
+        min-width: 15%;
+
+        h1 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .middleSection {
+        max-width: 20%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        position: relative;
+        gap: 0;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    .middleSection img {
+        width: 32px;
+        margin-left: -10px;
+        border-radius: 8px;
+        z-index: 1;
+    }
+
+    .middleSection img:first-child {
+        margin-left: 0;
+        z-index: 3;
+    }
+
+    .middleSection img:nth-child(2) {
+        z-index: 2;
+    }
+
+    .middleSection img:nth-child(3) {
+        z-index: 1;
+    }
+
+    .rightSection {
+        position: fixed;
+        right: 9.5%;
+    }
+}
+
+.petTitle .middleSection img {
+    width: 32px;
+    height: 52px;
+    margin-left: -10px;
+    border-radius: 8px;
+    z-index: 1;
+    transition: transform 0.2s, z-index 0.2s;
+}
+
+.petTitle .middleSection img:hover {
+    transform: scale(1.18);
+    z-index: 10;
 }
 
 .petTitle h1 {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
     margin: 0;
 }
@@ -416,6 +481,8 @@
 .petDesc {
     font-size: 18px;
     font-weight: 500;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .ong {
@@ -798,6 +865,7 @@
 
 .sidebar-content {
     display: flex;
+    overflow: hidden;
 }
 
 .chat {
@@ -826,6 +894,45 @@
 .chatTitle {
     display: flex;
     gap: 15px;
+    width: 85%;
+    margin-bottom: 1.5%;
+    overflow: hidden;
+
+    .petName {
+        min-width: 0;
+        max-width: 100%;
+        flex: 3 1 50%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            display: block;
+        }
+    }
+
+    .ongName {
+        min-width: 0;
+        flex: 2 1 40%;
+        display: flex;
+        align-items: center;
+
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
 }
 
 .chatFooter {
@@ -990,12 +1097,19 @@
 
 .cardTextsArea {
     margin-left: 5px;
-
+    width: 80%;
 }
 
 .cardTitle {
     display: flex;
     gap: 7px;
+
+    h4 {
+        max-width: 45%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .recentMessage {
@@ -1419,7 +1533,7 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.4s;
-            bottom: 160px;
+            bottom: 146px;
 
             .menuIcon {
                 transition: transform 0.5s ease;
@@ -1432,7 +1546,7 @@
 
         .ongInfos {
             width: 100%;
-            height: 25%;
+            height: 30%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1623,6 +1737,7 @@
                     border-radius: 10px;
                     display: flex;
                     align-items: center;
+                    justify-content: space-between;
                     gap: 18px;
 
                     .imgPerfil {
@@ -1636,7 +1751,7 @@
                     }
 
                     .textos {
-                        width: 60%;
+                        width: 85%;
 
                         h1 {
                             font-size: 18px;
@@ -1646,9 +1761,10 @@
                         p {
                             font-size: 16px;
                             font-weight: 500;
-                            word-break: break-word;
                             max-height: 45px;
-                            overflow-y: auto;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
                         }
 
                         span {
@@ -1658,8 +1774,8 @@
                     }
 
                     .contact {
+                        width: 8%;
                         position: relative;
-                        width: 100%;
                         min-height: 100px;
                     }
 
@@ -1861,6 +1977,16 @@
         .secondaryButton {
             margin-top: 15px;
         }
+    }
+
+    .toastContainer {
+        width: 85% !important;
+        height: 6rem !important;
+        position: absolute !important;
+        z-index: 2000 !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding: 0 !important;
     }
 }
 
@@ -2097,7 +2223,7 @@
 
     .senhaAtual {
         width: 100%;
-        height: 20%;
+        height: 23%;
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -2127,10 +2253,21 @@
 
     .buttonsAct {
         width: 100%;
-        height: 16%;
+        height: 20%;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
+    }
+
+    /*VERIFIFCAR E APAGAR PROVAVELMENTE MAS PODE SER UTIL PRO TOAST GREEN*/
+    .toastContainer {
+        width: 75% !important;
+        height: 6rem !important;
+        position: absolute !important;
+        z-index: 2000 !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding: 0 !important;
     }
 }
 
@@ -2145,10 +2282,10 @@
 
 .likedContainer {
     cursor: pointer;
+    max-width: 150px;
 }
 
 .likedCard {
-    width: 150px;
     height: 175px;
     border-radius: 10px;
     border: solid 2px var(--secondaryColor);
@@ -2165,6 +2302,12 @@
 .likedName {
     display: flex;
     justify-content: center;
+
+    h3 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .middleSection {
@@ -2233,6 +2376,7 @@
     }
 }
 
+
 /* .imageWrapper {
     border-radius: 50%;
     overflow: hidden;
@@ -2253,79 +2397,60 @@
     height: 100%;
 }
 
-
-.petContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-
-    .petHeader {
-        background-color: var(--secondaryColor);
-        width: 100%;
-        height: 10%;
-        border-radius: 20px 20px 0 0;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-evenly;
-
-        .searchIcon {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            margin-left: -1115px;
-        }
-
-        input {
-            height: 6vh;
-            width: 85%;
-            padding-left: 40px;
-            border-radius: 20px;
-            border: none;
-        }
-
-        button {
-            height: 6vh;
-            font-size: 16px;
-            padding-left: 15px;
-            padding-right: 15px;
-            border-radius: 20px;
-            border: none;
-            background-color: #fff;
-        }
-
-        button:hover {
-            cursor: pointer;
-            background-color: var(--primaryColor);
-            transition: ease-in-out 0.3s;
-        }
-    }
-
-    .pets {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        /* até 5 por linha */
-        gap: 20px;
-        /* espaçamento entre os cards */
-        padding: 20px;
-        height: 70vh;
-        /* ocupa o restante da tela abaixo do cabeçalho */
-        overflow-y: auto;
-    }
-}
-
 .petCard {
-    background-color: var(--secondaryColor);
+    background-color: var(--tercearyColor);
     width: 200px;
     height: 240px;
-    border-radius: 10px;
+    border-radius: 10px !important;
 
     .petImage {
+        position: relative;
         width: 180px;
         height: 180px;
         border-radius: 10px;
         margin: 10px 10px 10px 10px;
+
+        .menu3p {
+            background-color: var(--tercearyColor);
+            bottom: 90%;
+            left: 90%;
+            position: absolute;
+            z-index: 5;
+            cursor: pointer;
+            border-radius: 0 0 0 10px;
+        }
+
+        .baloonPet {
+            position: absolute;
+            right: -15%;
+            top: 20%;
+            border: white solid 2px;
+            background: var(--tercearyColor);
+            border-radius: 10px;
+            width: 220px;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            color: #F4F4F4;
+            font-weight: 500;
+            font-size: 12px;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .baloonPet::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 80%;
+            border-width: 0 12px 18px 12px;
+            border-style: solid;
+            border-color: transparent transparent var(--tercearyColor) transparent;
+            width: 0;
+            height: 0;
+        }
     }
 
     .nameOptions {
@@ -2333,10 +2458,16 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 0 14px 10px 14px;
+        max-height: 17%;
 
         span {
+            color: white;
             font-size: 17px;
             font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 74%;
         }
 
         .options {
@@ -2345,7 +2476,7 @@
             justify-content: space-between;
 
             button {
-                background-color: var(--secondaryColor);
+                background-color: var(--tercearyColor);
                 border: none;
                 font-size: 20px;
             }
@@ -2354,8 +2485,25 @@
                 cursor: pointer;
             }
         }
-
     }
+}
+
+.petCard.adopted,
+.petCard.adopted .petImage,
+.petCard.adopted .menu3p,
+.petCard.adopted .nameOptions,
+.petCard.adopted .options button,
+.petCard.adopted .baloonPet {
+    background-color: var(--secondaryColor) !important;
+    border-radius: 10px !important;
+}
+
+.petCard.adopted .menu3p {
+    border-radius: 0 0 0 10px !important
+}
+
+.petCard.adopted .baloonPet::after {
+    border-color: transparent transparent var(--secondaryColor) transparent;
 }
 
 /* .modal-overlay {
@@ -2413,6 +2561,12 @@
             .petAge {
                 display: flex;
                 flex-direction: row;
+
+                .input-container {
+                    input {
+                        border-radius: 0px !important;
+                    }
+                }
             }
         }
 
@@ -2435,6 +2589,31 @@
                 justify-content: center;
             }
 
+            span {
+                font-size: 16px;
+            }
+
+        }
+
+        .desc {
+            display: flex;
+            flex-direction: column;
+
+            span {
+                font-size: 18px;
+            }
+
+            textarea {
+                min-height: 100px;
+                max-height: 100px;
+                max-width: 530px;
+                min-width: 530px;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: var(--backgroundColor);
+                border: #000 2px solid;
+                font-size: 16px;
+            }
         }
     }
 
@@ -2450,6 +2629,7 @@
         margin-top: 10px;
         /* margin-bottom: 10px; */
         gap: 7px;
+        margin-bottom: -24px;
 
         .title {
             font-size: 18px;
@@ -2482,6 +2662,12 @@
             margin-right: 15px;
             margin-left: 5px;
             font-weight: 600;
+        }
+    }
+
+    .imgAdd {
+        span {
+            font-size: 16px;
         }
     }
 

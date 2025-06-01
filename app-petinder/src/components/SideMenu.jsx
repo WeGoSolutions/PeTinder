@@ -68,11 +68,11 @@ function SideMenu(props) {
                             : undefined
                     }
                 >
-                    {activeTab === "chats" && selectedChat && (
+                    {activeTab === "chats" && (
                         <Chat
-                            ongName={selectedChat.ongNome}
-                            petName={selectedChat.petNome}
-                            ongLink={selectedChat.ongLink}
+                            ongName={selectedChat?.ongNome}
+                            petName={selectedChat?.petNome}
+                            ongLink={selectedChat?.ongLink}
                         />
                     )}
                     <div className="menuContent">

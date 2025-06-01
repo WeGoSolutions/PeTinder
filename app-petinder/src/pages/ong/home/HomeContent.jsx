@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 import { url } from "../../../provider/apiInstance";
 
 export default function HomeContent() {
-    const tamanho = 1;
     const [pets, setPets] = useState([]);
+    const [infosMensagens, setInfosMensagens] = useState([]);
 
     const mensagemInteressados = "Ainda não temos nenhum interessado, mas não se preocupe, em pouco tempo irão aparecer!"
     const mensagemCharts = (
@@ -33,39 +33,59 @@ export default function HomeContent() {
                 setPets(response.data);
             })
             .catch(error => {
-                if(error.response && error.response.status === 404) {
+                if (error.response && error.response.status === 404) {
                     setPets([]);
                 } else {
                     console.error('Erro ao buscar pets:', error);
                 }
             });
     }, []);
+    
+    useEffect(() => {
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
+
+        url.get(`/ongs/${ongId}/mensagens-pendentes`)
+            .then(response => {
+                const dados = response.data;
+                setInfosMensagens(Array.isArray(dados) ? dados : []);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar mensagens:', error);
+            });
+    }, []);
+
+    function formatarData(dataHora) {
+        if (!dataHora) return '';
+        const data = new Date(dataHora);
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        const horas = String(data.getHours()).padStart(2, '0');
+        const minutos = String(data.getMinutes()).padStart(2, '0');
+        return `${dia}/${mes}/${ano} - ${horas}:${minutos}`;
+    }
 
     return (
         <div className="containerFull">
             <h1>Interessados</h1>
 
             <div className="englobe">
-                {tamanho === 0 ? (
+                {infosMensagens.length === 0 ? (
                     <SemMensagensdeInteressados mensagem={mensagemInteressados} icon="normal" />
                 ) : (
                     <>
-                        <Mensagens
-                            nome="Cauan Araruna"
-                            mensagem="Estou interessado em adotar o Kenny!"
-                            data="19/04/2025 - 13:14"
-                            telefone="(11) 98804-1111"
-                            email="cauan.araruna@sptech.school"
-                            imgSrc="/cauan.svg"
-                        />
-                        <Mensagens
-                            nome="Gisele Mendes"
-                            mensagem="Estou interessada em adotar a Dolores!"
-                            data="19/04/2025 - 13:15"
-                            telefone="(11) 93204-1234"
-                            email="gisele.teste@sptech.school"
-                            imgSrc="/gisele.svg"
-                        />
+                        {infosMensagens.slice(0, 2).map((msg, idx) => (
+                            <Mensagens
+                                key={idx}
+                                nome={msg.nomeUser}
+                                mensagem={`Estou interessado(a) em adotar o(a) ${msg.nomePet}!`}
+                                data={formatarData(msg.dataHora)}
+                                telefone={msg.telefoneUser}
+                                email={msg.emailUser}
+                                imgSrc={msg.imageUrl || "/profile.svg"}
+                            />
+                        ))}
                     </>
                 )}
             </div>

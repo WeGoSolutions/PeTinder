@@ -3,20 +3,20 @@ import "../components.css";
 import { IoIosMenu } from "react-icons/io";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
-import { url } from "../../provider/apiInstance";
 import SideButtonsConfig from "./SideButtonsConfig";
+
+const sessionName = sessionStorage.getItem("userName");
+const ongNome = sessionName || "Undefined";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
-
-    // const response = url.get(`/users/${email}/validar-email`);
    
     return (
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
 
             <div className="ongInfos">
                 <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" />
-                <span>AUmigos do bem</span>
+                <span>{ongNome}</span>
             </div>
 
             {/* <div className="line"></div> */}
@@ -29,7 +29,6 @@ export default function SidePanel() {
                 <SideButtons nameButton="Pets" icon="Pets" path="/ong/pets" />
 
                 <div className="configButton">
-                    {/* <SideButtons nameButton="Configurações" icon="Config" path="/ong/configuracao" /> */}
                     <SideButtonsConfig nameButton="Configurações" icon="Config" path="/ong/configuracao" sidePanelOpen={open} />
                 </div>
             </div>

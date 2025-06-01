@@ -35,9 +35,14 @@ function UserImage({ src, alt = "Foto do usuário", size = 180, hasEdit }) {
         if (!selectedFile) return;
         setIsSaving(true);
         const userId = sessionStorage.getItem("userId");
+        const ongId = sessionStorage.getItem("ongId");
         try {
             const [base64] = await convertImagesToBase64([selectedFile]);
-            await url.post(`/users/${userId}/imagem`, { imagemUsuario: base64 });
+            if (ongId) {
+                await url.put(`/ongs/${ongId}/imagem`, { imagemOng: base64 });
+            } else if (userId) {
+                await url.put(`/users/${userId}/imagem`, { imagemUsuario: base64 });
+            }
             window.location.reload();
         } catch (error) {
             alert("Erro ao salvar imagem.");
