@@ -188,6 +188,31 @@ export default function PetsContent() {
 
     const openAddModal = () => {
         setModo("Adicionar");
+        setFormStep1({
+            nome: "",
+            idade: "",
+            idadeTipo: "anos",
+            porte: "",
+            descricao: "",
+            sexo: "",
+            peso: "",
+            altura: "",
+        });
+        setFormStep2({
+            tags: [],
+            isCastrado: false,
+            isVermifugo: false,
+            isVacinado: false,
+        });
+        setImages([]);
+        const obj = {};
+        allTags.flat().forEach(tag => { obj[tag] = true; });
+        setDisabledTags(obj);
+        setVacStatus({
+            castrado: false,
+            vermifugado: false,
+            vacinado: false
+        });
         setEditStep(1);
     };
 
