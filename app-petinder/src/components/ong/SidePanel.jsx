@@ -4,13 +4,18 @@ import { IoIosMenu } from "react-icons/io";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
 import SideButtonsConfig from "./SideButtonsConfig";
-
-const sessionName = sessionStorage.getItem("userName");
-const ongNome = sessionName || "Undefined";
+import { useEffect} from "react";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
-   
+
+    const [ongNome, setOngNome] = useState("Undefined");
+
+    useEffect(() => {
+        const sessionName = sessionStorage.getItem("userName");
+        setOngNome(sessionName || "Undefined");
+    }, []);
+
     return (
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
 
@@ -19,12 +24,11 @@ export default function SidePanel() {
                 <span>{ongNome}</span>
             </div>
 
-            {/* <div className="line"></div> */}
             {!open && <div className="line"></div>}
 
             <div className="sideButtons">
                 <SideButtons nameButton="Home" icon="Home" path="/ong/home" />
-                <SideButtons nameButton="Interessados" icon="Interessados" path="/ong/interessados"  />
+                <SideButtons nameButton="Interessados" icon="Interessados" path="/ong/interessados" />
                 <SideButtons nameButton="Dashboard" icon="Dash" path="/ong/dashboard" />
                 <SideButtons nameButton="Pets" icon="Pets" path="/ong/pets" />
 

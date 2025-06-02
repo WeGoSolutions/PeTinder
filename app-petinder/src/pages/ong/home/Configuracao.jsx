@@ -40,8 +40,21 @@ export default function Configuracao() {
         numero: "",
         cidade: "",
         uf: "",
-        // imagemUrl: ""
+        imagemUrl: ""
     });
+
+    useEffect(() => {
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
+        url.get(`/ongs/${ongId}/imagem/arquivo`)
+            .then(res => {
+                const data = res.data;
+
+                setFormValues({
+                    imagemUrl: data.imagemUrl
+                });
+            })
+    }, [])
 
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
@@ -50,7 +63,7 @@ export default function Configuracao() {
             .then(res => {
                 const data = res.data;
                 const endereco = data.endereco || {};
-                // Formata o CPF ou CNPJ ao setar os valores iniciais
+
                 let cepFormatado = "";
                 let cpfFormatado = "";
                 let cnpjFormatado = "";
@@ -98,7 +111,7 @@ export default function Configuracao() {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        
+
         const payload = {
             nome: formValues.nomeOng,
             email: formValues.email,
@@ -131,19 +144,18 @@ export default function Configuracao() {
     return (
         <div className="configContainer">
             <div className="toastContainer">
-                    {toast.mensagem && (
-                        <Toast
-                            mensagem={toast.mensagem}
-                            tipo={toast.tipo}
-                            onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
-                        />
-                    )}
-                </div>
-            {/* <h2>Atualize suas informações de conta</h2> */}
+                {toast.mensagem && (
+                    <Toast
+                        mensagem={toast.mensagem}
+                        tipo={toast.tipo}
+                        onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                    />
+                )}
+            </div>
+
             <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">
-                <UserImage size={160} src="/aumigosLogo.svg" hasEdit={true} />
-                {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}
+                <UserImage size={160} src={formValues.imagemUrl} hasEdit={true} />
             </div>
             <div className="containerForm">
                 <div className="configTextInfo1">
@@ -169,7 +181,6 @@ export default function Configuracao() {
                                     id="cpfcnpj"
                                     name="cpfcpnj"
                                     label={tipoDocumento}
-                                    // value={cpfCnpj}
                                     value={tipoDocumento === "CPF" ? formValues.cpf : formValues.cnpj}
                                     onChange={handleCpfCnpjChange}
                                 />
@@ -185,6 +196,7 @@ export default function Configuracao() {
                                         setTipoDocumento(e.target.value);
                                         setCpfCnpj("");
                                     }}
+                                    disabled={false}
                                 />
                             </div>
                         </div>
@@ -195,7 +207,7 @@ export default function Configuracao() {
                         label="Link de Contato"
                         value={formValues.link}
                         onChange={e => setFormValues({ ...formValues, link: e.target.value })}
-
+                        disabled={false}
                     />
                 </div>
 
@@ -207,7 +219,7 @@ export default function Configuracao() {
                         label="CEP"
                         value={formValues.cep}
                         onChange={e => setFormValues({ ...formValues, cep: e.target.value })}
-
+                        disabled={false}
                     />
                     <FormInput
                         id="rua"
@@ -215,7 +227,7 @@ export default function Configuracao() {
                         label="Rua"
                         value={formValues.rua}
                         onChange={e => setFormValues({ ...formValues, rua: e.target.value })}
-
+                        disabled={false}
                     />
                     <div className="inputDif">
                         <div className="bigInput">
@@ -225,7 +237,7 @@ export default function Configuracao() {
                                 label="Complemento"
                                 value={formValues.complemento}
                                 onChange={e => setFormValues({ ...formValues, complemento: e.target.value })}
-
+                                disabled={false}
                             />
                             <FormInput
                                 id="cidade"
@@ -233,7 +245,7 @@ export default function Configuracao() {
                                 label="Cidade"
                                 value={formValues.cidade}
                                 onChange={e => setFormValues({ ...formValues, cidade: e.target.value })}
-
+                                disabled={false}
                             />
                         </div>
                         <div className="litInput">
@@ -243,6 +255,7 @@ export default function Configuracao() {
                                 label="Número"
                                 value={formValues.numero}
                                 onChange={e => setFormValues({ ...formValues, numero: e.target.value })}
+                                disabled={false}
 
                             />
                             <DropDown
@@ -252,7 +265,7 @@ export default function Configuracao() {
                                 options={ufs}
                                 value={formValues.uf}
                                 onChange={e => setFormValues({ ...formValues, uf: e.target.value })}
-
+                                disabled={false}
                             />
                         </div>
                     </div>
@@ -266,21 +279,3 @@ export default function Configuracao() {
         </div>
     )
 }
-
-// { POST DA ONG
-//   "cnpj": "12345678000190",
-//   "cpf": "12345678909",
-//   "nome": "Joao da Silva",
-//   "razaoSocial": "Teste",
-//   "senha": "SenhaForte123!",
-//   "email": "joao.siielvaa@example.com",
-//   "link": "https://www.jscomercio.com.br",
-//   "endereco": {
-//     "cep": "02530005",
-//     "rua": "dos bobos",
-// 		"numero": "12",
-// 		"cidade": "Jalpao do sul",
-// 		"uf": "SP",
-// 		"complemento": "casa"
-//   }
-// }

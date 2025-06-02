@@ -3,7 +3,6 @@ import axios from "axios";
 import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from './config.module.css';
-// import "../../components/components.css";
 import SecondaryButton from "../../components/SecondaryButton";
 import NavBar from "../../components/NavBar";
 import DropDown from "../../components/DropDown";
@@ -34,25 +33,53 @@ function Config() {
         imagemUrl: ""
     });
 
+    // Estado para controlar se os campos já foram preenchidos (não podem ser editados)
+    const isFieldDisabled = (field) => {
+        // Só desabilita se o campo já tinha valor ao carregar a tela OU se acabou de salvar
+        return (initialValues[field] && initialValues[field] !== "") || justSaved;
+    };
+
+    // Salva os valores iniciais ao carregar os dados do usuário
+    const [initialValues, setInitialValues] = useState({});
+
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
         url.get(`/users/${userId}`)
             .then(res => {
                 const data = res.data;
-                setFormValues({
+
+                const maskCPF = (value) => {
+                    return (value || "")
+                        .replace(/\D/g, "")
+                        .slice(0, 11)
+                        .replace(/(\d{3})(\d)/, "$1.$2")
+                        .replace(/(\d{3})(\d)/, "$1.$2")
+                        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+                };
+
+                const maskCEP = (value) => {
+                    return (value || "")
+                        .replace(/\D/g, "")
+                        .slice(0, 8)
+                        .replace(/(\d{5})(\d{1,3})$/, "$1-$2");
+                };
+
+                const loadedValues = {
                     nome: data.nome || "",
                     email: data.email || "",
-                    cpf: data.cpf || "",
+                    cpf: maskCPF(data.cpf),
                     dataNasc: data.dataNasc || "",
-                    cep: data.cep || "",
+                    cep: maskCEP(data.cep) || "",
                     rua: data.rua || "",
                     complemento: data.complemento || "",
                     numero: data.numero || "",
                     cidade: data.cidade || "",
                     uf: data.uf || "",
                     imagemUrl: data.imagemUrl || ""
-                });
+                };
+                setFormValues(loadedValues);
+                setInitialValues(loadedValues); // Salva os valores iniciais
             })
             .catch(err => {
                 console.error("Erro ao buscar dados do usuário:", err);
@@ -65,7 +92,6 @@ function Config() {
         window.history.back();
     };
 
-    // Função para retornar a classe do botão de menu lateral
     const getOptionClass = (isActive) => {
         return `${styles.options} ${isActive ? styles.Botaoativo : ""}`;
     };
@@ -191,9 +217,7 @@ function Config() {
             if (error.response && error.response.status === 409) {
                 newErrors.senhaAtual = "Senha atual incorreta.";
                 setErrorStyle("senhaAtual");
-
                 // setToast({ mensagem: 'Senha atual incorreta', tipo: 'erro' });
-
             }
 
             setErrors(prev => ({
@@ -203,17 +227,21 @@ function Config() {
         }
     };
 
-    //NAO ESTA FUNCIONANDO, TEM DADO 409 - CONFLITO NESSA ETAPA DE ATUALIZAÇÃO
+    const [justSaved, setJustSaved] = useState(false);
+
     const handleSave = async () => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
 
+        const cpfSemMascara = formValues.cpf.replace(/\D/g, "");
+        const cepSemMascara = formValues.cep.replace(/\D/g, "");
+
         const payload = {
             nome: formValues.nome,
             email: formValues.email,
-            cpf: formValues.cpf,
+            cpf: cpfSemMascara,
             dataNasc: formValues.dataNasc,
-            cep: formValues.cep,
+            cep: cepSemMascara,
             rua: formValues.rua,
             numero: formValues.numero,
             cidade: formValues.cidade,
@@ -225,22 +253,88 @@ function Config() {
             await url.patch(`/users/${userId}`, payload);
             sessionStorage.setItem("userName", formValues.nome);
             setToast({ mensagem: 'Dados atualizados com sucesso!', tipo: 'sucesso' });
+            //tirar talvez, se não quiser o reload automático
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
+            setJustSaved(true); // Bloqueia edição após salvar
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
             setToast({ mensagem: 'Erro ao atualizar dados.', tipo: 'erro' });
         }
     };
 
-    // Função para atualizar os campos do formulário de informações pessoais e endereço
-    const handleFormChange = (e) => {
+    const handleFormChange = async (e) => {
         const { name, value } = e.target;
+        let newValue = value;
+       
+        if (name === "cep") {
+            newValue = value;
+            setFormValues((prev) => ({
+                ...prev,
+                cep: newValue
+            }));
+           
+            if (newValue.replace(/\D/g, "").length === 8) {
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${newValue.replace(/\D/g, "")}/json/`);
+                    const data = await response.json();
+                    if (!data.erro) {
+                        setFormValues((prev) => ({
+                            ...prev,
+                            rua: data.logradouro || prev.rua,
+                            cidade: data.localidade || prev.cidade,
+                            uf: data.uf || prev.uf,
+                        }));
+                    }
+                } catch (error) {
+                    console.error("Erro ao buscar o CEP:", error);
+                }
+            }
+            return;
+        }
         setFormValues((prev) => ({
             ...prev,
-            [name]: value
+            [name]: newValue
         }));
+    };
+
+ 
+    const validateEmail = () => {
+        const email = formValues.email;
+        const contemAcento = /[^\u0000-\u007F]/.test(email);
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if (!email.trim()) {
+            setToast({ mensagem: "O email é obrigatório.", tipo: "erro" });
+            return false;
+        } else if (email.includes(" ")) {
+            setToast({ mensagem: "O email não pode conter espaços.", tipo: "erro" });
+            return false;
+        } else if (contemAcento) {
+            setToast({ mensagem: "O email não pode conter acentos.", tipo: "erro" });
+            return false;
+        } else if (!emailValido) {
+            setToast({ mensagem: "Formato de email inválido.", tipo: "erro" });
+            return false;
+        }
+        return true;
+    };
+
+    const validateNome = () => {
+        const nome = formValues.nome.trim();
+
+        if (!nome) {
+            setToast({ mensagem: "O nome é obrigatório.", tipo: "erro" });
+            return false;
+        } else if (nome.length < 3) {
+            setToast({ mensagem: "O nome deve ter pelo menos 3 caracteres.", tipo: "erro" });
+            return false;
+        } else if (/[^a-zA-ZÀ-ÿ\s]/.test(nome)) {
+            setToast({ mensagem: "O nome não deve conter símbolos ou caracteres especiais.", tipo: "erro" });
+            return false;
+        }
+        return true;
     };
 
     return (
@@ -354,22 +448,47 @@ function Config() {
                                     name="nome"
                                     label="Nome Completo"
                                     value={formValues.nome}
-                                    disabled={true}
+                                    // disabled={isFieldDisabled("nome") || justSaved}
+                                    disabled={false}
+                                    onChange={(e) =>
+                                        setFormValues(prev => ({
+                                            ...prev,
+                                            [e.target.name]: e.target.value,
+                                        }))
+                                    }
                                 />
                                 <FormInput
                                     id="email"
                                     name="email"
                                     label="Email"
                                     value={formValues.email}
-                                    disabled={true}
+                                    disabled={false}
+                                    onChange={(e) => {
+                                        setFormValues(prev => ({
+                                            ...prev,
+                                            [e.target.name]: e.target.value,
+                                        }));
+                                        // Limpa erro visual ao digitar
+                                        const inputElement = document.getElementById("email");
+                                        if (inputElement) {
+                                            inputElement.style.border = "2px solid black";
+                                            inputElement.closest(".input-container")?.classList.remove("error");
+                                        }
+                                    }}
+                                    error={undefined}
                                 />
                                 <FormInput
                                     id="cpf"
                                     name="cpf"
                                     label="CPF"
                                     value={formValues.cpf}
-                                    disabled={true}
+                                    onChange={(e) => setFormValues(prev => ({
+                                        ...prev,
+                                        cpf: e.target.value // já vem mascarado do FormInput
+                                    }))}
+                                    disabled={isFieldDisabled("cpf")}
                                 />
+
                                 <div className={styles.registerFormRow}>
                                     <FormInput
                                         id="dataNasc"
@@ -378,7 +497,7 @@ function Config() {
                                         type="date"
                                         required
                                         value={formValues.dataNasc}
-                                        disabled={true}
+                                        disabled={isFieldDisabled("dataNasc") || justSaved}
                                     />
                                 </div>
                             </div>
@@ -391,6 +510,7 @@ function Config() {
                                     label="CEP"
                                     value={formValues.cep}
                                     onChange={handleFormChange}
+                                    disabled={false}
                                 />
                                 <FormInput
                                     id="rua"
@@ -398,6 +518,7 @@ function Config() {
                                     label="Rua"
                                     value={formValues.rua}
                                     onChange={handleFormChange}
+                                    disabled={false}
                                 />
                                 <div className={styles.inputDif}>
                                     <div className={styles.bigInput}>
@@ -407,6 +528,7 @@ function Config() {
                                             label="Complemento"
                                             value={formValues.complemento}
                                             onChange={handleFormChange}
+                                            disabled={false}
                                         />
                                         <FormInput
                                             id="cidade"
@@ -414,6 +536,7 @@ function Config() {
                                             label="Cidade"
                                             value={formValues.cidade}
                                             onChange={handleFormChange}
+                                            disabled={false}
                                         />
                                     </div>
                                     <div className={styles.litInput}>
@@ -423,6 +546,7 @@ function Config() {
                                             label="Número"
                                             value={formValues.numero}
                                             onChange={handleFormChange}
+                                            disabled={false}
                                         />
                                         <DropDown
                                             id="uf"
@@ -431,13 +555,16 @@ function Config() {
                                             options={ufs}
                                             value={formValues.uf}
                                             onChange={handleFormChange}
+                                            disabled={false}
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className={styles.buttons}>
-                            <div onClick={handleSave}>
+                            <div onClick={() => {
+                                if (validateNome() && validateEmail()) handleSave();
+                            }}>
                                 <PrimaryButton text="Salvar" />
                             </div>
                         </div>

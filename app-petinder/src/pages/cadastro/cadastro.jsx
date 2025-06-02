@@ -419,10 +419,14 @@ function Cadastro() {
                         type="button"
                         className={`primary-button ${isLoading || isButtonDisabled ? styles.disabledButton : ''}`}
                         disabled={isLoading || isButtonDisabled}
-                        onClick={createAccount}
+                        onClick={async () => {
+                            if (isLoading) return;
+                            setIsButtonDisabled(true);
+                            await createAccount();
+                        }}
                     >
                         {isLoading ? "Criando conta..." : (isButtonDisabled ? `Aguarde: ${counter}s` : "Estou ciente")}
-                        </button>
+                    </button>
                 </GenericModal>
             </div>
         </>
