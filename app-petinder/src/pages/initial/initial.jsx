@@ -151,11 +151,7 @@ function Initial() {
         const { name, value } = e.target;
 
         let formattedValue = value;
-        if (name === "cep") {
-            formattedValue = formatarCEP(value);
-        } else if (name === "cpf") {
-            formattedValue = formatarCPF(value);
-        }
+
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: formattedValue,
