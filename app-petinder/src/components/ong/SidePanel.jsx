@@ -5,6 +5,7 @@ import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
 import SideButtonsConfig from "./SideButtonsConfig";
 import { useEffect} from "react";
+import UserImage from "../UserImage";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
@@ -20,7 +21,8 @@ export default function SidePanel() {
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
 
             <div className="ongInfos">
-                <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" />
+                <UserImage size={100} hasEdit={false} />
+                {/* <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" /> */}
                 <span>{ongNome}</span>
             </div>
 

@@ -1553,6 +1553,20 @@
             justify-content: space-between;
             gap: 10px;
 
+            .userImageContainer {
+                transition: scale .3s ease-in-out;
+
+                /* .userImageWrapper{
+
+                    
+                    img {
+                        width: 50px;
+                        transition: width 0.3s ease-in-out;
+                    }
+                } */
+            }
+
+
             span {
                 font-size: 16px;
                 font-weight: 700;
@@ -1643,9 +1657,9 @@
         .ongInfos {
             height: 13%;
 
-            img {
-                width: 50px;
-                transition: width 0.3s ease-in-out;
+            .userImageContainer {
+                scale: 0.5;
+                transition: scale .3s ease-in-out;
             }
 
             span {
