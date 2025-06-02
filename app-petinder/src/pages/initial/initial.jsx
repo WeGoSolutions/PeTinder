@@ -287,8 +287,14 @@ function Initial() {
             return;
         }
 
+        const formValuesToSend = {
+        ...formValues,
+        cpf: formValues.cpf.replace(/[^\d]/g, ""),
+        cep: formValues.cep.replace(/[^\d]/g, "")
+    };
+
         try {
-            const response = await url.put(`/users/${userId}/optional`, formValues, {
+            const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
