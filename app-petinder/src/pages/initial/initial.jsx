@@ -151,11 +151,7 @@ function Initial() {
         const { name, value } = e.target;
 
         let formattedValue = value;
-        if (name === "cep") {
-            formattedValue = formatarCEP(value);
-        } else if (name === "cpf") {
-            formattedValue = formatarCPF(value);
-        }
+
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: formattedValue,
@@ -291,8 +287,14 @@ function Initial() {
             return;
         }
 
+        const formValuesToSend = {
+        ...formValues,
+        cpf: formValues.cpf.replace(/[^\d]/g, ""),
+        cep: formValues.cep.replace(/[^\d]/g, "")
+    };
+
         try {
-            const response = await url.put(`/users/${userId}/optional`, formValues, {
+            const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
