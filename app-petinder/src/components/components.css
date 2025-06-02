@@ -1553,6 +1553,20 @@
             justify-content: space-between;
             gap: 10px;
 
+            .userImageContainer {
+                transition: scale .3s ease-in-out;
+
+                /* .userImageWrapper{
+
+                    
+                    img {
+                        width: 50px;
+                        transition: width 0.3s ease-in-out;
+                    }
+                } */
+            }
+
+
             span {
                 font-size: 16px;
                 font-weight: 700;
@@ -1643,9 +1657,9 @@
         .ongInfos {
             height: 13%;
 
-            img {
-                width: 50px;
-                transition: width 0.3s ease-in-out;
+            .userImageContainer {
+                scale: 0.5;
+                transition: scale .3s ease-in-out;
             }
 
             span {
@@ -1901,7 +1915,7 @@
         align-items: center;
         padding-left: 5%;
 
-        img {
+        /* img {
             background-color: #80465D;
             border-radius: 50%;
             height: 160px;
@@ -1909,7 +1923,7 @@
             border: solid 3.5px var(--secondaryColor);
             object-fit: cover;
             object-position: center;
-        }
+        } */
     }
 
     .registerFormRow {
@@ -1981,7 +1995,7 @@
 
     .toastContainer {
         width: 85% !important;
-        height: 6rem !important;
+        height: 4rem !important;
         position: absolute !important;
         z-index: 2000 !important;
         display: flex !important;
@@ -2837,4 +2851,8 @@
     button {
         margin: 0px !important;
     }
+}
+
+.cancelButtonDelete{
+    margin-top: 15px;
 }

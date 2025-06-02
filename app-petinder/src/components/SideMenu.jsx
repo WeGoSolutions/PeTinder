@@ -33,6 +33,7 @@ function SideMenu(props) {
             .catch(() => {
                 setPendingChats([]);
                 setSelectedChat({
+                    petId: "",
                     ongNome: "",
                     petNome: "",
                     ongLink: ""
@@ -70,6 +71,7 @@ function SideMenu(props) {
                 >
                     {activeTab === "chats" && (
                         <Chat
+                            petId={selectedChat?.petId}
                             ongName={selectedChat?.ongNome}
                             petName={selectedChat?.petNome}
                             ongLink={selectedChat?.ongLink}

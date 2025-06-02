@@ -4,27 +4,33 @@ import { IoIosMenu } from "react-icons/io";
 import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import SideButtons from "./SideButtons";
 import SideButtonsConfig from "./SideButtonsConfig";
-
-const sessionName = sessionStorage.getItem("userName");
-const ongNome = sessionName || "Undefined";
+import { useEffect} from "react";
+import UserImage from "../UserImage";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
-   
+
+    const [ongNome, setOngNome] = useState("Undefined");
+
+    useEffect(() => {
+        const sessionName = sessionStorage.getItem("userName");
+        setOngNome(sessionName || "Undefined");
+    }, []);
+
     return (
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
 
             <div className="ongInfos">
-                <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" />
+                <UserImage size={100} hasEdit={false} />
+                {/* <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" /> */}
                 <span>{ongNome}</span>
             </div>
 
-            {/* <div className="line"></div> */}
             {!open && <div className="line"></div>}
 
             <div className="sideButtons">
                 <SideButtons nameButton="Home" icon="Home" path="/ong/home" />
-                <SideButtons nameButton="Interessados" icon="Interessados" path="/ong/interessados"  />
+                <SideButtons nameButton="Interessados" icon="Interessados" path="/ong/interessados" />
                 <SideButtons nameButton="Dashboard" icon="Dash" path="/ong/dashboard" />
                 <SideButtons nameButton="Pets" icon="Pets" path="/ong/pets" />
 

@@ -18,13 +18,12 @@ export default function Configuracao() {
 
     const handleCpfCnpjChange = (e) => {
         let value = e.target.value.replace(/\D/g, "");
-
         if (tipoDocumento === "CPF") {
             if (value.length > 11) value = value.slice(0, 11);
-            setCpfCnpj(formatarCPF(value));
+            setFormValues((prev) => ({ ...prev, cpf: formatarCPF(value) }));
         } else {
             if (value.length > 14) value = value.slice(0, 14);
-            setCpfCnpj(formatarCNPJ(value));
+            setFormValues((prev) => ({ ...prev, cnpj: formatarCNPJ(value) }));
         }
     };
 
@@ -40,8 +39,24 @@ export default function Configuracao() {
         numero: "",
         cidade: "",
         uf: "",
-        // imagemUrl: ""
+        imagemUrl: ""
     });
+
+    const [initialCpf, setInitialCpf] = useState("");
+    const [initialCnpj, setInitialCnpj] = useState("");
+
+    useEffect(() => {
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
+        url.get(`/ongs/${ongId}/imagem/arquivo`)
+            .then(res => {
+                const data = res.data;
+
+                setFormValues({
+                    imagemUrl: data.imagemUrl
+                });
+            })
+    }, [])
 
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
@@ -50,7 +65,7 @@ export default function Configuracao() {
             .then(res => {
                 const data = res.data;
                 const endereco = data.endereco || {};
-                // Formata o CPF ou CNPJ ao setar os valores iniciais
+
                 let cepFormatado = "";
                 let cpfFormatado = "";
                 let cnpjFormatado = "";
@@ -86,24 +101,63 @@ export default function Configuracao() {
                     cidade: endereco.cidade || "",
                     uf: endereco.uf || "",
                     complemento: endereco.complemento || "",
-                    // imagemUrl: data.imagemUrl || "",
                 });
+                setInitialCpf(cpfFormatado);
+                setInitialCnpj(cnpjFormatado);
             })
             .catch(err => {
                 console.error("Erro ao buscar dados do usuário:", err);
             });
     }, []);
 
+    function validateNome() {
+        const nome = formValues.nomeOng.trim();
+        if (!nome) {
+            setToast({ mensagem: "O nome é obrigatório.", tipo: "erro" });
+            return false;
+        } else if (nome.length < 3) {
+            setToast({ mensagem: "O nome deve ter pelo menos 3 caracteres.", tipo: "erro" });
+            return false;
+        } else if (/[^a-zA-ZÀ-ÿ\s]/.test(nome)) {
+            setToast({ mensagem: "O nome não deve conter símbolos ou caracteres especiais.", tipo: "erro" });
+            return false;
+        }
+        return true;
+    }
+
+    function validateEmail() {
+        const email = formValues.email;
+        const contemAcento = /[^\u0000-\u007F]/.test(email);
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!email.trim()) {
+            setToast({ mensagem: "O email é obrigatório.", tipo: "erro" });
+            return false;
+        } else if (email.includes(" ")) {
+            setToast({ mensagem: "O email não pode conter espaços.", tipo: "erro" });
+            return false;
+        } else if (contemAcento) {
+            setToast({ mensagem: "O email não pode conter acentos.", tipo: "erro" });
+            return false;
+        } else if (!emailValido) {
+            setToast({ mensagem: "Formato de email inválido.", tipo: "erro" });
+            return false;
+        }
+        return true;
+    }
+
     const handleSave = async () => {
+        if (!validateNome() || !validateEmail()) return;
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        
+        const cpfValue = formValues.cpf ? formValues.cpf.replace(/\D/g, "") : undefined;
+        const cnpjValue = formValues.cnpj ? formValues.cnpj.replace(/\D/g, "") : undefined;
+
         const payload = {
             nome: formValues.nomeOng,
             email: formValues.email,
-            cnpj: tipoDocumento === "CNPJ" ? cpfCnpj.replace(/\D/g, "") : formValues.cnpj.replace(/\D/g, ""),
-            cpf: tipoDocumento === "CPF" ? cpfCnpj.replace(/\D/g, "") : formValues.cpf.replace(/\D/g, ""),
+            cnpj: cnpjValue,
+            cpf: cpfValue,
             link: formValues.link,
             endereco: {
                 cep: formValues.cep.replace(/\D/g, ""),
@@ -128,22 +182,64 @@ export default function Configuracao() {
         }
     };
 
+    function maskCEP(value) {
+        return value
+            .replace(/\D/g, "")
+            .replace(/(\d{5})(\d)/, "$1-$2")
+            .slice(0, 9);
+    }
+
+    const handleCepChange = async (e) => {
+        let value = e.target.value.replace(/\D/g, "");
+        if (value.length > 8) value = value.slice(0, 8);
+        const masked = maskCEP(value);
+        setFormValues((prev) => ({ ...prev, cep: masked }));
+
+        if (value.length === 8) {
+            try {
+                const res = await axios.get(`https://viacep.com.br/ws/${value}/json/`);
+                if (res.data.erro) {
+                    setToast({ mensagem: "CEP não encontrado.", tipo: "erro" });
+                    setFormValues((prev) => ({
+                        ...prev,
+                        rua: "",
+                        cidade: "",
+                        uf: ""
+                    }));
+                } else {
+                    setFormValues((prev) => ({
+                        ...prev,
+                        rua: res.data.logradouro || "",
+                        cidade: res.data.localidade || "",
+                        uf: res.data.uf || ""
+                    }));
+                }
+            } catch (error) {
+                setToast({ mensagem: "Erro ao buscar CEP.", tipo: "erro" });
+            }
+        }
+    };
+
+    const docValueFromBackend = tipoDocumento === "CPF" ? formValues.cpf : formValues.cnpj;
+    const isDocEditable = tipoDocumento === "CPF"
+        ? !(initialCpf && initialCpf.length > 0)
+        : !(initialCnpj && initialCnpj.length > 0);
+
     return (
         <div className="configContainer">
             <div className="toastContainer">
-                    {toast.mensagem && (
-                        <Toast
-                            mensagem={toast.mensagem}
-                            tipo={toast.tipo}
-                            onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
-                        />
-                    )}
-                </div>
-            {/* <h2>Atualize suas informações de conta</h2> */}
+                {toast.mensagem && (
+                    <Toast
+                        mensagem={toast.mensagem}
+                        tipo={toast.tipo}
+                        onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                    />
+                )}
+            </div>
+
             <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">
-                <UserImage size={160} src="/aumigosLogo.svg" hasEdit={true} />
-                {/* <img src="/cauan.svg" alt="Foto de perfil do usuário" /> */}
+                <UserImage size={160} src={formValues.imagemUrl} hasEdit={true} />
             </div>
             <div className="containerForm">
                 <div className="configTextInfo1">
@@ -166,12 +262,12 @@ export default function Configuracao() {
                         <div className="inputDif">
                             <div className="bigInput">
                                 <FormInput
-                                    id="cpfcnpj"
-                                    name="cpfcpnj"
+                                    id={tipoDocumento}
+                                    name={tipoDocumento}
                                     label={tipoDocumento}
-                                    // value={cpfCnpj}
                                     value={tipoDocumento === "CPF" ? formValues.cpf : formValues.cnpj}
                                     onChange={handleCpfCnpjChange}
+                                    disabled={!isDocEditable}
                                 />
                             </div>
                             <div className="litInput">
@@ -185,6 +281,7 @@ export default function Configuracao() {
                                         setTipoDocumento(e.target.value);
                                         setCpfCnpj("");
                                     }}
+                                    disabled={!isDocEditable}
                                 />
                             </div>
                         </div>
@@ -195,7 +292,7 @@ export default function Configuracao() {
                         label="Link de Contato"
                         value={formValues.link}
                         onChange={e => setFormValues({ ...formValues, link: e.target.value })}
-
+                        disabled={false}
                     />
                 </div>
 
@@ -206,8 +303,8 @@ export default function Configuracao() {
                         name="cep"
                         label="CEP"
                         value={formValues.cep}
-                        onChange={e => setFormValues({ ...formValues, cep: e.target.value })}
-
+                        onChange={handleCepChange}
+                        disabled={false}
                     />
                     <FormInput
                         id="rua"
@@ -215,7 +312,7 @@ export default function Configuracao() {
                         label="Rua"
                         value={formValues.rua}
                         onChange={e => setFormValues({ ...formValues, rua: e.target.value })}
-
+                        disabled={false}
                     />
                     <div className="inputDif">
                         <div className="bigInput">
@@ -225,7 +322,7 @@ export default function Configuracao() {
                                 label="Complemento"
                                 value={formValues.complemento}
                                 onChange={e => setFormValues({ ...formValues, complemento: e.target.value })}
-
+                                disabled={false}
                             />
                             <FormInput
                                 id="cidade"
@@ -233,7 +330,7 @@ export default function Configuracao() {
                                 label="Cidade"
                                 value={formValues.cidade}
                                 onChange={e => setFormValues({ ...formValues, cidade: e.target.value })}
-
+                                disabled={false}
                             />
                         </div>
                         <div className="litInput">
@@ -243,6 +340,7 @@ export default function Configuracao() {
                                 label="Número"
                                 value={formValues.numero}
                                 onChange={e => setFormValues({ ...formValues, numero: e.target.value })}
+                                disabled={false}
 
                             />
                             <DropDown
@@ -252,35 +350,33 @@ export default function Configuracao() {
                                 options={ufs}
                                 value={formValues.uf}
                                 onChange={e => setFormValues({ ...formValues, uf: e.target.value })}
-
+                                disabled={false}
                             />
                         </div>
                     </div>
                 </div>
             </div>
             <div className="buttonsAct" >
-                <div onClick={handleSave}>
+                <div
+                    onClick={async () => {
+                        await handleSave();
+ 
+                        const ongId = sessionStorage.getItem("ongId");
+                        if (!ongId) return;
+                        url.get(`/ongs/${ongId}`)
+                            .then(res => {
+                                const data = res.data;
+                                setFormValues(prev => ({
+                                    ...prev,
+                                    cpf: data.cpf ? formatarCPF(data.cpf.replace(/\D/g, "")) : "",
+                                    cnpj: data.cnpj ? formatarCNPJ(data.cnpj.replace(/\D/g, "")) : ""
+                                }));
+                            });
+                    }}
+                >
                     <PrimaryButton text="Salvar" />
                 </div>
             </div>
         </div>
     )
 }
-
-// { POST DA ONG
-//   "cnpj": "12345678000190",
-//   "cpf": "12345678909",
-//   "nome": "Joao da Silva",
-//   "razaoSocial": "Teste",
-//   "senha": "SenhaForte123!",
-//   "email": "joao.siielvaa@example.com",
-//   "link": "https://www.jscomercio.com.br",
-//   "endereco": {
-//     "cep": "02530005",
-//     "rua": "dos bobos",
-// 		"numero": "12",
-// 		"cidade": "Jalpao do sul",
-// 		"uf": "SP",
-// 		"complemento": "casa"
-//   }
-// }

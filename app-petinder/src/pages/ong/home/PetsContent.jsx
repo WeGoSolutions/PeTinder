@@ -19,9 +19,12 @@ export default function PetsContent() {
     const [editStep, setEditStep] = useState(0);
     const [modo, setModo] = useState("editar");
     const [pets, setPets] = useState([]);
-    const idade = ["anos", "meses"];
-    const porte = ["pequeno", "medio", "grande"];
+    const idade = ["Anos", "Meses"];
+    const porte = ["Pequeno", "Médio", "Grande"];
     const [images, setImages] = useState([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [petToDelete, setPetToDelete] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
     const [formStep1, setFormStep1] = useState({
         nome: "",
         idade: "",
@@ -46,6 +49,10 @@ export default function PetsContent() {
             [name]: type === "number" ? Number(value) : value
         }));
     };
+
+    const filteredPets = pets.filter(pet =>
+        pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     const handleNextStep = () => {
         setFormStep1({
@@ -143,14 +150,12 @@ export default function PetsContent() {
 
     const handleTagClick = (tagName) => {
         const selectedCount = Object.values(disabledTags).filter(v => !v).length;
-        // Se a tag já está selecionada, permite desmarcar normalmente
         if (!disabledTags[tagName]) {
             setDisabledTags(prev => ({
                 ...prev,
                 [tagName]: true
             }));
         } else if (selectedCount < 7) {
-            // Só permite selecionar se ainda não atingiu o limite
             setDisabledTags(prev => ({
                 ...prev,
                 [tagName]: false
@@ -159,7 +164,6 @@ export default function PetsContent() {
     };
 
     const [disabledTags, setDisabledTags] = useState(() => {
-        // Inicializa todas como true (desabilitadas)
         const obj = {};
         allTags.flat().forEach(tag => { obj[tag] = true; });
         return obj;
@@ -251,19 +255,16 @@ export default function PetsContent() {
                 peso: pet.peso || "",
                 altura: pet.altura || "",
             });
-            // Preenche tags
             const tagsObj = {};
             allTags.flat().forEach(tag => {
                 tagsObj[tag] = !pet.tags?.includes(tag);
             });
             setDisabledTags(tagsObj);
-            // Preenche vacinas
             setVacStatus({
                 castrado: !!pet.isCastrado,
                 vermifugado: !!pet.isVermifugo,
                 vacinado: !!pet.isVacinado,
             });
-            // Preenche imagens
             if (pet.imagens && pet.imagens.length > 0) {
                 setImages(
                     pet.imagens.map(url => ({
@@ -284,15 +285,43 @@ export default function PetsContent() {
     const goToSecondStep = () => setEditStep(2);
     const goBackToFirstStep = () => setEditStep(1);
 
-    const deletePet = (idToDelete) => {
-        setPets((prevPets) => prevPets.filter((pet) => pet.id !== idToDelete));
+    const handleDeleteClick = (pet) => {
+        setPetToDelete(pet);
+        setShowDeleteModal(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (petToDelete) {
+            try {
+                await url.delete(`/pets/${petToDelete.id}`);
+                setShowDeleteModal(false);
+                setPetToDelete(null);
+                window.location.reload();
+            } catch (error) {
+                console.error("Erro ao deletar pet:", error);
+            }
+        } else {
+            setShowDeleteModal(false);
+            setPetToDelete(null);
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
+        setPetToDelete(null);
     };
 
     return (
         <div className={styles.petContainer}>
             <div className={styles.petHeader}>
-                <IoSearch className={styles.searchIcon} />
-                <input type="text" className={styles.searchBar} />
+                {/* <IoSearch className={styles.searchIcon} /> */}
+                <input
+                    type="text"
+                    className={styles.searchBar}
+                    placeholder="Pesquisar por nome"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                />
                 <button className={styles.addPet} onClick={openAddModal}>Adicionar +</button>
             </div>
             {editStep > 0 && (
@@ -474,8 +503,32 @@ export default function PetsContent() {
                 </GenericModal>
             )}
 
+            {showDeleteModal && petToDelete && (
+                <GenericModal
+                    isOpen={showDeleteModal}
+                    onClose={handleCancelDelete}
+                    width="40rem"
+                    height="15rem"
+                    title="Confirmação"
+                >
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
+                        <span style={{ fontSize: 18, textAlign: "center" }}>
+                            Tem certeza que quer deletar o pet <b>{petToDelete.nome}</b>?
+                        </span>
+                        <div style={{ display: "flex", gap: 16 }}>
+                            <div onClick={handleConfirmDelete}>
+                                <PrimaryButton text="Deletar" />
+                            </div>
+                            <div className="cancelButtonDelete" onClick={handleCancelDelete}>
+                                <SecondaryButton text="Cancelar" />
+                            </div>
+                        </div>
+                    </div>
+                </GenericModal>
+            )}
+
             <div className={styles.pets}>
-                {pets.map((pet) => (
+                {filteredPets.map((pet) => (
                     <PetCard
                         key={pet.id}
                         id={pet.id}
@@ -483,7 +536,7 @@ export default function PetsContent() {
                         isAdopted={pet.isAdopted}
                         src={pet.src}
                         onEdit={() => openEditModal(pet.id)}
-                        onDelete={() => deletePet(pet.id)}
+                        onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
             </div>
