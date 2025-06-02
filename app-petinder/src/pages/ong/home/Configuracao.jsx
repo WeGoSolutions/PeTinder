@@ -196,6 +196,7 @@ export default function Configuracao() {
                                         setTipoDocumento(e.target.value);
                                         setCpfCnpj("");
                                     }}
+                                    disabled={false}
                                 />
                             </div>
                         </div>
@@ -206,7 +207,7 @@ export default function Configuracao() {
                         label="Link de Contato"
                         value={formValues.link}
                         onChange={e => setFormValues({ ...formValues, link: e.target.value })}
-
+                        disabled={false}
                     />
                 </div>
 
@@ -218,7 +219,7 @@ export default function Configuracao() {
                         label="CEP"
                         value={formValues.cep}
                         onChange={e => setFormValues({ ...formValues, cep: e.target.value })}
-
+                        disabled={false}
                     />
                     <FormInput
                         id="rua"
@@ -226,7 +227,7 @@ export default function Configuracao() {
                         label="Rua"
                         value={formValues.rua}
                         onChange={e => setFormValues({ ...formValues, rua: e.target.value })}
-
+                        disabled={false}
                     />
                     <div className="inputDif">
                         <div className="bigInput">
@@ -236,7 +237,7 @@ export default function Configuracao() {
                                 label="Complemento"
                                 value={formValues.complemento}
                                 onChange={e => setFormValues({ ...formValues, complemento: e.target.value })}
-
+                                disabled={false}
                             />
                             <FormInput
                                 id="cidade"
@@ -244,7 +245,7 @@ export default function Configuracao() {
                                 label="Cidade"
                                 value={formValues.cidade}
                                 onChange={e => setFormValues({ ...formValues, cidade: e.target.value })}
-
+                                disabled={false}
                             />
                         </div>
                         <div className="litInput">
@@ -254,6 +255,7 @@ export default function Configuracao() {
                                 label="Número"
                                 value={formValues.numero}
                                 onChange={e => setFormValues({ ...formValues, numero: e.target.value })}
+                                disabled={false}
 
                             />
                             <DropDown
@@ -263,7 +265,7 @@ export default function Configuracao() {
                                 options={ufs}
                                 value={formValues.uf}
                                 onChange={e => setFormValues({ ...formValues, uf: e.target.value })}
-
+                                disabled={false}
                             />
                         </div>
                     </div>

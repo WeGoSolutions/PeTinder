@@ -264,12 +264,77 @@ function Config() {
         }
     };
 
-    const handleFormChange = (e) => {
+    const handleFormChange = async (e) => {
         const { name, value } = e.target;
+        let newValue = value;
+       
+        if (name === "cep") {
+            newValue = value;
+            setFormValues((prev) => ({
+                ...prev,
+                cep: newValue
+            }));
+           
+            if (newValue.replace(/\D/g, "").length === 8) {
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${newValue.replace(/\D/g, "")}/json/`);
+                    const data = await response.json();
+                    if (!data.erro) {
+                        setFormValues((prev) => ({
+                            ...prev,
+                            rua: data.logradouro || prev.rua,
+                            cidade: data.localidade || prev.cidade,
+                            uf: data.uf || prev.uf,
+                        }));
+                    }
+                } catch (error) {
+                    console.error("Erro ao buscar o CEP:", error);
+                }
+            }
+            return;
+        }
         setFormValues((prev) => ({
             ...prev,
-            [name]: value
+            [name]: newValue
         }));
+    };
+
+ 
+    const validateEmail = () => {
+        const email = formValues.email;
+        const contemAcento = /[^\u0000-\u007F]/.test(email);
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        if (!email.trim()) {
+            setToast({ mensagem: "O email é obrigatório.", tipo: "erro" });
+            return false;
+        } else if (email.includes(" ")) {
+            setToast({ mensagem: "O email não pode conter espaços.", tipo: "erro" });
+            return false;
+        } else if (contemAcento) {
+            setToast({ mensagem: "O email não pode conter acentos.", tipo: "erro" });
+            return false;
+        } else if (!emailValido) {
+            setToast({ mensagem: "Formato de email inválido.", tipo: "erro" });
+            return false;
+        }
+        return true;
+    };
+
+    const validateNome = () => {
+        const nome = formValues.nome.trim();
+
+        if (!nome) {
+            setToast({ mensagem: "O nome é obrigatório.", tipo: "erro" });
+            return false;
+        } else if (nome.length < 3) {
+            setToast({ mensagem: "O nome deve ter pelo menos 3 caracteres.", tipo: "erro" });
+            return false;
+        } else if (/[^a-zA-ZÀ-ÿ\s]/.test(nome)) {
+            setToast({ mensagem: "O nome não deve conter símbolos ou caracteres especiais.", tipo: "erro" });
+            return false;
+        }
+        return true;
     };
 
     return (
@@ -397,14 +462,20 @@ function Config() {
                                     name="email"
                                     label="Email"
                                     value={formValues.email}
-                                    // disabled={isFieldDisabled("email") || justSaved}
                                     disabled={false}
-                                    onChange={(e) =>
+                                    onChange={(e) => {
                                         setFormValues(prev => ({
                                             ...prev,
                                             [e.target.name]: e.target.value,
-                                        }))
-                                    }
+                                        }));
+                                        // Limpa erro visual ao digitar
+                                        const inputElement = document.getElementById("email");
+                                        if (inputElement) {
+                                            inputElement.style.border = "2px solid black";
+                                            inputElement.closest(".input-container")?.classList.remove("error");
+                                        }
+                                    }}
+                                    error={undefined}
                                 />
                                 <FormInput
                                     id="cpf"
@@ -438,10 +509,7 @@ function Config() {
                                     name="cep"
                                     label="CEP"
                                     value={formValues.cep}
-                                    onChange={e => setFormValues(prev => ({
-                                        ...prev,
-                                        cep: e.target.value // já vem mascarado do FormInput
-                                    }))}
+                                    onChange={handleFormChange}
                                     disabled={false}
                                 />
                                 <FormInput
@@ -494,8 +562,8 @@ function Config() {
                             </div>
                         </div>
                         <div className={styles.buttons}>
-                            <div onClick={async () => {
-                                await handleSave();
+                            <div onClick={() => {
+                                if (validateNome() && validateEmail()) handleSave();
                             }}>
                                 <PrimaryButton text="Salvar" />
                             </div>
