@@ -51,7 +51,7 @@ return (
                 <ReceivedMessage message="Vou criar o formulario" />
                 <div ref={chatEndRef} />
             </div> */}
-            <ChatFooter />
+            <ChatFooter petId={props.petId} />
         </div>
     );
 }
