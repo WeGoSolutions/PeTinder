@@ -2857,3 +2857,7 @@
         margin: 0px !important;
     }
 }
+
+.cancelButtonDelete{
+    margin-top: 15px;
+}

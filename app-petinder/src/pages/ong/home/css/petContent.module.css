@@ -14,20 +14,17 @@
         align-items: center;
         justify-content: space-evenly;
 
-
-        .searchIcon {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            margin-left: -1115px;
-        }
-
         input {
             height: 6vh;
             width: 85%;
             padding-left: 40px;
             border-radius: 20px;
             border: none;
+            background-image: url('/searchIcon.svg');
+            background-repeat: no-repeat;
+            background-position: 14px center;
+            background-size: 22px 22px;
+            padding-left: 45px;
         }
 
         button {

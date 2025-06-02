@@ -1,0 +1,25 @@
+.not-found-pets {
+    width: 85%;
+    height: 90%;
+    background-color: #F4F4F4;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 50px;
+}
+
+.notFoundText{
+    max-width: 35rem;
+
+    h1 {
+        font-size: 2.5rem;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: 500;
+    }
+}

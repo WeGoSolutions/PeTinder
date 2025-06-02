@@ -10,6 +10,7 @@ import FormInput from "../../components/FormInput";
 import HiperLink from "../../components/HiperLink";
 import PrimaryButton from "../../components/PrimaryButton";
 import DropDown from "../../components/DropDown";
+import NotFoundPets from "../../components/exceptions/NotFoundPets";
 import { formatarCEP, capitalizar, formatarCPF } from "../../utils";
 import { url } from "../../provider/apiInstance"; // Certifique-se de importar a instância axios
 import ImageInput from "../../components/ImageInput";
@@ -39,6 +40,7 @@ function Initial() {
     const [sideMenuTab, setSideMenuTab] = useState("chats");
     const [selectedChat, setSelectedChat] = useState(null);
     const [userEndereco, setUserEndereco] = useState(null);
+    const [notFound, setNotFound] = useState(false);
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -203,8 +205,18 @@ function Initial() {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         url.get(`/status/default/${userId}`)
-            .then(response => setPets(response.data))
-            .catch(error => console.error("Error fetching pets:", error));
+            .then(response => {
+                setPets(response.data);
+                setNotFound(false);
+            })
+            .catch(error => {
+                if (error.response && error.response.status === 404) {
+                    setNotFound(true);
+                } else {
+                    setNotFound(false);
+                    console.error("Error fetching pets:", error);
+                }
+            });
     }, []);
 
     useEffect(() => {
@@ -374,29 +386,38 @@ function Initial() {
             />
             <NavBar />
             <div className="appArea">
-                <PetActions
-                    pet={pet}
-                    images={pet.images}
-                    adotar={handleAdotarPet}
-                    passar={aumentarIndex} />
-                <PetInfo
-                    petId={pet.id}
-                    petName={pet.nome}
-                    likes={pet.curtidas}
-                    petAge={pet.idade}
-                    petDesc={pet.descricao}
-                    ongLink={pet.linkOng}
-                    ongName={pet.nomeOng}
-                    qntdTags={pet.qntdTags}
-                    tags={pet.tags}
-                    isLiked={pet.isLiked}
-                    onLike={handleLikePet}
-                    isCastrado={pet.isCastrado}
-                    isVermifugo={pet.isVermifugo}
-                    isVacinado={pet.isVacinado}
-                    endereco={pet.endereco} // <-- Passe o endereço aqui
-                    userEndereco={userEndereco} // <-- Passe o endereço do usuário aqui
-                />
+                {!notFound ? (
+                    <>
+                        <PetActions
+                            pet={pet}
+                            images={pet.images}
+                            adotar={handleAdotarPet}
+                            passar={aumentarIndex}
+                        />
+                        <PetInfo
+                            petId={pet.id}
+                            petName={pet.nome}
+                            likes={pet.curtidas}
+                            petAge={pet.idade}
+                            petDesc={pet.descricao}
+                            ongLink={pet.linkOng}
+                            ongName={pet.nomeOng}
+                            qntdTags={pet.qntdTags}
+                            tags={pet.tags}
+                            isLiked={pet.isLiked}
+                            onLike={handleLikePet}
+                            isCastrado={pet.isCastrado}
+                            isVermifugo={pet.isVermifugo}
+                            isVacinado={pet.isVacinado}
+                            endereco={pet.endereco}
+                            userEndereco={userEndereco}
+                        />
+                    </>
+                ) :
+                    <>
+                        <NotFoundPets />
+                    </>
+                }
             </div>
 
             {/* Modal para novos usuários */}
