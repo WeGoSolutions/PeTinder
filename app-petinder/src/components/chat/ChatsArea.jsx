@@ -20,19 +20,21 @@ function ChatsArea(props) {
         <div className="chatsArea">
             {(Array.isArray(pendingChats) ? pendingChats : []).map((chat) => (
                 <div key={chat.petId} onClick={() => props.onSelectChat({
+                    petId: chat.petId,
                     ongNome: chat.ongInfo?.nome,
                     petNome: chat.petNome,
                     ongLink: chat.ongInfo?.link
                 })}>
-                    <ChatCard
-                        petId={chat.petId}
-                        petNome={chat.petNome}
-                        ongNome={chat.ongInfo?.nome}
-                        descricao={chat.descricao}
-                    />
-                </div>
-            ))}
+            <ChatCard
+                petId={chat.petId}
+                petNome={chat.petNome}
+                ongNome={chat.ongInfo?.nome}
+                descricao={chat.descricao}
+            />
         </div>
+    ))
+}
+        </div >
     );
 }
 
