@@ -185,7 +185,10 @@ function Initial() {
 
     const aumentarIndex = () => {
         setPetIndex((prevIndex) => {
-            if (pets.length <= 1) return 0;
+            if (pets.length <= 1) {
+                setNotFound(true); // Mostra tela de erro se não houver mais pets
+                return 0;
+            }
             return (prevIndex + 1) % pets.length;
         });
     };
@@ -193,6 +196,9 @@ function Initial() {
     const removerPetAtualEDepois = () => {
         setPets((prevPets) => {
             const novosPets = prevPets.filter((_, idx) => idx !== petIndex);
+            if (novosPets.length === 0) {
+                setNotFound(true); // Mostra tela de erro se não houver mais pets
+            }
             return novosPets;
         });
         setPetIndex(0);
@@ -288,10 +294,10 @@ function Initial() {
         }
 
         const formValuesToSend = {
-        ...formValues,
-        cpf: formValues.cpf.replace(/[^\d]/g, ""),
-        cep: formValues.cep.replace(/[^\d]/g, "")
-    };
+            ...formValues,
+            cpf: formValues.cpf.replace(/[^\d]/g, ""),
+            cep: formValues.cep.replace(/[^\d]/g, "")
+        };
 
         try {
             const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
@@ -366,8 +372,9 @@ function Initial() {
                 isCastrado: data.isCastrado,
                 isVermifugo: data.isVermifugo,
                 isVacinado: data.isVacinado,
-                endereco: data.endereco, // <-- Adicione esta linha
+                endereco: data.endereco,
             });
+            setNotFound(false); // <-- Garante que o erro some ao selecionar um pet curtido
             setIsSideMenuOpen(false);
         } catch (error) {
             console.error(error);
