@@ -53,7 +53,7 @@ export default function Configuracao() {
                 const data = res.data;
 
                 setFormValues({
-                    imagemUrl: data.imagemUrl
+                    imagemUrl: data.imageUrl
                 });
             })
     }, [])
