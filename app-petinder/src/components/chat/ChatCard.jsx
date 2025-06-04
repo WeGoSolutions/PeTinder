@@ -1,10 +1,27 @@
+import { useEffect, useState } from "react";
+import { url } from "../../provider/apiInstance";
+
 function ChatCard({ petNome, ongNome, descricao }) {
     const titleTooltip = `${petNome} • ${ongNome}`
+
+    const [urlImage, setUrlImage] = useState("");
+
+    useEffect(() => {
+        // const ongId = sessionStorage.getItem("ongId"); // precisa de uma lógica para pegar o ID da ONG
+        // if (!ongId) return;
+
+        url.get(`/ongs/1/imagem/arquivo`)
+            .then(res => {
+                const data = res.data;
+
+                setUrlImage(data.imageUrl);
+            })
+    }, [])
 
     return (
         <div className="chatCardContainer" tabIndex="0" title={titleTooltip}>
             <div className="cardLogoOng">
-                <img src="/aumigos.svg" alt={petNome} />
+                <img src={urlImage} alt={petNome} />
             </div>
             <div className="cardTextsArea">
                 <div className="cardTitle">
