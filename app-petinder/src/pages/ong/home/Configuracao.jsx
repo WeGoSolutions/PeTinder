@@ -48,7 +48,7 @@ export default function Configuracao() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        url.get(`/ongs/${ongId}/imagem/arquivo`)
+        url.get(`/ongs/${ongId}/imagem/1`)
             .then(res => {
                 const data = res.data;
 
@@ -101,6 +101,7 @@ export default function Configuracao() {
                     cidade: endereco.cidade || "",
                     uf: endereco.uf || "",
                     complemento: endereco.complemento || "",
+                    imagemUrl: data.imagemUrl || ""
                 });
                 setInitialCpf(cpfFormatado);
                 setInitialCnpj(cnpjFormatado);

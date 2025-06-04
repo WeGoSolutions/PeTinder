@@ -13,6 +13,7 @@ export default function Modal(props) {
     const [codigo, setCodigo] = useState("");
     const [isValid, setIsValid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     function gerarCodigo() {
         return Math.floor(100000 + Math.random() * 900000).toString();
@@ -64,6 +65,8 @@ export default function Modal(props) {
     };
 
     const changeModal = async () => {
+        if (isButtonDisabled) return; // Impede múltiplos envios
+        setIsButtonDisabled(true);
         if (validateEmail()) {
             setIsLoading(true);
 
@@ -72,6 +75,7 @@ export default function Modal(props) {
                 setErrors({ email: "Este e-mail não está cadastrado." });
                 setErrorStyle("emailredefinir");
                 setIsLoading(false);
+                setIsButtonDisabled(false);
                 return;
             }
 
@@ -105,7 +109,10 @@ export default function Modal(props) {
                 console.error('Erro ao enviar o email:', error);
             } finally {
                 setIsLoading(false);
+                // O botão só será reabilitado se o modal for fechado ou timeout, não aqui
             }
+        } else {
+            setIsButtonDisabled(false);
         }
     };
 
@@ -148,6 +155,7 @@ export default function Modal(props) {
             setCodigo("");
             resetInputStyle("emailredefinir");
             setOpenModalCodigo(false);
+            setIsButtonDisabled(false); // Reabilita o botão ao abrir o modal
         }
     }, [props.isOpen]);
 
@@ -173,7 +181,7 @@ export default function Modal(props) {
                             onBlur={handleBlur}
                             error={errors.email}
                         />
-                        <div onClick={changeModal}>
+                        <div onClick={isButtonDisabled ? undefined : changeModal}>
                             <SecondaryButton
                                 type="button"
                                 text={
@@ -183,6 +191,7 @@ export default function Modal(props) {
                                         </span>
                                     ) : "Enviar código"
                                 }
+                                disabled={isButtonDisabled}
                             />
                         </div>
                     </div>
