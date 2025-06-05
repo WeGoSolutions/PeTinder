@@ -6,22 +6,35 @@ import SideButtons from "./SideButtons";
 import SideButtonsConfig from "./SideButtonsConfig";
 import { useEffect} from "react";
 import UserImage from "../UserImage";
+import { url } from "../../provider/apiInstance";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
 
     const [ongNome, setOngNome] = useState("Undefined");
+    const [urlImage, setUrlImage] = useState("");
 
     useEffect(() => {
         const sessionName = sessionStorage.getItem("userName");
         setOngNome(sessionName || "Undefined");
     }, []);
 
+      useEffect(() => {
+             const ongId = sessionStorage.getItem("ongId");
+             if (!ongId) return;
+             url.get(`/ongs/${ongId}/imagem/arquivo`)
+                 .then(res => {
+                     const data = res.data;
+     
+                     setUrlImage(data.imageUrl);
+                 })
+         }, [])
+
     return (
         <aside className={`sidePanel ${open ? "closedPanel" : ""} `}>
 
             <div className="ongInfos">
-                <UserImage size={100} hasEdit={false} />
+                <UserImage size={100} hasEdit={false} src={urlImage}/>
                 {/* <img src="/aumigosLogo.svg" alt="Logo da ONG Aumigos Do Bem" /> */}
                 <span>{ongNome}</span>
             </div>
