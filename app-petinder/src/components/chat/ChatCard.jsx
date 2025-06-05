@@ -1,22 +1,29 @@
 import { useEffect, useState } from "react";
 import { url } from "../../provider/apiInstance";
 
-function ChatCard({ petNome, ongNome, descricao }) {
+function ChatCard({ petNome, ongNome, descricao, petId }) {
     const titleTooltip = `${petNome} • ${ongNome}`
 
     const [urlImage, setUrlImage] = useState("");
 
-    useEffect(() => {
-        // const ongId = sessionStorage.getItem("ongId"); // precisa de uma lógica para pegar o ID da ONG
-        // if (!ongId) return;
+   useEffect(() => {
+        async function fetchOngImage() {
+            if (!petId) return;
+            try {
+                // Busca o pet para pegar o ongId
+                const petRes = await url.get(`/pets/${petId}`);
+                const ongId = petRes.data.ongId;
+                if (!ongId) return;
 
-        url.get(`/ongs/1/imagem/arquivo`)
-            .then(res => {
-                const data = res.data;
-
-                setUrlImage(data.imageUrl);
-            })
-    }, [])
+                // Busca a imagem da ONG
+                const ongRes = await url.get(`/ongs/${ongId}/imagem/arquivo`);
+                setUrlImage(ongRes.data?.imageUrl || "");
+            } catch (err) {
+                setUrlImage(""); // fallback
+            }
+        }
+        fetchOngImage();
+    }, [petId]);
 
     return (
         <div className="chatCardContainer" tabIndex="0" title={titleTooltip}>

@@ -41,7 +41,6 @@ export default function Configuracao() {
         numero: "",
         cidade: "",
         uf: "",
-        // imagemUrl: ""
     });
 
     const [initialCpf, setInitialCpf] = useState("");
@@ -50,13 +49,9 @@ export default function Configuracao() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        url.get(`/ongs/${ongId}/imagem/1`)
+        url.get(`/ongs/${ongId}/imagem/arquivo`)
             .then(res => {
                 const data = res.data;
-
-                // setFormValues({
-                //     imagemUrl: data.imageUrl
-                // });
 
                 setUrlImage(data.imageUrl);
             })
