@@ -885,11 +885,10 @@
     align-items: center;
     flex-direction: row;
     gap: 15px;
+    padding: 10px;
 }
 
 .ongLogo {
-    margin-left: 10px;
-    margin-top: 10px;
     width: 55px;
     height: 55px;
     border: 2px solid;
@@ -913,7 +912,6 @@
     display: flex;
     gap: 15px;
     width: 85%;
-    margin-bottom: 1.5%;
     overflow: hidden;
 
     .petName {
@@ -2381,23 +2379,35 @@
     gap: 35px;
     padding: 10px;
     align-items: center;
+    justify-content: center;
 
-    img {
-        width: 20rem;
-    }
-
-    .chatMessagesNoChatText {
+    .chatMessagesNoChatContainer {
         display: flex;
-        gap: 4px;
-        max-width: 24rem;
-        flex-wrap: wrap;
-        flex-direction: row;
+        align-items: center;
         justify-content: center;
-        text-align: center;
-        font-size: 18px;
+        flex-direction: column;
+        gap: 35px;
 
-        a {
-            font-size: 18px !important;
+        img {
+            height: 15rem;
+            border-radius: 50%;
+            width: 15rem;
+            object-fit: cover;
+        }
+
+        .chatMessagesNoChatText {
+            display: flex;
+            gap: 4px;
+            max-width: 24rem;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+
+            a {
+                font-size: 18px !important;
+            }
         }
     }
 }

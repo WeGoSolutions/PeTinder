@@ -32,7 +32,8 @@ function SideMenu(props) {
                         petId: "",
                         ongNome: "",
                         petNome: "",
-                        ongLink: ""
+                        ongLink: "",
+                        ongId: "",
                     });
                 });
         }
@@ -71,6 +72,7 @@ function SideMenu(props) {
                             ongName={selectedChat?.ongNome}
                             petName={selectedChat?.petNome}
                             ongLink={selectedChat?.ongLink}
+                            ongId={selectedChat?.ongId}
                         />
                     )}
                     <div className="menuContent">

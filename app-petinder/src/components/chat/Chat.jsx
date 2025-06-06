@@ -1,9 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatFooter from "./ChatFooter";
 import ChatHeader from "./ChatHeader";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
 import HiperLink from "../HiperLink";
+import { url } from "../../provider/apiInstance";
+import { CgProfile } from "react-icons/cg";
 
 function Chat(props) {
     const chatEndRef = useRef(null);
@@ -11,6 +13,8 @@ function Chat(props) {
     const scrollToBottom = () => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
+
+    const [urlImage, setUrlImage] = useState("");
 
     useEffect(() => {
         scrollToBottom();
@@ -20,29 +24,47 @@ function Chat(props) {
         scrollToBottom();
     }, [props.messages]);
 
-return (
-    <div className="chat">
-        <ChatHeader ongName={props.ongName} petName={props.petName} />
-        <div className="chatMessagesNoChat">
-            <img src="./aumigosDoBem.svg" alt="" />
-            <div className="chatMessagesNoChatText">
-                {(!props.ongName && !props.petName && !props.ongLink) ? (
-                    <p>Opss, parece que você não tem chat ainda.</p>
-                ) : (
-                    <p>
-                        Ficamos muito felizes pela sua decisão!&nbsp;
-                        <HiperLink
-                            label="Clique aqui"
-                            href={props.ongLink}
-                            haveDecoration={true}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        />
-                        &nbsp;para entrar em contato com a ONG referente ao Pet desejado ❤️
-                    </p>
-                )}
+    useEffect(() => {
+
+        url.get(`/ongs/${props.ongId}/imagem/arquivo`)
+            .then(ongRes => {
+                setUrlImage(ongRes.data?.imageUrl || "");
+            })
+            .catch(() => {
+                setUrlImage(""); // fallback
+            });
+
+    }, [props.ongId]);
+
+    return (
+        <div className="chat">
+            <ChatHeader urlImage={urlImage} ongName={props.ongName} petName={props.petName} />
+            <div className="chatMessagesNoChat">
+                <div className="chatMessagesNoChatContainer">
+                    {urlImage ? (
+                        <img src={urlImage} alt="" />
+                    ) : (
+                        <CgProfile size={250} />
+                    )}
+                    <div className="chatMessagesNoChatText">
+                        {(!props.ongName && !props.petName && !props.ongLink) ? (
+                            <p>Opss, parece que você não tem chat ainda.</p>
+                        ) : (
+                            <p>
+                                Ficamos muito felizes pela sua decisão!&nbsp;
+                                <HiperLink
+                                    label="Clique aqui"
+                                    href={props.ongLink}
+                                    haveDecoration={true}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                />
+                                &nbsp;para entrar em contato com a ONG referente ao Pet desejado ❤️
+                            </p>
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
 
             {/* <div className="chatMessages">
                 <SentMessage message="Olá" />

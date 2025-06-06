@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { url } from "../../provider/apiInstance";
+import { CgProfile } from "react-icons/cg";
 
 function ChatCard({ petNome, ongNome, descricao, petId }) {
     const titleTooltip = `${petNome} • ${ongNome}`
 
     const [urlImage, setUrlImage] = useState("");
 
-   useEffect(() => {
+    useEffect(() => {
         async function fetchOngImage() {
             if (!petId) return;
             try {
@@ -28,7 +29,11 @@ function ChatCard({ petNome, ongNome, descricao, petId }) {
     return (
         <div className="chatCardContainer" tabIndex="0" title={titleTooltip}>
             <div className="cardLogoOng">
-                <img src={urlImage} alt={petNome} />
+                {urlImage ? (
+                    <img src={urlImage} alt={petNome} />
+                ) : (
+                    <CgProfile size={55}/>
+                )}
             </div>
             <div className="cardTextsArea">
                 <div className="cardTitle">
