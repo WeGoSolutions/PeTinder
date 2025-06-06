@@ -418,7 +418,7 @@ function Config() {
 
                         <div className={styles.buttonsAct}>
                             <div onClick={changePassword}>
-                                <SecondaryButton type="button" text="Salvar" />
+                                <PrimaryButton type="button" text="Salvar" />
                             </div>
                         </div>
                     </div>

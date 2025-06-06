@@ -888,7 +888,25 @@
 }
 
 .ongLogo {
-    margin-left: 15px;
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 55px;
+    height: 55px;
+    border: 2px solid;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--backgroundColor);
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
 }
 
 .chatTitle {
@@ -1087,12 +1105,21 @@
 .cardLogoOng {
     width: 60px;
     height: 60px;
-    border: 3px solid;
+    border: 2px solid;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--backgroundColor);
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
 }
 
 .cardTextsArea {
@@ -1914,6 +1941,11 @@
         display: flex;
         align-items: center;
         padding-left: 5%;
+
+        .userImageEdit {
+            margin-top: 7rem;
+            margin-left: 7rem;
+        }
 
         /* img {
             background-color: #80465D;
@@ -2858,6 +2890,6 @@
     }
 }
 
-.cancelButtonDelete{
+.cancelButtonDelete {
     margin-top: 15px;
 }

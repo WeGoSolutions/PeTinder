@@ -41,7 +41,6 @@ export default function Configuracao() {
         numero: "",
         cidade: "",
         uf: "",
-        // imagemUrl: ""
     });
 
     const [initialCpf, setInitialCpf] = useState("");
@@ -53,10 +52,6 @@ export default function Configuracao() {
         url.get(`/ongs/${ongId}/imagem/arquivo`)
             .then(res => {
                 const data = res.data;
-
-                // setFormValues({
-                //     imagemUrl: data.imageUrl
-                // });
 
                 setUrlImage(data.imageUrl);
             })
@@ -105,6 +100,7 @@ export default function Configuracao() {
                     cidade: endereco.cidade || "",
                     uf: endereco.uf || "",
                     complemento: endereco.complemento || "",
+                    imagemUrl: data.imagemUrl || ""
                 });
                 setInitialCpf(cpfFormatado);
                 setInitialCnpj(cnpjFormatado);

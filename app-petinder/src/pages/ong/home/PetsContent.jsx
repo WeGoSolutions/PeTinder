@@ -41,6 +41,7 @@ export default function PetsContent() {
         isVermifugo: false,
         isVacinado: false,
     });
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const handleStep1Change = (e) => {
         const { name, value, type } = e.target;
@@ -69,6 +70,8 @@ export default function PetsContent() {
     };
 
     const handleSavePet = async () => {
+        if (isButtonDisabled) return;
+        setIsButtonDisabled(true);
         const selectedTags = Object.entries(disabledTags)
             .filter(([tag, isDisabled]) => !isDisabled)
             .map(([tag]) => tag);
@@ -127,6 +130,7 @@ export default function PetsContent() {
             window.location.reload();
         } catch (error) {
             console.error(error);
+            setIsButtonDisabled(false); // Reabilita o botão em caso de erro
         }
     };
 
@@ -493,8 +497,8 @@ export default function PetsContent() {
 
                                 </div>
                                 <div className={styles.next2}>
-                                    <div onClick={handleSavePet}>
-                                        <PrimaryButton text="Salvar" />
+                                    <div onClick={isButtonDisabled ? undefined : handleSavePet}>
+                                        <PrimaryButton text="Salvar" disabled={isButtonDisabled} />
                                     </div>
                                 </div>
                             </div>
