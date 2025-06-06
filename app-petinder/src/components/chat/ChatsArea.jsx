@@ -23,13 +23,15 @@ function ChatsArea(props) {
                     petId: chat.petId,
                     ongNome: chat.ongInfo?.nome,
                     petNome: chat.petNome,
-                    ongLink: chat.ongInfo?.link
+                    ongLink: chat.ongInfo?.link,
+                    ongId: chat.ongId
                 })}>
             <ChatCard
                 petId={chat.petId}
                 petNome={chat.petNome}
                 ongNome={chat.ongInfo?.nome}
                 descricao={chat.descricao}
+                ongId={chat.ongId}
             />
         </div>
     ))
