@@ -324,6 +324,7 @@ function Initial() {
         try {
             await url.post(`/status/pending/${pet.id}/${userId}`);
             setSelectedChat({
+                petId: pet.id,
                 ongNome: pet.nomeOng,
                 petNome: pet.nome,
                 ongLink: pet.linkOng
