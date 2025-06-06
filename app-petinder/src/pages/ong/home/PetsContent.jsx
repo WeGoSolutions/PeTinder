@@ -106,6 +106,7 @@ export default function PetsContent() {
             nome: formStep1.nome,
             peso: Number(formStep1.peso) || 0,
             altura: Number(formStep1.altura) || 0,
+            porte: formStep1.porte,
             curtidas: 0,
             tags: selectedTags,
             descricao: formStep1.descricao,
