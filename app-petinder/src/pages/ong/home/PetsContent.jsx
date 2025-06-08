@@ -100,7 +100,7 @@ export default function PetsContent() {
         );
 
         let idadeFinal = Number(formStep1.idade);
-        if (formStep1.idadeTipo === "meses") {
+        if (formStep1.idadeTipo === "Meses") {
             idadeFinal = idadeFinal / 100;
         }
 
@@ -246,14 +246,23 @@ export default function PetsContent() {
         try {
             const res = await url.get(`/pets/${petId}`);
             const pet = res.data;
+
+            let idade = "";
+            let idadeTipo = "anos";
+            if (pet.idade !== undefined && pet.idade !== null) {
+                if (pet.idade < 1) {
+                    idade = String(Math.round(pet.idade * 100));
+                    idadeTipo = "Meses";
+                } else {
+                    idade = String(Math.floor(pet.idade));
+                    idadeTipo = "Anos";
+                }
+            }
+
             setFormStep1({
                 nome: pet.nome || "",
-                idade: pet.idade
-                    ? pet.idade < 1
-                        ? String(Math.round(pet.idade * 100))
-                        : String(Math.floor(pet.idade))
-                    : "",
-                idadeTipo: pet.idade && pet.idade < 1 ? "meses" : "anos",
+                idade,
+                idadeTipo,
                 porte: pet.porte || "",
                 descricao: pet.descricao || "",
                 sexo: pet.sexo ? pet.sexo.toLowerCase() : "",
