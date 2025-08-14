@@ -421,7 +421,6 @@ function Cadastro() {
                         disabled={isLoading || isButtonDisabled}
                         onClick={async () => {
                             if (isLoading) return;
-                            setIsButtonDisabled(true);
                             await createAccount();
                         }}
                     >

@@ -1,11 +1,21 @@
+import { useEffect, useState } from "react";
+import { CgProfile } from "react-icons/cg";
+
+
 function ChatHeader(props) {
     const titleTooltip = `${props.petName} • ${props.ongName}`
 
     return (
         <div className="chatHeader" title={titleTooltip}>
-            <div className="ongLogo">
-                <img src="../../aumigos.svg" alt="" />
-            </div>
+            {props.urlImage ? (
+                <div className="ongLogo">
+                    <img src={props.urlImage} alt="" />
+                </div>
+            ):(
+                <div className="ongLogo">
+                    <CgProfile size={50}/>
+                </div>
+            )}
             <div className="chatTitle">
                 <div className="petName">
                     <h2>{props.petName}</h2>

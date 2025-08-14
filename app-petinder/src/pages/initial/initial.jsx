@@ -27,7 +27,6 @@ function Initial() {
         cidade: "",
         uf: ""
     });
-
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
     const [showModal, setShowModal] = useState(false);
     const [modalStep, setModalStep] = useState(1); // 1: primeiro modal, 2: segundo modal
@@ -58,7 +57,6 @@ function Initial() {
     };
 
     const signImage = async () => {
-        // Verifica se há imagem selecionada
         if (!profileImage) {
             return;
         }
@@ -151,11 +149,7 @@ function Initial() {
         const { name, value } = e.target;
 
         let formattedValue = value;
-        if (name === "cep") {
-            formattedValue = formatarCEP(value);
-        } else if (name === "cpf") {
-            formattedValue = formatarCPF(value);
-        }
+
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: formattedValue,
@@ -189,7 +183,10 @@ function Initial() {
 
     const aumentarIndex = () => {
         setPetIndex((prevIndex) => {
-            if (pets.length <= 1) return 0;
+            if (pets.length <= 1) {
+                setNotFound(true); // Mostra tela de erro se não houver mais pets
+                return 0;
+            }
             return (prevIndex + 1) % pets.length;
         });
     };
@@ -197,6 +194,9 @@ function Initial() {
     const removerPetAtualEDepois = () => {
         setPets((prevPets) => {
             const novosPets = prevPets.filter((_, idx) => idx !== petIndex);
+            if (novosPets.length === 0) {
+                setNotFound(true); // Mostra tela de erro se não houver mais pets
+            }
             return novosPets;
         });
         setPetIndex(0);
@@ -291,8 +291,14 @@ function Initial() {
             return;
         }
 
+        const formValuesToSend = {
+            ...formValues,
+            cpf: formValues.cpf.replace(/[^\d]/g, ""),
+            cep: formValues.cep.replace(/[^\d]/g, "")
+        };
+
         try {
-            const response = await url.put(`/users/${userId}/optional`, formValues, {
+            const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
@@ -318,6 +324,7 @@ function Initial() {
         try {
             await url.post(`/status/pending/${pet.id}/${userId}`);
             setSelectedChat({
+                petId: pet.id,
                 ongNome: pet.nomeOng,
                 petNome: pet.nome,
                 ongLink: pet.linkOng
@@ -364,8 +371,9 @@ function Initial() {
                 isCastrado: data.isCastrado,
                 isVermifugo: data.isVermifugo,
                 isVacinado: data.isVacinado,
-                endereco: data.endereco, // <-- Adicione esta linha
+                endereco: data.endereco,
             });
+            setNotFound(false); // <-- Garante que o erro some ao selecionar um pet curtido
             setIsSideMenuOpen(false);
         } catch (error) {
             console.error(error);

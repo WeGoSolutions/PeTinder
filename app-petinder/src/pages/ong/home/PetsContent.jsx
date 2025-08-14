@@ -41,6 +41,7 @@ export default function PetsContent() {
         isVermifugo: false,
         isVacinado: false,
     });
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const handleStep1Change = (e) => {
         const { name, value, type } = e.target;
@@ -69,6 +70,8 @@ export default function PetsContent() {
     };
 
     const handleSavePet = async () => {
+        if (isButtonDisabled) return;
+        setIsButtonDisabled(true);
         const selectedTags = Object.entries(disabledTags)
             .filter(([tag, isDisabled]) => !isDisabled)
             .map(([tag]) => tag);
@@ -97,7 +100,7 @@ export default function PetsContent() {
         );
 
         let idadeFinal = Number(formStep1.idade);
-        if (formStep1.idadeTipo === "meses") {
+        if (formStep1.idadeTipo === "Meses") {
             idadeFinal = idadeFinal / 100;
         }
 
@@ -106,6 +109,7 @@ export default function PetsContent() {
             nome: formStep1.nome,
             peso: Number(formStep1.peso) || 0,
             altura: Number(formStep1.altura) || 0,
+            porte: formStep1.porte,
             curtidas: 0,
             tags: selectedTags,
             descricao: formStep1.descricao,
@@ -127,6 +131,7 @@ export default function PetsContent() {
             window.location.reload();
         } catch (error) {
             console.error(error);
+            setIsButtonDisabled(false); // Reabilita o botão em caso de erro
         }
     };
 
@@ -241,14 +246,23 @@ export default function PetsContent() {
         try {
             const res = await url.get(`/pets/${petId}`);
             const pet = res.data;
+
+            let idade = "";
+            let idadeTipo = "anos";
+            if (pet.idade !== undefined && pet.idade !== null) {
+                if (pet.idade < 1) {
+                    idade = String(Math.round(pet.idade * 100));
+                    idadeTipo = "Meses";
+                } else {
+                    idade = String(Math.floor(pet.idade));
+                    idadeTipo = "Anos";
+                }
+            }
+
             setFormStep1({
                 nome: pet.nome || "",
-                idade: pet.idade
-                    ? pet.idade < 1
-                        ? String(Math.round(pet.idade * 100))
-                        : String(Math.floor(pet.idade))
-                    : "",
-                idadeTipo: pet.idade && pet.idade < 1 ? "meses" : "anos",
+                idade,
+                idadeTipo,
                 porte: pet.porte || "",
                 descricao: pet.descricao || "",
                 sexo: pet.sexo ? pet.sexo.toLowerCase() : "",
@@ -493,8 +507,8 @@ export default function PetsContent() {
 
                                 </div>
                                 <div className={styles.next2}>
-                                    <div onClick={handleSavePet}>
-                                        <PrimaryButton text="Salvar" />
+                                    <div onClick={isButtonDisabled ? undefined : handleSavePet}>
+                                        <PrimaryButton text="Salvar" disabled={isButtonDisabled} />
                                     </div>
                                 </div>
                             </div>

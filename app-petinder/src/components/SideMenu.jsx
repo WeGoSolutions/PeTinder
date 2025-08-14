@@ -9,38 +9,35 @@ import { url } from "../provider/apiInstance";
 function SideMenu(props) {
     const isOpen = props.isOpen;
     const setIsOpen = props.setIsOpen;
-
-    const [activeTab, setActiveTab] = useState("chats"); // "chats" ou "liked"
+    const activeTab = props.activeTab; // use prop, não estado interno
+    const setActiveTab = props.setActiveTab;
     const [selectedChat, setSelectedChat] = useState(null);
     const [pendingChats, setPendingChats] = useState([]);
-
-    useEffect(() => {
-        if (props.activeTab) setActiveTab(props.activeTab);
-    }, [props.activeTab]);
 
     useEffect(() => {
         if (props.selectedChat) setSelectedChat(props.selectedChat);
     }, [props.selectedChat]);
 
     useEffect(() => {
-    if (isOpen && activeTab === "chats") {
-        const userId = sessionStorage.getItem("userId");
-        if (!userId) return;
-        url.get(`/status/pending/ong/${userId}`)
-            .then(res => {
-                setPendingChats(Array.isArray(res.data) ? res.data : []);
-            })
-            .catch(() => {
-                setPendingChats([]);
-                setSelectedChat({
-                    petId: "",
-                    ongNome: "",
-                    petNome: "",
-                    ongLink: ""
+        if (isOpen && activeTab === "chats") {
+            const userId = sessionStorage.getItem("userId");
+            if (!userId) return;
+            url.get(`/status/pending/ong/${userId}`)
+                .then(res => {
+                    setPendingChats(Array.isArray(res.data) ? res.data : []);
+                })
+                .catch(() => {
+                    setPendingChats([]);
+                    setSelectedChat({
+                        petId: "",
+                        ongNome: "",
+                        petNome: "",
+                        ongLink: "",
+                        ongId: "",
+                    });
                 });
-            });
-    }
-}, [isOpen, activeTab]);
+        }
+    }, [isOpen, activeTab]);
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -48,7 +45,7 @@ function SideMenu(props) {
 
     return (
         <>
-            {isOpen && <div className="sidebar-overlay" onClick={toggleSidebar} />}
+            {isOpen && <div className="sidebar-overlay" onClick={() => setIsOpen(false)} />}
             <div
                 className={`sidebar-container ${isOpen ? "open" : ""}`}
                 style={
@@ -57,7 +54,7 @@ function SideMenu(props) {
                         : undefined
                 }
             >
-                <div className="toggle-button" onClick={toggleSidebar}>
+                <div className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? ">" : <><IoChatbubblesOutline /></>}
                 </div>
 
@@ -75,6 +72,7 @@ function SideMenu(props) {
                             ongName={selectedChat?.ongNome}
                             petName={selectedChat?.petNome}
                             ongLink={selectedChat?.ongLink}
+                            ongId={selectedChat?.ongId}
                         />
                     )}
                     <div className="menuContent">

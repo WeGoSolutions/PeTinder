@@ -16,6 +16,8 @@ export default function Configuracao() {
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
     const [cpfCnpj, setCpfCnpj] = useState("");
 
+    const [urlImage, setUrlImage] = useState("");
+
     const handleCpfCnpjChange = (e) => {
         let value = e.target.value.replace(/\D/g, "");
         if (tipoDocumento === "CPF") {
@@ -39,7 +41,6 @@ export default function Configuracao() {
         numero: "",
         cidade: "",
         uf: "",
-        imagemUrl: ""
     });
 
     const [initialCpf, setInitialCpf] = useState("");
@@ -52,9 +53,7 @@ export default function Configuracao() {
             .then(res => {
                 const data = res.data;
 
-                setFormValues({
-                    imagemUrl: data.imagemUrl
-                });
+                setUrlImage(data.imageUrl);
             })
     }, [])
 
@@ -101,6 +100,7 @@ export default function Configuracao() {
                     cidade: endereco.cidade || "",
                     uf: endereco.uf || "",
                     complemento: endereco.complemento || "",
+                    imagemUrl: data.imagemUrl || ""
                 });
                 setInitialCpf(cpfFormatado);
                 setInitialCnpj(cnpjFormatado);
@@ -239,7 +239,7 @@ export default function Configuracao() {
 
             <h1 style={{ paddingLeft: "5%" }}>Conta</h1>
             <div className="imgUser">
-                <UserImage size={160} src={formValues.imagemUrl} hasEdit={true} />
+                <UserImage size={160} src={urlImage} hasEdit={true} />
             </div>
             <div className="containerForm">
                 <div className="configTextInfo1">

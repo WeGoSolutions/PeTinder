@@ -12,18 +12,24 @@ export default function ModalCodigo(props) {
     const [sendingCode, setSendingCode] = useState(false);
     const [resetInputs, setResetInputs] = useState(0);
     const [mostrarErro, setMostrarErro] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const changeModalPassword = () => {
+        if (isButtonDisabled) return;
+        setIsButtonDisabled(true);
         setSendingCode(true);
         setMostrarErro(true);
 
         if (!props.isValid && codigoDigitado === props.cod) {
             setCodigoExpiradoStyle();
+            setIsButtonDisabled(false); // Reabilita se código expirado
             return;
         }
 
         if (codigoDigitado === props.cod && props.isValid) {
             setChangeToPassword(true);
+        } else {
+            setIsButtonDisabled(false); // Reabilita se código inválido
         }
     };
 
@@ -87,8 +93,8 @@ export default function ModalCodigo(props) {
                                 : " "}
                     </span>
 
-                    <div onClick={changeModalPassword}>
-                        <SecondaryButton type="button" text="Validar código" />
+                    <div onClick={isButtonDisabled ? undefined : changeModalPassword}>
+                        <SecondaryButton type="button" text="Validar código" disabled={isButtonDisabled} />
                     </div>
                     <span
                         className={`resend ${isDisabled ? "disabled" : ""}`}
