@@ -1416,6 +1416,7 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            overflow-y: auto;
 
             .titleModal {
                 font-size: 20px;
@@ -1433,8 +1434,49 @@
                 overflow-y: auto;
             }
 
-        }
+            .interessados {
+                width: 100%;
+                gap: 5px;
+                display: flex;
+                flex-direction: column;
 
+                .messageContainer {
+                    background-color: #FFC0D9;
+                    width: 100%;
+                    height: 80px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 18px;
+                    border: solid 1px #80465D;
+
+                    .imgPerfil {
+                        width: 52px;
+                        height: 52px;
+                        border-radius: 50%;
+                        border: solid 3px #80465D;
+                        margin-left: 15px;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+
+                    .textos {
+                        width: 85%;
+                        display: flex;
+                        align-items: flex-start;
+                        max-width: 85%;
+                        overflow-x: auto;
+                        white-space: nowrap;
+
+                        h1 {
+                            font-size: 18px;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -2500,17 +2542,17 @@
             z-index: 10;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-            .baloonText{
+            .baloonText {
                 cursor: pointer;
                 padding: 5px;
                 border-radius: 5px;
 
-                &.adopted:hover{
+                &.adopted:hover {
                     color: var(--secondaryColor);
                     background-color: var(--primaryColor);
                 }
-                
-                &.notAdopted:hover{
+
+                &.notAdopted:hover {
                     background-color: var(--secondaryColor);
                 }
             }

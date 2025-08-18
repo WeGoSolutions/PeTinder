@@ -5,10 +5,17 @@ import { IoMdMore } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "../../provider/apiInstance";
+import GenericModal from "../../components/GenericModal";
+import Mensagens from "./Mensagens";
+import SemMensagensdeInteressados from "./SemMensagensdeInteressados";
 
 function PetCard(props) {
     const [showBaloon, setShowBaloon] = useState(false);
     const baloonRef = useRef(null);
+
+    // Adicione os estados do modal
+    const [showModal, setShowModal] = useState(false);
+    const [modalStep, setModalStep] = useState(1);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -44,8 +51,63 @@ function PetCard(props) {
         }
     };
 
+    const [infosMensagens, setInfosMensagens] = useState([]);
+
+    useEffect(() => {
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
+
+        url.get(`/ongs/${ongId}/mensagens-pendentes`)
+            .then(response => {
+                const dados = response.data;
+                // Filtrar mensagens apenas para este pet específico
+                const mensagensDoPet = Array.isArray(dados) 
+                    ? dados.filter(msg => msg.nomePet === props.nome || msg.petNome === props.nome)
+                    : [];
+                setInfosMensagens(mensagensDoPet);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar mensagens:', error);
+            });
+    }, [props.nome]);
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const mensagemInteressados = "Ainda não temos nenhum interessado, mas não se preocupe, em pouco tempo irão aparecer!";
+
     return (
         <div className={`petCard${props.isAdopted ? " adopted" : ""}`}>
+            {showModal && (
+                <GenericModal
+                    isOpen={showModal}
+                    onClose={handleCloseModal}
+                    title={`Usuários interessados no ${props.nome}:`}
+                    width="600px"
+                    // height="540px"
+                >
+
+                    <div className="interessados">
+                        {infosMensagens.length === 0 ? (
+                            <SemMensagensdeInteressados mensagem={mensagemInteressados} icon="normal" />
+                        ) : (
+                            <>
+                                {infosMensagens.map((msg, idx) => (
+                                    <Mensagens
+                                        key={idx}
+                                        nome={msg.nomeUser}
+                                        imgSrc={msg.imageUrl || "/profile.svg"}
+                                        hideIcon={true}
+                                    />
+                                ))}
+                            </>
+                        )}
+                    </div>
+
+
+                </GenericModal>
+            )}
             <div className="petImage">
                 {props.src ? (
                     <img src={props.src} className="image" />
@@ -70,7 +132,7 @@ function PetCard(props) {
                         ) : (
                             <>
                                 <p className="baloonText notAdopted"
-                                    onClick={() => marcarComoAdotado()}
+                                    onClick={() => setShowModal(true)}
                                 >
                                     Adotado pelo PeTinder
                                 </p>

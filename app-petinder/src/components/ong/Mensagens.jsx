@@ -5,7 +5,7 @@ import "../components.css";
 import { useState } from "react";
 import UserImage from "../UserImage";
 
-export default function Mensagens({nome, mensagem, data, telefone, email, imgSrc}) {
+export default function Mensagens({nome, mensagem, data, telefone, email, imgSrc, hideIcon}) {
     const [showBaloon, setShowBaloon] = useState(false);
 
     return (
@@ -26,11 +26,13 @@ export default function Mensagens({nome, mensagem, data, telefone, email, imgSrc
                         {email && <p>E-mail: {email}</p>}
                     </div>
                 )}
-                <MdOutlineContactPhone
-                    size={40}
-                    className="iconPhone"
-                    onClick={() => setShowBaloon((prev) => !prev)}
-                />
+                {!hideIcon && (
+                    <MdOutlineContactPhone
+                        size={40}
+                        className="iconPhone"
+                        onClick={() => setShowBaloon((prev) => !prev)}
+                    />
+                )}
             </div>
         </div>
     )
