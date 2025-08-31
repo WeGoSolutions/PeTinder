@@ -5,7 +5,7 @@ import GenericModal from "./GenericModal";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
 import { url } from "../provider/apiInstance";
-import { convertImagesToBase64 } from "../utils";
+import { convertImagesToBase64 } from "../utils/utils";
 
 function UserImage({ src, alt = "Foto do usuário", size = 180, hasEdit }) {
     const [modalOpen, setModalOpen] = useState(false);

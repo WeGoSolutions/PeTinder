@@ -7,6 +7,7 @@ import axios from "axios";
 import { url } from "../../../provider/apiInstance";
 import Toast from "../../../components/Toast";
 import PrimaryButton from "../../../components/PrimaryButton";
+import Strings from "../../../utils/strings"
 
 export default function ConfigSeguranca() {
     const navigate = useNavigate();
@@ -48,29 +49,29 @@ export default function ConfigSeguranca() {
         const tamanhoValido = senha.length >= 8;
 
         if (!senha.trim()) {
-            newErrors.novaSenha = "A nova senha é obrigatória.";
+            newErrors.novaSenha = Strings.erroSenha1;
             setErrorStyle("novaSenha");
         } else if (!tamanhoValido) {
-            newErrors.novaSenha = "A senha deve ter pelo menos 8 caracteres.";
+            newErrors.novaSenha = Strings.erroSenha2;
             setErrorStyle("novaSenha");
         } else if (!temLetraMaiuscula) {
-            newErrors.novaSenha = "A senha deve conter pelo menos uma letra maiúscula.";
+            newErrors.novaSenha = Strings.erroSenha3;
             setErrorStyle("novaSenha");
         } else if (!temLetraMinuscula) {
-            newErrors.novaSenha = "A senha deve conter pelo menos uma letra minúscula.";
+            newErrors.novaSenha = Strings.erroSenha4;
             setErrorStyle("novaSenha");
         } else if (!temSimbolo) {
-            newErrors.novaSenha = "A senha deve conter pelo menos um símbolo.";
+            newErrors.novaSenha = Strings.erroSenha5;
             setErrorStyle("novaSenha");
         } else {
             resetInputStyle("novaSenha");
         }
 
         if (!confirmar.trim()) {
-            newErrors.confirmarSenha = "A confirmação de senha é obrigatória.";
+            newErrors.confirmarSenha = Strings.erroConfSenha;
             setErrorStyle("confirmarSenha");
         } else if (senha && confirmar && senha !== confirmar) {
-            newErrors.confirmarSenha = "As senhas devem coincidir.";
+            newErrors.confirmarSenha = Strings.erroSenha6;
             setErrorStyle("novaSenha");
             setErrorStyle("confirmarSenha");
         } else {
@@ -106,7 +107,7 @@ export default function ConfigSeguranca() {
         if (formValues.novaSenha !== formValues.confirmarSenha) {
             setErrors(prev => ({
                 ...prev,
-                confirmarSenha: "A nova senha e a confirmação não coincidem."
+                confirmarSenha: Strings.erroSenha6
             }));
             setErrorStyle("novaSenha");
             setErrorStyle("confirmarSenha");
@@ -134,7 +135,7 @@ export default function ConfigSeguranca() {
 
             let newErrors = {};
             if (error.response && error.response.status === 409) {
-                newErrors.senhaAtual = "Senha atual incorreta.";
+                newErrors.senhaAtual = Strings.erroSenha9;
                 setErrorStyle("senhaAtual");
             }
 
@@ -166,7 +167,7 @@ export default function ConfigSeguranca() {
                     <FormInput
                         id="senhaAtual"
                         name="senhaAtual"
-                        label="Senha atual"
+                        label={Strings.senhaAtual}
                         type="password"
                         required
                         value={formValues.senhaAtual}
@@ -182,7 +183,7 @@ export default function ConfigSeguranca() {
                     <FormInput
                         id="novaSenha"
                         name="novaSenha"
-                        label="Nova senha"
+                        label={String.novaSenha}
                         type="password"
                         required
                         value={formValues.novaSenha}
@@ -193,7 +194,7 @@ export default function ConfigSeguranca() {
                     <FormInput
                         id="confirmarSenha"
                         name="confirmarSenha"
-                        label="Confirmar senha"
+                        label={Strings.confNovaSenha}
                         type="password"
                         required
                         value={formValues.confirmarSenha}
