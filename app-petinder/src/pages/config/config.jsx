@@ -7,6 +7,9 @@ import SecondaryButton from "../../components/SecondaryButton";
 import NavBar from "../../components/NavBar";
 import DropDown from "../../components/DropDown";
 import UserImage from "../../components/UserImage";
+import HiperLink from "../../components/HiperLink";
+import Modal from "../../components/Modal";
+import GenericModal from "../../components/GenericModal"
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { url } from "../../provider/apiInstance";
@@ -17,8 +20,11 @@ function Config() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
+    const [openModal, setOpenModal] = useState(false);
+    const [deleteAccount, setDeleteAccount] = useState(false);
 
     const [errors, setErrors] = useState({});
+    const closeDeleteModal = () => setDeleteAccount(false);
 
     const [formValues, setFormValues] = useState({
         nome: "",
@@ -228,6 +234,20 @@ function Config() {
         }
     };
 
+    const deleteUserAccount = async () => {
+        const userId = sessionStorage.getItem("userId");
+        if (!userId) return;
+        try {
+            await url.delete(`/users/${userId}`);
+            // Opcional: Limpar dados do usuário e redirecionar
+            sessionStorage.clear();
+            window.location.href = "/";
+        } catch (error) {
+            setToast({ mensagem: "Erro ao deletar conta.", tipo: "erro" });
+            console.error("Erro ao deletar conta:", error);
+        }
+    };
+
     const [justSaved, setJustSaved] = useState(false);
 
     const handleSave = async () => {
@@ -268,14 +288,14 @@ function Config() {
     const handleFormChange = async (e) => {
         const { name, value } = e.target;
         let newValue = value;
-       
+
         if (name === "cep") {
             newValue = value;
             setFormValues((prev) => ({
                 ...prev,
                 cep: newValue
             }));
-           
+
             if (newValue.replace(/\D/g, "").length === 8) {
                 try {
                     const response = await fetch(`https://viacep.com.br/ws/${newValue.replace(/\D/g, "")}/json/`);
@@ -300,7 +320,7 @@ function Config() {
         }));
     };
 
- 
+
     const validateEmail = () => {
         const email = formValues.email;
         const contemAcento = /[^\u0000-\u007F]/.test(email);
@@ -390,7 +410,15 @@ function Config() {
                                 required
                                 error={errors.senhaAtual}
                             />
-                            <h3><IoMdInformationCircleOutline size={14} /> Esqueceu sua senha atual? Faça o processo de “Esqueci a senha” na tela de Login.</h3>
+                            <h3><IoMdInformationCircleOutline size={14} /> Esqueceu sua senha atual? Faça o processo de
+                                <div onClick={() => setOpenModal(true)}>
+                                    <HiperLink
+                                        href="#"
+                                        label="“Esqueci a senha”"
+                                        haveDecoration={true}
+                                    />
+                                </div>
+                            </h3>
                         </div>
 
                         <div className={styles.inputSenhas}>
@@ -418,6 +446,14 @@ function Config() {
                         </div>
 
                         <div className={styles.buttonsAct}>
+                            <div className={styles.deleteAccount}
+                                onClick={() => setDeleteAccount(true)}>
+                                <HiperLink
+                                    href="#"
+                                    label="Deletar Conta"
+                                    haveDecoration={false}
+                                />
+                            </div>
                             <div onClick={changePassword}>
                                 <PrimaryButton type="button" text="Salvar" />
                             </div>
@@ -572,7 +608,39 @@ function Config() {
                     </div>
                 )}
             </div>
-        </div>
+            <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
+            {deleteAccount > 0 && (
+                <GenericModal
+                    isOpen={deleteAccount > 0}
+                    onClose={closeDeleteModal}
+                    width="600px"
+                    height="26rem"
+                    title="Deletar Conta"
+                >
+                    <>
+                        <div className={styles.deleteInfo}>
+                            <div className={styles.deleteArea}>
+                                <div className={styles.deleteImage}>
+                                    <img src="/delete.png" />
+                                </div>
+                                <div className={styles.deleteText}>
+                                    <p>Tem certeza de que deseja excluir sua conta?</p>
+                                    <p>Esta ação é irreversível e todos os seus dados serão permanentemente apagados.</p>
+                                </div>
+                            </div>
+                            <div className={styles.next}>
+                                <div className={styles.secondary} onClick={deleteUserAccount}>
+                                    <SecondaryButton text="Deletar" />
+                                </div>
+                                <div onClick={closeDeleteModal}>
+                                    <PrimaryButton text="Cancelar" />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                </GenericModal>
+            )}
+        </div >
     )
 }
 export default Config;
