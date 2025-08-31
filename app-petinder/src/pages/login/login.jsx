@@ -8,6 +8,7 @@ import styles from './login.module.css';
 import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
 import Logo from "../../components/Logo";
+import Strings from "../../utils/strings"
 
 function Login() {
     const Navigate = useNavigate();
@@ -38,7 +39,7 @@ function Login() {
         let newErrors = {};
 
         if (!formValues.email.trim()) {
-            newErrors.email = "O email é obrigatório.";
+            newErrors.email = Strings.erroEmail1;
             setErrorStyle("email");
             return
         } else {
@@ -46,7 +47,7 @@ function Login() {
         }
 
         if (!formValues.senha.trim()) {
-            newErrors.senha = "A senha é obrigatória.";
+            newErrors.senha = Strings.erroSenha1;
             setErrorStyle("senha");
             return
         } else {
@@ -96,7 +97,7 @@ function Login() {
                     sessionStorage.setItem('isNew', data.userNovo)
 
                     setToast({
-                        mensagem: 'Login realizado com sucesso!',
+                        mensagem: Strings.sucessoLogin,
                         tipo: 'sucesso'
                     });
 
@@ -105,7 +106,7 @@ function Login() {
                     }, 1000);
                 } else {
                     setToast({
-                        mensagem: 'Ops! Ocorreu um erro interno.',
+                        mensagem: Strings.erroLogin1,
                         tipo: 'erro'
                     });
                     return;
@@ -113,18 +114,18 @@ function Login() {
             })
                 .catch((error) => {
                     setToast({
-                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        mensagem: Strings.erroLogin2,
                         tipo: 'erro'
                     });
                     console.error("Erro ao fazer login:", error);
                     setToast({
-                        mensagem: 'Conta não encontrada.',
+                        mensagem: Strings.erroLogin3,
                         tipo: 'erro'
                     });
                 });
         } catch (error) {
             setToast({
-                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                mensagem: Strings.erroLogin2,
                 tipo: 'erro'
             });
         }
@@ -148,7 +149,7 @@ function Login() {
                     sessionStorage.setItem('userName', data.nome);
 
                     setToast({
-                        mensagem: 'Login realizado com sucesso!',
+                        mensagem: Strings.sucessoLogin,
                         tipo: 'sucesso'
                     });
 
@@ -157,7 +158,7 @@ function Login() {
                     }, 1000);
                 } else {
                     setToast({
-                        mensagem: 'Ops! Ocorreu um erro interno.',
+                        mensagem: Strings.erroLogin1,
                         tipo: 'erro'
                     });
                     return;
@@ -165,18 +166,18 @@ function Login() {
             })
                 .catch((error) => {
                     setToast({
-                        mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                        mensagem: Strings.erroLogin2,
                         tipo: 'erro'
                     });
                     console.error("Erro ao fazer login:", error);
                     setToast({
-                        mensagem: 'Conta não encontrada.',
+                        mensagem: Strings.erroLogin3,
                         tipo: 'erro'
                     });
                 });
         } catch (error) {
             setToast({
-                mensagem: 'Erro ao fazer login. Verifique suas credenciais.',
+                mensagem: Strings.erroLogin2,
                 tipo: 'erro'
             });
         }
@@ -243,7 +244,7 @@ function Login() {
                         <FormInput
                             id="email"
                             name="email"
-                            label="Email"
+                            label={Strings.email}
                             type="email"
                             required
                             value={formValues.email}
@@ -253,7 +254,7 @@ function Login() {
                         <FormInput
                             id="senha"
                             name="senha"
-                            label="Senha"
+                            label={Strings.senha}
                             type="password"
                             required
                             value={formValues.senha}

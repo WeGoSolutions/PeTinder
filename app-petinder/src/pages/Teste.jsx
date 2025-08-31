@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './teste.module.css';
 import FormInput from '../components/FormInput';
-import { convertImagesToBase64 } from '../utils';
+import { convertImagesToBase64 } from '../utils/utils';
 import { url } from '../provider/apiInstance';
 
 function Teste() {

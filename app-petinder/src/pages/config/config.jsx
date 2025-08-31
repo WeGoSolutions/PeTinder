@@ -14,6 +14,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
+import Strings from "../../utils/strings"
 
 function Config() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
@@ -88,7 +89,7 @@ function Config() {
                 setInitialValues(loadedValues); // Salva os valores iniciais
             })
             .catch(err => {
-                console.error("Erro ao buscar dados do usuário:", err);
+                console.error(Strings.erroBuscaUser, err);
             });
     }, []);
 
@@ -139,29 +140,29 @@ function Config() {
         const tamanhoValido = senha.length >= 8;
 
         if (!senha.trim()) {
-            newErrors.novaSenha = "A nova senha é obrigatória.";
+            newErrors.novaSenha = Strings.erroSenha7;
             setErrorStyle("novaSenha");
         } else if (!tamanhoValido) {
-            newErrors.novaSenha = "A senha deve ter pelo menos 8 caracteres.";
+            newErrors.novaSenha = Strings.erroSenha2;
             setErrorStyle("novaSenha");
         } else if (!temLetraMaiuscula) {
-            newErrors.novaSenha = "A senha deve conter pelo menos uma letra maiúscula.";
+            newErrors.novaSenha = Strings.erroSenha3;
             setErrorStyle("novaSenha");
         } else if (!temLetraMinuscula) {
-            newErrors.novaSenha = "A senha deve conter pelo menos uma letra minúscula.";
+            newErrors.novaSenha = Strings.erroSenha4;
             setErrorStyle("novaSenha");
         } else if (!temSimbolo) {
-            newErrors.novaSenha = "A senha deve conter pelo menos um símbolo.";
+            newErrors.novaSenha = Strings.erroSenha5;
             setErrorStyle("novaSenha");
         } else {
             resetInputStyle("novaSenha");
         }
 
         if (!confirmar.trim()) {
-            newErrors.confirmarSenha = "A confirmação de senha é obrigatória.";
+            newErrors.confirmarSenha = Strings.erroSenha8;
             setErrorStyle("confirmarSenha");
         } else if (senha && confirmar && senha !== confirmar) {
-            newErrors.confirmarSenha = "As senhas devem coincidir.";
+            newErrors.confirmarSenha = Strings.erroSenha6;
             setErrorStyle("novaSenha");
             setErrorStyle("confirmarSenha");
         } else {
@@ -195,7 +196,7 @@ function Config() {
         if (!userId) return;
 
         if (formValuesSenha.novaSenha !== formValuesSenha.confirmarSenha) {
-            alert("A nova senha e a confirmação não coincidem.");
+            alert(Strings.erroSenha6);
             return;
         }
 
@@ -205,7 +206,7 @@ function Config() {
                 novaSenha: formValuesSenha.novaSenha
             });
 
-            setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });
+            setToast({ mensagem: Strings.senhaSucesso, tipo: 'sucesso' });
             setFormValuesSenha({
                 senhaAtual: "",
                 novaSenha: "",
@@ -221,7 +222,7 @@ function Config() {
 
             let newErrors = {};
             if (error.response && error.response.status === 409) {
-                newErrors.senhaAtual = "Senha atual incorreta.";
+                newErrors.senhaAtual = Strings.erroSenha9;
                 setErrorStyle("senhaAtual");
                 // setToast({ mensagem: 'Senha atual incorreta', tipo: 'erro' });
             }
@@ -272,7 +273,7 @@ function Config() {
         try {
             await url.patch(`/users/${userId}`, payload);
             sessionStorage.setItem("userName", formValues.nome);
-            setToast({ mensagem: 'Dados atualizados com sucesso!', tipo: 'sucesso' });
+            setToast({ mensagem: Strings.sucessoAtualizacao, tipo: 'sucesso' });
             //tirar talvez, se não quiser o reload automático
             setTimeout(() => {
                 window.location.reload();
@@ -280,7 +281,7 @@ function Config() {
             setJustSaved(true); // Bloqueia edição após salvar
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
-            setToast({ mensagem: 'Erro ao atualizar dados.', tipo: 'erro' });
+            setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
         }
     };
 
@@ -326,16 +327,16 @@ function Config() {
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
         if (!email.trim()) {
-            setToast({ mensagem: "O email é obrigatório.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail1, tipo: "erro" });
             return false;
         } else if (email.includes(" ")) {
-            setToast({ mensagem: "O email não pode conter espaços.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail2, tipo: "erro" });
             return false;
         } else if (contemAcento) {
-            setToast({ mensagem: "O email não pode conter acentos.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail3, tipo: "erro" });
             return false;
         } else if (!emailValido) {
-            setToast({ mensagem: "Formato de email inválido.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail4, tipo: "erro" });
             return false;
         }
         return true;
@@ -345,13 +346,13 @@ function Config() {
         const nome = formValues.nome.trim();
 
         if (!nome) {
-            setToast({ mensagem: "O nome é obrigatório.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome1, tipo: "erro" });
             return false;
         } else if (nome.length < 3) {
-            setToast({ mensagem: "O nome deve ter pelo menos 3 caracteres.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome2, tipo: "erro" });
             return false;
         } else if (/[^a-zA-ZÀ-ÿ\s]/.test(nome)) {
-            setToast({ mensagem: "O nome não deve conter símbolos ou caracteres especiais.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome3, tipo: "erro" });
             return false;
         }
         return true;
@@ -482,7 +483,7 @@ function Config() {
                                 <FormInput
                                     id="nome"
                                     name="nome"
-                                    label="Nome Completo"
+                                    label= {Strings.nome}
                                     value={formValues.nome}
                                     // disabled={isFieldDisabled("nome") || justSaved}
                                     disabled={false}
@@ -496,7 +497,7 @@ function Config() {
                                 <FormInput
                                     id="email"
                                     name="email"
-                                    label="Email"
+                                    label={Strings.email}
                                     value={formValues.email}
                                     disabled={false}
                                     onChange={(e) => {
@@ -516,7 +517,7 @@ function Config() {
                                 <FormInput
                                     id="cpf"
                                     name="cpf"
-                                    label="CPF"
+                                    label={Strings.cpf}
                                     value={formValues.cpf}
                                     onChange={(e) => setFormValues(prev => ({
                                         ...prev,
@@ -529,7 +530,7 @@ function Config() {
                                     <FormInput
                                         id="dataNasc"
                                         name="dataNasc"
-                                        label="Data de Nascimento"
+                                        label={Strings.dataNasc}
                                         type="date"
                                         required
                                         value={formValues.dataNasc}
@@ -543,7 +544,7 @@ function Config() {
                                 <FormInput
                                     id="cep"
                                     name="cep"
-                                    label="CEP"
+                                    label={Strings.cep}
                                     value={formValues.cep}
                                     onChange={handleFormChange}
                                     disabled={false}
@@ -551,7 +552,7 @@ function Config() {
                                 <FormInput
                                     id="rua"
                                     name="rua"
-                                    label="Rua"
+                                    label={Strings.rua}
                                     value={formValues.rua}
                                     onChange={handleFormChange}
                                     disabled={false}
@@ -561,7 +562,7 @@ function Config() {
                                         <FormInput
                                             id="complemento"
                                             name="complemento"
-                                            label="Complemento"
+                                            label={Strings.complemento}
                                             value={formValues.complemento}
                                             onChange={handleFormChange}
                                             disabled={false}
@@ -569,7 +570,7 @@ function Config() {
                                         <FormInput
                                             id="cidade"
                                             name="cidade"
-                                            label="Cidade"
+                                            label={Strings.Cidade}
                                             value={formValues.cidade}
                                             onChange={handleFormChange}
                                             disabled={false}
@@ -579,7 +580,7 @@ function Config() {
                                         <FormInput
                                             id="numero"
                                             name="numero"
-                                            label="Número"
+                                            label={Strings.numero}
                                             value={formValues.numero}
                                             onChange={handleFormChange}
                                             disabled={false}
@@ -587,7 +588,7 @@ function Config() {
                                         <DropDown
                                             id="uf"
                                             name="uf"
-                                            label="UF"
+                                            label={Strings.uf}
                                             options={ufs}
                                             value={formValues.uf}
                                             onChange={handleFormChange}

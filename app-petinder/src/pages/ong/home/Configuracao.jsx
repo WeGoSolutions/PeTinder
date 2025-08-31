@@ -4,10 +4,11 @@ import PrimaryButton from "../../../components/PrimaryButton";
 import "../../../components/components.css";
 import DropDown from "../../../components/DropDown";
 import UserImage from "../../../components/UserImage";
-import { formatarCPF, formatarCNPJ, formatarCEP } from "../../../utils";
+import { formatarCPF, formatarCNPJ, formatarCEP } from "../../../utils/utils";
 import axios from "axios";
 import { url } from "../../../provider/apiInstance";
 import Toast from "../../../components/Toast";
+import Strings from "../../../utils/strings"
 
 
 export default function Configuracao() {
@@ -113,13 +114,13 @@ export default function Configuracao() {
     function validateNome() {
         const nome = formValues.nomeOng.trim();
         if (!nome) {
-            setToast({ mensagem: "O nome é obrigatório.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome1, tipo: "erro" });
             return false;
         } else if (nome.length < 3) {
-            setToast({ mensagem: "O nome deve ter pelo menos 3 caracteres.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome2, tipo: "erro" });
             return false;
         } else if (/[^a-zA-ZÀ-ÿ\s]/.test(nome)) {
-            setToast({ mensagem: "O nome não deve conter símbolos ou caracteres especiais.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome3, tipo: "erro" });
             return false;
         }
         return true;
@@ -130,16 +131,16 @@ export default function Configuracao() {
         const contemAcento = /[^\u0000-\u007F]/.test(email);
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         if (!email.trim()) {
-            setToast({ mensagem: "O email é obrigatório.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail1, tipo: "erro" });
             return false;
         } else if (email.includes(" ")) {
-            setToast({ mensagem: "O email não pode conter espaços.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail2, tipo: "erro" });
             return false;
         } else if (contemAcento) {
-            setToast({ mensagem: "O email não pode conter acentos.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail3, tipo: "erro" });
             return false;
         } else if (!emailValido) {
-            setToast({ mensagem: "Formato de email inválido.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail4, tipo: "erro" });
             return false;
         }
         return true;
@@ -172,13 +173,13 @@ export default function Configuracao() {
         try {
             await url.patch(`/ongs/${ongId}`, payload);
             sessionStorage.setItem("userName", formValues.nomeOng);
-            setToast({ mensagem: 'Dados atualizados com sucesso!', tipo: 'sucesso' });
+            setToast({ mensagem: Strings.atualizacaoDadosSucesso, tipo: 'sucesso' });
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
-            setToast({ mensagem: 'Erro ao atualizar dados.', tipo: 'erro' });
+            setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
         }
     };
 
@@ -199,7 +200,7 @@ export default function Configuracao() {
             try {
                 const res = await axios.get(`https://viacep.com.br/ws/${value}/json/`);
                 if (res.data.erro) {
-                    setToast({ mensagem: "CEP não encontrado.", tipo: "erro" });
+                    setToast({ mensagem: Strings.erroCep1, tipo: "erro" });
                     setFormValues((prev) => ({
                         ...prev,
                         rua: "",
@@ -215,7 +216,7 @@ export default function Configuracao() {
                     }));
                 }
             } catch (error) {
-                setToast({ mensagem: "Erro ao buscar CEP.", tipo: "erro" });
+                setToast({ mensagem: Strings.erroCep2, tipo: "erro" });
             }
         }
     };
@@ -247,14 +248,14 @@ export default function Configuracao() {
                     <FormInput
                         id="nome"
                         name="nomeOng"
-                        label="Nome da ONG"
+                        label={Strings.nomeOng}
                         value={formValues.nomeOng}
                         onChange={e => setFormValues({ ...formValues, nomeOng: e.target.value })}
                     />
                     <FormInput
                         id="email"
                         name="email"
-                        label="Email"
+                        label={Strings.email}
                         value={formValues.email}
                         onChange={e => setFormValues({ ...formValues, email: e.target.value })}
                     />
@@ -274,7 +275,7 @@ export default function Configuracao() {
                                 <DropDown
                                     id="tipoDocumento"
                                     name="tipoDocumento"
-                                    label="Tipo"
+                                    label={Strings.tipo}
                                     options={["CPF", "CNPJ"]}
                                     value={tipoDocumento}
                                     onChange={e => {
@@ -289,7 +290,7 @@ export default function Configuracao() {
                     <FormInput
                         id="link"
                         name="link"
-                        label="Link de Contato"
+                        label={Strings.linkContato}
                         value={formValues.link}
                         onChange={e => setFormValues({ ...formValues, link: e.target.value })}
                         disabled={false}
@@ -301,7 +302,7 @@ export default function Configuracao() {
                     <FormInput
                         id="cep"
                         name="cep"
-                        label="CEP"
+                        label={Strings.cep}
                         value={formValues.cep}
                         onChange={handleCepChange}
                         disabled={false}
@@ -309,7 +310,7 @@ export default function Configuracao() {
                     <FormInput
                         id="rua"
                         name="rua"
-                        label="Rua"
+                        label={Strings.rua}
                         value={formValues.rua}
                         onChange={e => setFormValues({ ...formValues, rua: e.target.value })}
                         disabled={false}
@@ -319,7 +320,7 @@ export default function Configuracao() {
                             <FormInput
                                 id="complemento"
                                 name="complemento"
-                                label="Complemento"
+                                label={Strings.complemento}
                                 value={formValues.complemento}
                                 onChange={e => setFormValues({ ...formValues, complemento: e.target.value })}
                                 disabled={false}
@@ -327,7 +328,7 @@ export default function Configuracao() {
                             <FormInput
                                 id="cidade"
                                 name="cidade"
-                                label="Cidade"
+                                label={Strings.cidade}
                                 value={formValues.cidade}
                                 onChange={e => setFormValues({ ...formValues, cidade: e.target.value })}
                                 disabled={false}
@@ -337,7 +338,7 @@ export default function Configuracao() {
                             <FormInput
                                 id="numero"
                                 name="numero"
-                                label="Número"
+                                label={Strings.numero}
                                 value={formValues.numero}
                                 onChange={e => setFormValues({ ...formValues, numero: e.target.value })}
                                 disabled={false}
@@ -346,7 +347,7 @@ export default function Configuracao() {
                             <DropDown
                                 id="uf"
                                 name="uf"
-                                label="UF"
+                                label={Strings.uf}
                                 options={ufs}
                                 value={formValues.uf}
                                 onChange={e => setFormValues({ ...formValues, uf: e.target.value })}
