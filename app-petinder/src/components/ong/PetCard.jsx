@@ -41,7 +41,7 @@ function PetCard(props) {
     const marcarComoAdotado = async (idAdotante) => {
         try {
             console.log('marcarComoAdotado chamado com idAdotante:', idAdotante);
-            await url.post(`/status/adopted/${props.id}/${idAdotante}`);
+            await url.post(`/status/adopted/${props.id}`);
             setAdotanteId(idAdotante);
             window.location.reload();
         } catch (err) {
@@ -49,14 +49,14 @@ function PetCard(props) {
         }
     };
 
-    const voltarParaAdocao = async () => {
-        try {
-            await url.delete(`/status/${props.id}/1`); //esse id tbm /status/adopted/{petId}/{userId}
-            window.location.reload();
-        } catch (err) {
-            alert("Erro ao voltar para adoção");
-        }
-    };
+    // const voltarParaAdocao = async () => {
+    //     try {
+    //         await url.delete(`/status/${props.id}/1`); //esse id tbm /status/adopted/{petId}/{userId}
+    //         window.location.reload();
+    //     } catch (err) {
+    //         alert("Erro ao voltar para adoção");
+    //     }
+    // };
 
     const [infosMensagens, setInfosMensagens] = useState([]);
 
