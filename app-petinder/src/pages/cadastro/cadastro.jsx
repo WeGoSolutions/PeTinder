@@ -349,7 +349,7 @@ function Cadastro() {
                                     <FormInput
                                         id="senha"
                                         name="senha"
-                                        label={Strings.senhas}
+                                        label={Strings.senha}
                                         type="password"
                                         required
                                         value={formValues.senha}

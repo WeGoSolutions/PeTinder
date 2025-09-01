@@ -113,7 +113,7 @@ export default function PetsContent() {
             curtidas: 0,
             tags: selectedTags,
             descricao: formStep1.descricao,
-            ongId: Number(sessionStorage.getItem("ongId")),
+            ongId: sessionStorage.getItem("ongId"),
             sexo: formStep1.sexo?.toUpperCase() || "",
             isCastrado: vac.castrado,
             isVermifugo: vac.vermifugado,
