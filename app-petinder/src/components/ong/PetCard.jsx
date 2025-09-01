@@ -17,6 +17,11 @@ function PetCard(props) {
     const [showModal, setShowModal] = useState(false);
     const [modalStep, setModalStep] = useState(1);
 
+        // Novo estado para controlar o modal de adotante
+    const [showAdotanteModal, setShowAdotanteModal] = useState(false);
+    const [adotanteInfo, setAdotanteInfo] = useState(null);
+    const [adotanteId, setAdotanteId] = useState(3);
+
     useEffect(() => {
         function handleClickOutside(event) {
             if (baloonRef.current && !baloonRef.current.contains(event.target)) {
@@ -33,9 +38,11 @@ function PetCard(props) {
         };
     }, [showBaloon]);
 
-    const marcarComoAdotado = async () => {
+    const marcarComoAdotado = async (idAdotante) => {
         try {
-            await url.post(`/status/adopted/${props.id}/1`);
+            console.log('marcarComoAdotado chamado com idAdotante:', idAdotante);
+            await url.post(`/status/adopted/${props.id}/${idAdotante}`);
+            setAdotanteId(idAdotante);
             window.location.reload();
         } catch (err) {
             alert("Erro ao marcar como adotado");
@@ -44,7 +51,7 @@ function PetCard(props) {
 
     const voltarParaAdocao = async () => {
         try {
-            await url.delete(`/status/${props.id}/1`);
+            await url.delete(`/status/${props.id}/1`); //esse id tbm /status/adopted/{petId}/{userId}
             window.location.reload();
         } catch (err) {
             alert("Erro ao voltar para adoção");
@@ -60,9 +67,20 @@ function PetCard(props) {
         url.get(`/ongs/${ongId}/mensagens-pendentes`)
             .then(response => {
                 const dados = response.data;
-                // Filtrar mensagens apenas para este pet específico
-                const mensagensDoPet = Array.isArray(dados) 
-                    ? dados.filter(msg => msg.nomePet === props.nome || msg.petNome === props.nome)
+                console.log('Mensagens recebidas:', dados);
+
+                // Salvar em variáveis os campos desejados
+                const mensagensDoPet = Array.isArray(dados)
+                    ? dados
+                        .filter(msg => msg.nomePet === props.nome || msg.petNome === props.nome)
+                        .map(msg => {
+                            const idOng = msg.idOng;
+                            const idUser = msg.idUser;
+                            const idPet = msg.idPet;
+                            const nomeUser = msg.nomeUser;
+                            const nomePet = msg.nomePet || msg.petNome;
+                            return { ...msg, idOng, idUser, idPet, nomeUser, nomePet };
+                        })
                     : [];
                 setInfosMensagens(mensagensDoPet);
             })
@@ -77,6 +95,23 @@ function PetCard(props) {
 
     const mensagemInteressados = "Ainda não temos nenhum interessado, mas não se preocupe, em pouco tempo irão aparecer!";
 
+    // Abrir modal e buscar dados do adotante
+    const handleShowAdotanteModal = async () => {
+        await fetchAdotanteInfo();
+        setShowAdotanteModal(true);
+    };
+
+    // Função para buscar dados do adotante
+    const fetchAdotanteInfo = async () => {
+        console.log('Buscando informações do adotante com ID:', adotanteId);
+        try {
+            const res = await url.get(`/users/${adotanteId}`); //esse id
+            setAdotanteInfo(res.data);
+        } catch (err) {
+            setAdotanteInfo(null);
+        }
+    };
+
     return (
         <div className={`petCard${props.isAdopted ? " adopted" : ""}`}>
             {showModal && (
@@ -85,29 +120,57 @@ function PetCard(props) {
                     onClose={handleCloseModal}
                     title={`Usuários interessados no ${props.nome}:`}
                     width="600px"
-                    // height="540px"
                 >
-
                     <div className="interessados">
                         {infosMensagens.length === 0 ? (
                             <SemMensagensdeInteressados mensagem={mensagemInteressados} icon="normal" />
                         ) : (
-                            <>
+                            <div>
                                 {infosMensagens.map((msg, idx) => (
                                     <Mensagens
                                         key={idx}
-                                        nome={msg.nomeUser}
+                                        onClick={async () => {
+                                            setAdotanteId(msg.idUser);
+                                            console.log('Adotante ID:', msg.idUser);
+                                            setShowModal(false);
+
+                                            // já chama marcarComoAdotado passando o idUser
+                                            await marcarComoAdotado(msg.idUser);
+                                        }}
+                                        nome={`${msg.nomeUser} (ID: ${msg.idUser})`}
                                         imgSrc={msg.imageUrl || "/profile.svg"}
                                         hideIcon={true}
                                     />
                                 ))}
-                            </>
+                            </div>
                         )}
                     </div>
-
-
                 </GenericModal>
             )}
+
+            {showAdotanteModal && (
+                <GenericModal
+                    isOpen={showAdotanteModal}
+                    onClose={() => setShowAdotanteModal(false)}
+                    title={`Adotante do(a) ${props.nome}:`}
+                    width="400px"
+                    height="300px"
+                >
+                    {adotanteInfo ? (
+                        <div className="adotante-info">
+                            <img
+                                src={adotanteInfo.imageUrl || "/profile.svg"}
+                                style={{ width: 80, height: 80, borderRadius: "50%" }}
+                            />
+                            <h3>{`${adotanteInfo.nome} (ID: ${adotanteInfo.id})`}</h3>
+                            <p>Email: {adotanteInfo.email}</p>
+                        </div>
+                    ) : (
+                        <p>Nenhum adotante encontrado para este pet.</p>
+                    )}
+                </GenericModal>
+            )}
+
             <div className="petImage">
                 {props.src ? (
                     <img src={props.src} className="image" />
@@ -123,12 +186,20 @@ function PetCard(props) {
                 {showBaloon && (
                     <div className="baloonPet" ref={baloonRef}>
                         {props.isAdopted ? (
-                            <p
-                                className="baloonText adopted"
-                                onClick={() => voltarParaAdocao()}
-                            >
-                                Voltar para a Adoção
-                            </p>
+                            <>
+                                <p
+                                    className="baloonText adopted"
+                                    onClick={() => voltarParaAdocao()}
+                                >
+                                    Voltar para a Adoção
+                                </p>
+                                <p
+                                    className="baloonText adopted"
+                                    onClick={handleShowAdotanteModal}
+                                >
+                                    Ver adotante
+                                </p>
+                            </>
                         ) : (
                             <>
                                 <p className="baloonText notAdopted"
