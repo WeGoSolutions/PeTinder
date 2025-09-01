@@ -12,7 +12,7 @@ import {
     InputDate,
     Text
 } from "./style";
-import { capitalizar, validarMaiorDeIdade, formatarCPF, formatarCNPJ, formatarTelefone, formatarCEP } from "../../utils";
+import { capitalizar, validarMaiorDeIdade, formatarCPF, formatarCNPJ, formatarTelefone, formatarCEP } from "../../utils/utils";
 
 const DemonstrationForm = () => {
     const [formValues, setFormValues] = useState({

@@ -2187,7 +2187,7 @@
     left: 0;
 }
 
-.userImageWrapper {
+.imageWrapper {
     border-radius: 50%;
     overflow: hidden;
     background-color: #ccc;
@@ -2212,13 +2212,8 @@
     height: 100%;
 }
 
-.perfilAreaModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 91vh;
-    background: rgba(0, 0, 0, 0.4);
+
+.petContainer {
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;

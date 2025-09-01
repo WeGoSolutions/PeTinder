@@ -12,7 +12,7 @@ import PrimaryButton from "../../../components/PrimaryButton";
 import styles from './css/petContent.module.css';
 import Tag from "../../../components/Tag";
 import SecondaryButton from "../../../components/SecondaryButton";
-import { convertImagesToBase64 } from "../../../utils";
+import { convertImagesToBase64 } from "../../../utils/utils";
 
 export default function PetsContent() {
     const [editingPetId, setEditingPetId] = useState(null);

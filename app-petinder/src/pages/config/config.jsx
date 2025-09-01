@@ -7,17 +7,24 @@ import SecondaryButton from "../../components/SecondaryButton";
 import NavBar from "../../components/NavBar";
 import DropDown from "../../components/DropDown";
 import UserImage from "../../components/UserImage";
+import HiperLink from "../../components/HiperLink";
+import Modal from "../../components/Modal";
+import GenericModal from "../../components/GenericModal"
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
+import Strings from "../../utils/strings"
 
 function Config() {
     const ufs = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"];
 
     const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
+    const [openModal, setOpenModal] = useState(false);
+    const [deleteAccount, setDeleteAccount] = useState(false);
 
     const [errors, setErrors] = useState({});
+    const closeDeleteModal = () => setDeleteAccount(false);
 
     const [formValues, setFormValues] = useState({
         nome: "",
@@ -82,7 +89,7 @@ function Config() {
                 setInitialValues(loadedValues); // Salva os valores iniciais
             })
             .catch(err => {
-                console.error("Erro ao buscar dados do usuário:", err);
+                console.error(Strings.erroBuscaUser, err);
             });
     }, []);
 
@@ -133,29 +140,29 @@ function Config() {
         const tamanhoValido = senha.length >= 8;
 
         if (!senha.trim()) {
-            newErrors.novaSenha = "A nova senha é obrigatória.";
+            newErrors.novaSenha = Strings.erroSenha7;
             setErrorStyle("novaSenha");
         } else if (!tamanhoValido) {
-            newErrors.novaSenha = "A senha deve ter pelo menos 8 caracteres.";
+            newErrors.novaSenha = Strings.erroSenha2;
             setErrorStyle("novaSenha");
         } else if (!temLetraMaiuscula) {
-            newErrors.novaSenha = "A senha deve conter pelo menos uma letra maiúscula.";
+            newErrors.novaSenha = Strings.erroSenha3;
             setErrorStyle("novaSenha");
         } else if (!temLetraMinuscula) {
-            newErrors.novaSenha = "A senha deve conter pelo menos uma letra minúscula.";
+            newErrors.novaSenha = Strings.erroSenha4;
             setErrorStyle("novaSenha");
         } else if (!temSimbolo) {
-            newErrors.novaSenha = "A senha deve conter pelo menos um símbolo.";
+            newErrors.novaSenha = Strings.erroSenha5;
             setErrorStyle("novaSenha");
         } else {
             resetInputStyle("novaSenha");
         }
 
         if (!confirmar.trim()) {
-            newErrors.confirmarSenha = "A confirmação de senha é obrigatória.";
+            newErrors.confirmarSenha = Strings.erroSenha8;
             setErrorStyle("confirmarSenha");
         } else if (senha && confirmar && senha !== confirmar) {
-            newErrors.confirmarSenha = "As senhas devem coincidir.";
+            newErrors.confirmarSenha = Strings.erroSenha6;
             setErrorStyle("novaSenha");
             setErrorStyle("confirmarSenha");
         } else {
@@ -189,7 +196,7 @@ function Config() {
         if (!userId) return;
 
         if (formValuesSenha.novaSenha !== formValuesSenha.confirmarSenha) {
-            alert("A nova senha e a confirmação não coincidem.");
+            alert(Strings.erroSenha6);
             return;
         }
 
@@ -199,7 +206,7 @@ function Config() {
                 novaSenha: formValuesSenha.novaSenha
             });
 
-            setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });
+            setToast({ mensagem: Strings.senhaSucesso, tipo: 'sucesso' });
             setFormValuesSenha({
                 senhaAtual: "",
                 novaSenha: "",
@@ -215,7 +222,7 @@ function Config() {
 
             let newErrors = {};
             if (error.response && error.response.status === 409) {
-                newErrors.senhaAtual = "Senha atual incorreta.";
+                newErrors.senhaAtual = Strings.erroSenha9;
                 setErrorStyle("senhaAtual");
                 // setToast({ mensagem: 'Senha atual incorreta', tipo: 'erro' });
             }
@@ -224,6 +231,20 @@ function Config() {
                 ...prev,
                 ...newErrors
             }));
+        }
+    };
+
+    const deleteUserAccount = async () => {
+        const userId = sessionStorage.getItem("userId");
+        if (!userId) return;
+        try {
+            await url.delete(`/users/${userId}`);
+            // Opcional: Limpar dados do usuário e redirecionar
+            sessionStorage.clear();
+            window.location.href = "/";
+        } catch (error) {
+            setToast({ mensagem: "Erro ao deletar conta.", tipo: "erro" });
+            console.error("Erro ao deletar conta:", error);
         }
     };
 
@@ -252,7 +273,7 @@ function Config() {
         try {
             await url.patch(`/users/${userId}`, payload);
             sessionStorage.setItem("userName", formValues.nome);
-            setToast({ mensagem: 'Dados atualizados com sucesso!', tipo: 'sucesso' });
+            setToast({ mensagem: Strings.sucessoAtualizacao, tipo: 'sucesso' });
             //tirar talvez, se não quiser o reload automático
             setTimeout(() => {
                 window.location.reload();
@@ -260,21 +281,21 @@ function Config() {
             setJustSaved(true); // Bloqueia edição após salvar
         } catch (error) {
             console.error("Erro ao atualizar dados da ONG:", error);
-            setToast({ mensagem: 'Erro ao atualizar dados.', tipo: 'erro' });
+            setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
         }
     };
 
     const handleFormChange = async (e) => {
         const { name, value } = e.target;
         let newValue = value;
-       
+
         if (name === "cep") {
             newValue = value;
             setFormValues((prev) => ({
                 ...prev,
                 cep: newValue
             }));
-           
+
             if (newValue.replace(/\D/g, "").length === 8) {
                 try {
                     const response = await fetch(`https://viacep.com.br/ws/${newValue.replace(/\D/g, "")}/json/`);
@@ -299,23 +320,23 @@ function Config() {
         }));
     };
 
- 
+
     const validateEmail = () => {
         const email = formValues.email;
         const contemAcento = /[^\u0000-\u007F]/.test(email);
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
         if (!email.trim()) {
-            setToast({ mensagem: "O email é obrigatório.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail1, tipo: "erro" });
             return false;
         } else if (email.includes(" ")) {
-            setToast({ mensagem: "O email não pode conter espaços.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail2, tipo: "erro" });
             return false;
         } else if (contemAcento) {
-            setToast({ mensagem: "O email não pode conter acentos.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail3, tipo: "erro" });
             return false;
         } else if (!emailValido) {
-            setToast({ mensagem: "Formato de email inválido.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroEmail4, tipo: "erro" });
             return false;
         }
         return true;
@@ -325,13 +346,13 @@ function Config() {
         const nome = formValues.nome.trim();
 
         if (!nome) {
-            setToast({ mensagem: "O nome é obrigatório.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome1, tipo: "erro" });
             return false;
         } else if (nome.length < 3) {
-            setToast({ mensagem: "O nome deve ter pelo menos 3 caracteres.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome2, tipo: "erro" });
             return false;
         } else if (/[^a-zA-ZÀ-ÿ\s]/.test(nome)) {
-            setToast({ mensagem: "O nome não deve conter símbolos ou caracteres especiais.", tipo: "erro" });
+            setToast({ mensagem: Strings.erroNome3, tipo: "erro" });
             return false;
         }
         return true;
@@ -389,7 +410,15 @@ function Config() {
                                 required
                                 error={errors.senhaAtual}
                             />
-                            <h3><IoMdInformationCircleOutline size={14} /> Esqueceu sua senha atual? Faça o processo de “Esqueci a senha” na tela de Login.</h3>
+                            <h3><IoMdInformationCircleOutline size={14} /> Esqueceu sua senha atual? Faça o processo de
+                                <div onClick={() => setOpenModal(true)}>
+                                    <HiperLink
+                                        href="#"
+                                        label="“Esqueci a senha”"
+                                        haveDecoration={true}
+                                    />
+                                </div>
+                            </h3>
                         </div>
 
                         <div className={styles.inputSenhas}>
@@ -417,6 +446,14 @@ function Config() {
                         </div>
 
                         <div className={styles.buttonsAct}>
+                            <div className={styles.deleteAccount}
+                                onClick={() => setDeleteAccount(true)}>
+                                <HiperLink
+                                    href="#"
+                                    label="Deletar Conta"
+                                    haveDecoration={false}
+                                />
+                            </div>
                             <div onClick={changePassword}>
                                 <PrimaryButton type="button" text="Salvar" />
                             </div>
@@ -446,7 +483,7 @@ function Config() {
                                 <FormInput
                                     id="nome"
                                     name="nome"
-                                    label="Nome Completo"
+                                    label= {Strings.nome}
                                     value={formValues.nome}
                                     // disabled={isFieldDisabled("nome") || justSaved}
                                     disabled={false}
@@ -460,7 +497,7 @@ function Config() {
                                 <FormInput
                                     id="email"
                                     name="email"
-                                    label="Email"
+                                    label={Strings.email}
                                     value={formValues.email}
                                     disabled={false}
                                     onChange={(e) => {
@@ -480,7 +517,7 @@ function Config() {
                                 <FormInput
                                     id="cpf"
                                     name="cpf"
-                                    label="CPF"
+                                    label={Strings.cpf}
                                     value={formValues.cpf}
                                     onChange={(e) => setFormValues(prev => ({
                                         ...prev,
@@ -493,7 +530,7 @@ function Config() {
                                     <FormInput
                                         id="dataNasc"
                                         name="dataNasc"
-                                        label="Data de Nascimento"
+                                        label={Strings.dataNasc}
                                         type="date"
                                         required
                                         value={formValues.dataNasc}
@@ -507,7 +544,7 @@ function Config() {
                                 <FormInput
                                     id="cep"
                                     name="cep"
-                                    label="CEP"
+                                    label={Strings.cep}
                                     value={formValues.cep}
                                     onChange={handleFormChange}
                                     disabled={false}
@@ -515,7 +552,7 @@ function Config() {
                                 <FormInput
                                     id="rua"
                                     name="rua"
-                                    label="Rua"
+                                    label={Strings.rua}
                                     value={formValues.rua}
                                     onChange={handleFormChange}
                                     disabled={false}
@@ -525,7 +562,7 @@ function Config() {
                                         <FormInput
                                             id="complemento"
                                             name="complemento"
-                                            label="Complemento"
+                                            label={Strings.complemento}
                                             value={formValues.complemento}
                                             onChange={handleFormChange}
                                             disabled={false}
@@ -533,7 +570,7 @@ function Config() {
                                         <FormInput
                                             id="cidade"
                                             name="cidade"
-                                            label="Cidade"
+                                            label={Strings.Cidade}
                                             value={formValues.cidade}
                                             onChange={handleFormChange}
                                             disabled={false}
@@ -543,7 +580,7 @@ function Config() {
                                         <FormInput
                                             id="numero"
                                             name="numero"
-                                            label="Número"
+                                            label={Strings.numero}
                                             value={formValues.numero}
                                             onChange={handleFormChange}
                                             disabled={false}
@@ -551,7 +588,7 @@ function Config() {
                                         <DropDown
                                             id="uf"
                                             name="uf"
-                                            label="UF"
+                                            label={Strings.uf}
                                             options={ufs}
                                             value={formValues.uf}
                                             onChange={handleFormChange}
@@ -571,7 +608,39 @@ function Config() {
                     </div>
                 )}
             </div>
-        </div>
+            <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)} onCloseAll={() => setOpenModal(false)} />
+            {deleteAccount > 0 && (
+                <GenericModal
+                    isOpen={deleteAccount > 0}
+                    onClose={closeDeleteModal}
+                    width="600px"
+                    height="26rem"
+                    title="Deletar Conta"
+                >
+                    <>
+                        <div className={styles.deleteInfo}>
+                            <div className={styles.deleteArea}>
+                                <div className={styles.deleteImage}>
+                                    <img src="/delete.png" />
+                                </div>
+                                <div className={styles.deleteText}>
+                                    <p>Tem certeza de que deseja excluir sua conta?</p>
+                                    <p>Esta ação é irreversível e todos os seus dados serão permanentemente apagados.</p>
+                                </div>
+                            </div>
+                            <div className={styles.next}>
+                                <div className={styles.secondary} onClick={deleteUserAccount}>
+                                    <SecondaryButton text="Deletar" />
+                                </div>
+                                <div onClick={closeDeleteModal}>
+                                    <PrimaryButton text="Cancelar" />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                </GenericModal>
+            )}
+        </div >
     )
 }
 export default Config;
