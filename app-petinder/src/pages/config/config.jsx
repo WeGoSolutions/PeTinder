@@ -570,7 +570,7 @@ function Config() {
                                         <FormInput
                                             id="cidade"
                                             name="cidade"
-                                            label={Strings.Cidade}
+                                            label={Strings.cidade}
                                             value={formValues.cidade}
                                             onChange={handleFormChange}
                                             disabled={false}
