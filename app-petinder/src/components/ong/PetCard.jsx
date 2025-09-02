@@ -41,7 +41,7 @@ function PetCard(props) {
     const marcarComoAdotado = async (idAdotante) => {
         try {
             console.log('marcarComoAdotado chamado com idAdotante:', idAdotante);
-            await url.post(`/status/adopted/${props.id}`);
+            await url.post(`/status/adopted/${props.id}/${idAdotante}`);
             setAdotanteId(idAdotante);
             window.location.reload();
         } catch (err) {
@@ -49,14 +49,14 @@ function PetCard(props) {
         }
     };
 
-    // const voltarParaAdocao = async () => {
-    //     try {
-    //         await url.delete(`/status/${props.id}/1`); //esse id tbm /status/adopted/{petId}/{userId}
-    //         window.location.reload();
-    //     } catch (err) {
-    //         alert("Erro ao voltar para adoção");
-    //     }
-    // };
+    const voltarParaAdocao = async (idAdotante) => {
+        try {
+            await url.delete(`/status/${props.id}/5b42a85b-ff66-45c8-ab46-8d27e1f4578f`);   //ESSE ID AQUI - FAZER UM ROOT - marcarComoAdotado chamado com idAdotante: 5b42a85b-ff66-45c8-ab46-8d27e1f4578f
+            window.location.reload();
+        } catch (err) {
+            alert("Erro ao voltar para adoção");
+        }
+    };
 
     const [infosMensagens, setInfosMensagens] = useState([]);
 
@@ -103,9 +103,11 @@ function PetCard(props) {
 
     // Função para buscar dados do adotante
     const fetchAdotanteInfo = async () => {
-        console.log('Buscando informações do adotante com ID:', adotanteId);
+        console.log(`Buscando informações do adotante com ID: ${props.id}`);
         try {
-            const res = await url.get(`/users/${adotanteId}`); //esse id
+            const res = await url.get(`/status/adopted/${props.id}`);
+            console.log('Resposta completa do servidor:', res);
+            console.log('Itens retornados:', res.data);
             setAdotanteInfo(res.data);
         } catch (err) {
             setAdotanteInfo(null);
@@ -162,7 +164,7 @@ function PetCard(props) {
                                 src={adotanteInfo.imageUrl || "/profile.svg"}
                                 style={{ width: 80, height: 80, borderRadius: "50%" }}
                             />
-                            <h3>{`${adotanteInfo.nome} (ID: ${adotanteInfo.id})`}</h3>
+                            <h3>{`${adotanteInfo.nomeUsuario}`}</h3>
                             <p>Email: {adotanteInfo.email}</p>
                         </div>
                     ) : (
@@ -189,7 +191,7 @@ function PetCard(props) {
                             <>
                                 <p
                                     className="baloonText adopted"
-                                    onClick={() => voltarParaAdocao()}
+                                    onClick={() => voltarParaAdocao(adotanteInfo?.idUsuario)}
                                 >
                                     Voltar para a Adoção
                                 </p>

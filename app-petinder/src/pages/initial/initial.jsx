@@ -317,7 +317,7 @@ function Initial() {
     };
 
     const handleAdotarPet = async () => {
-        const userId = Number(sessionStorage.getItem("userId"));
+        const userId = sessionStorage.getItem("userId");
         if (!userId || !pet.id) {
             return;
         }
@@ -339,7 +339,7 @@ function Initial() {
     };
 
     const handleLikePet = async () => {
-        const userId = Number(sessionStorage.getItem("userId"));
+        const userId = sessionStorage.getItem("userId");
         if (!userId || !pet.id) {
             return;
         }
