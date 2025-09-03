@@ -1,7 +1,8 @@
 :root {
     --backgroundColor: #F4F4F4;
-    --primaryColor: #FFC0D9;
-    --secondaryColor: #80465D;
+    --primaryColor: linear-gradient(90deg, #C7849E 0%, #FFC0D9 100%);
+    --secondaryColor: linear-gradient(90deg, #80465D 0%, #59253A 100%);
+    --tercearyColor: #FF8FBB;
 }
 
 * {
@@ -36,7 +37,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
 }
 
 a {
@@ -175,13 +176,13 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background: white;
     position: relative;
     cursor: pointer;
 }
 
 .hiddenCheckbox:checked+.styledCheckbox {
-    background-color: #ffb6c1;
+    background: #ffb6c1;
 }
 
 .hiddenCheckbox:checked+.styledCheckbox::after {
@@ -192,7 +193,7 @@ span {
 }
 
 .disabledButton {
-    background-color: #ccc !important;
+    background: #ccc !important;
     cursor: not-allowed;
     pointer-events: none;
     opacity: 0.7;

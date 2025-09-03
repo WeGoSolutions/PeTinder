@@ -4,13 +4,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
+    background: black;
 }
 
 .area {
     width: 80%;
     height: 90%;
-    background-color: aliceblue;
+    background: aliceblue;
     border-radius: 25px;
 }
 

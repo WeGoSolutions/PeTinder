@@ -19,7 +19,7 @@ export const BackgroundContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background: #f0f0f0;
 `;
 
 export const FormContainer = styled.div`

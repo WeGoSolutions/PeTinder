@@ -9,7 +9,7 @@ import { url } from "../provider/apiInstance";
 function SideMenu(props) {
     const isOpen = props.isOpen;
     const setIsOpen = props.setIsOpen;
-    const activeTab = props.activeTab; // use prop, não estado interno
+    const activeTab = props.activeTab;
     const setActiveTab = props.setActiveTab;
     const [selectedChat, setSelectedChat] = useState(null);
     const [pendingChats, setPendingChats] = useState([]);

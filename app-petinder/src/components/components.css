@@ -1,8 +1,10 @@
 :root {
     --backgroundColor: #F4F4F4;
-    --primaryColor: #FFC0D9;
-    --secondaryColor: #80465D;
+    --primaryColor: linear-gradient(90deg, #C7849E 0%, #FFC0D9 100%);
+    --secondaryColor: linear-gradient(90deg, #80465D 0%, #59253A 100%);
     --tercearyColor: #FF8FBB;
+    --positive: linear-gradient(90deg, #C7FFC0 46%, #789973 100%);
+    --negative: linear-gradient(90deg, #EC5454 16%, #863030 100%);
 }
 
 .input-container {
@@ -16,13 +18,17 @@
 
 .input-container input {
     width: 100%;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     height: 60px;
     padding: 16px 12px 8px;
-    border: 2px solid black;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+    border: none;
+    border-bottom: 3px solid black;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.input-container input:focus {
+    outline: none;
 }
 
 .input-container label {
@@ -30,13 +36,13 @@
     top: 50%;
     left: 12px;
     transform: translateY(-50%);
-    font-size: 18px;
+    font-size: 16px;
     color: #000;
     transition: 0.3s ease-in-out;
     pointer-events: none;
     background: var(--backgroundColor);
     padding: 0 4px;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .input-container.error label {
@@ -66,7 +72,7 @@
 } */
 
 /* .input-container input[disabled] {
-  background-color: #f1f1f1;
+  background: #f1f1f1;
   color: #888;            
   cursor: not-allowed;      
   border: 1px solid #ccc;    
@@ -94,9 +100,9 @@
     padding: 12px;
     background: var(--primaryColor);
     border: none;
-    border-radius: 25px;
+    border-radius: 15px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
     margin-top: 15px;
     transition: background 0.5s;
@@ -112,22 +118,30 @@
     width: 232px;
     height: 50px;
     background: var(--backgroundColor);
-    border: 4px solid #FFC0D9;
-    border-radius: 25px;
+    border: 3px solid transparent;
+    border-radius: 15px;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
     transition: background 0.7s;
 
-    &:hover {
-        color: var(--backgroundColor);
-        border: var(--secondaryColor);
-        background: var(--secondaryColor);
-    }
+    background-image: var(--primaryColor);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 2px 1000px 1px var(--backgroundColor) inset;
+    /* truque p/ fundo sólido */
 }
 
+.secondary-button:hover {
+    color: var(--backgroundColor);
+    background-image: var(--secondaryColor);
+    box-shadow: 2px 1000px 1px transparent inset;
+    /* remove fundo no hover */
+}
+
+
 .navBar {
-    background-color: var(--primaryColor);
+    background: var(--primaryColor);
     height: 81px;
     display: flex;
     justify-content: space-between;
@@ -139,7 +153,10 @@
     left: 0;
     z-index: 1000;
     box-sizing: border-box;
-    border-bottom: 2px solid var(--secondaryColor);
+    border: 0 solid;                /* define o estilo para todos os lados */
+    border-bottom-width: 3px;       /* só a base terá espessura */
+    border-image-source: var(--secondaryColor);
+    border-image-slice: 1;
 }
 
 .logo {
@@ -166,7 +183,7 @@
 }
 
 .buttons button {
-    background-color: #fff;
+    background: #fff;
     border-radius: 15px;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
@@ -178,7 +195,7 @@
 }
 
 .buttons button:hover {
-    background-color: var(--secondaryColor);
+    background: var(--secondaryColor);
     color: var(--backgroundColor);
     cursor: pointer;
 }
@@ -186,7 +203,7 @@
 .textCard {
     height: 393px;
     width: 800px;
-    background-color: #fff;
+    background: #fff;
     padding: 30px;
     border-radius: 20px;
     box-shadow: 6px 6px rgb(0, 0, 0);
@@ -209,7 +226,7 @@
 }
 
 .footer {
-    background-color: var(--secondaryColor);
+    background: var(--secondaryColor);
     height: 350px;
     width: 102%;
     position: absolute;
@@ -262,7 +279,7 @@
     font-family: 'Poppins', sans-serif;
     width: 100vw;
     height: 70px;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     align-items: center;
     justify-content: space-between;
     padding-left: 20px;
@@ -297,7 +314,7 @@
     width: 30px;
     height: 30px;
     border: none;
-    background-color: transparent;
+    background: transparent;
     cursor: pointer;
 }
 
@@ -315,15 +332,13 @@
 .petInfoContainer {
     width: 458px;
     height: 630px;
-    background-color: var(--primaryColor);
+    background: var(--primaryColor);
     padding: 15px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 6px 6px rgb(0, 0, 0);
-
-
 }
 
 .petInfo {
@@ -445,7 +460,7 @@
 .containerTag p {
     margin: 0;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .tag-red {
@@ -494,7 +509,7 @@
 .petActionsContainer {
     width: 790px;
     height: 630px;
-    background-color: transparent;
+    background: transparent;
     padding: 15px;
     border-radius: 15px;
     display: flex;
@@ -556,7 +571,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.4);
     color: white;
     border: none;
     font-size: 24px;
@@ -568,14 +583,14 @@
 }
 
 .navButton:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.7);
 }
 
 .navButton.left {
     left: 10px;
     width: 50px;
     height: 50px;
-    background-color: white;
+    background: white;
     background-image: url("../../left.png");
     background-repeat: no-repeat;
     background-position: 10px;
@@ -586,7 +601,7 @@
     width: 50px;
     height: 50px;
     right: 10px;
-    background-color: white;
+    background: white;
     background-image: url(../../right.png);
     background-repeat: no-repeat;
     background-position: 14px;
@@ -614,7 +629,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #EC5454;
+    background: #EC5454;
     cursor: pointer;
 }
 
@@ -634,22 +649,20 @@
 }
 
 .actionsContainer .left {
-    background-color: #C7FFC0;
+    background: var(--positive);
     transition: 500ms;
 }
 
 .actionsContainer .left:hover {
-    background-color: #87bb80;
     transform: translateX(-35px);
 }
 
 .actionsContainer .right {
-    background-color: #EC5454;
+    background: var(--negative);
     transition: 500ms;
 }
 
 .actionsContainer .right:hover {
-    background-color: #d13333;
     transform: translateX(35px);
 }
 
@@ -676,7 +689,7 @@
 }
 
 .navBar {
-    background-color: var(--primaryColor);
+    background: var(--primaryColor);
     height: 81px;
     display: flex;
     justify-content: space-between;
@@ -715,7 +728,7 @@
 }
 
 .buttons button {
-    background-color: #fff;
+    background: #fff;
     border-radius: 15px;
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
@@ -726,7 +739,7 @@
 }
 
 .buttons button:hover {
-    background-color: var(--secondaryColor);
+    background: var(--secondaryColor);
     color: var(--backgroundColor);
     transition: background 0.5s;
     cursor: pointer;
@@ -735,7 +748,7 @@
 .textCard {
     height: 393px;
     width: 800px;
-    background-color: #fff;
+    background: #fff;
     padding: 30px;
     border-radius: 20px;
     box-shadow: 6px 6px rgb(0, 0, 0);
@@ -758,7 +771,7 @@
 }
 
 .footer {
-    background-color: var(--secondaryColor);
+    background: var(--secondaryColor);
     height: 350px;
     position: absolute;
     top: 219%;
@@ -813,7 +826,7 @@
     height: 100%;
     width: 980px;
     border-radius: 20px 0px 0px 20px;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     transform: translateX(100%);
     transition: transform 0.4s ease;
     z-index: 1000;
@@ -831,7 +844,7 @@
 .sidebar-content {
     border-radius: 20px 0px 0px 20px;
     flex: 1;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     overflow-y: auto;
 }
 
@@ -841,7 +854,7 @@
     top: 44vh;
     width: 50px;
     height: 100px;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     border-radius: 100px 6px 6px 100px;
     cursor: pointer;
     display: flex;
@@ -857,7 +870,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.4);
     /* 40% de opacidade */
     z-index: 999;
     /* um abaixo do menu */
@@ -896,7 +909,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     overflow: hidden;
 
     img {
@@ -994,7 +1007,7 @@
     width: fit-content;
     height: fit-content;
     min-height: 50px;
-    background-color: var(--primaryColor);
+    background: var(--primaryColor);
     border-radius: 15px 15px 0px 15px;
     padding: 10px;
     display: flex;
@@ -1019,7 +1032,7 @@
     width: fit-content;
     height: fit-content;
     min-height: 50px;
-    background-color: #FF8FBB;
+    background: #FF8FBB;
     border-radius: 15px 15px 15px 0px;
     padding: 10px;
     display: flex;
@@ -1108,7 +1121,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     overflow: hidden;
 
     img {
@@ -1157,7 +1170,7 @@
 .modalBackground {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1000;
 
     .modal {
@@ -1167,7 +1180,7 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        background-color: var(--backgroundColor);
+        background: var(--backgroundColor);
         padding: 30px;
         top: 50%;
         left: 50%;
@@ -1263,7 +1276,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     padding: 30px;
     top: 50%;
     left: 50%;
@@ -1345,7 +1358,7 @@
 .toast {
     height: fit-content;
     width: fit-content;
-    background-color: #333;
+    background: #333;
     color: white;
     padding: 1rem;
     border-radius: 0.5rem;
@@ -1367,7 +1380,7 @@
 .defaultModal {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 999;
 
     .modal {
@@ -1377,7 +1390,7 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        background-color: var(--backgroundColor);
+        background: var(--backgroundColor);
         padding: 30px;
         padding-top: 45px;
         top: 50%;
@@ -1425,7 +1438,7 @@
             .text {
                 width: 90%;
                 align-items: flex-start;
-                background-color: whitesmoke;
+                background: whitesmoke;
                 text-align: justify;
                 padding: 0 24px;
                 border-radius: 8px;
@@ -1465,7 +1478,7 @@
 
 .dropdown-select {
     width: 100%;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     height: 60px;
     padding: 16px 12px 8px;
     border: 2px solid black;
@@ -1530,7 +1543,7 @@
     .sidePanel {
         width: 35vh;
         height: 100%;
-        background-color: var(--backgroundColor);
+        background: var(--backgroundColor);
         border-radius: 20px 0 0 20px;
         display: flex;
         flex-direction: column;
@@ -1552,7 +1565,7 @@
             height: 2rem;
             position: absolute;
             right: -1rem;
-            background-color: var(--backgroundColor);
+            background: var(--backgroundColor);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1626,7 +1639,7 @@
                 justify-content: flex-start;
                 padding-left: 10px;
                 cursor: pointer;
-                transition: background-color 0.3s;
+                transition: background 0.3s;
 
                 .iconFixed {
                     min-width: 24px;
@@ -1641,11 +1654,11 @@
                 }
 
                 &:hover {
-                    background-color: #FADAE7;
+                    background: #FADAE7;
                 }
 
                 &.activeButton {
-                    background-color: #FADAE7;
+                    background: #FADAE7;
                 }
             }
         }
@@ -1653,7 +1666,7 @@
         .line {
             width: 60%;
             height: 3.5px;
-            background-color: #000;
+            background: #000;
             border-radius: 100px;
         }
 
@@ -1717,7 +1730,7 @@
     .mainContent {
         width: 100%;
         height: 100%;
-        background-color: var(--backgroundColor);
+        background: var(--backgroundColor);
         border-radius: 0 20px 20px 0;
         display: flex;
         padding: 25px;
@@ -1736,7 +1749,7 @@
             .noMessages {
                 width: 100%;
                 height: 100%;
-                background-color: #E6D9DE;
+                background: #E6D9DE;
                 border-radius: 10px;
                 display: flex;
                 align-items: center;
@@ -1770,7 +1783,7 @@
                 overflow-y: auto;
 
                 .messageContainer {
-                    background-color: #E6D9DE;
+                    background: #E6D9DE;
                     width: 100%;
                     height: 100px;
                     border-radius: 10px;
@@ -1920,7 +1933,7 @@
 /* CONTEUDO PRINCIPAL - FIM*/
 
 .configContainer {
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -1946,7 +1959,7 @@
         }
 
         /* img {
-            background-color: #80465D;
+            background: #80465D;
             border-radius: 50%;
             height: 160px;
             width: 160px;
@@ -2086,7 +2099,7 @@
     gap: 5px;
 
     .on {
-        background-color: var(--secondaryColor);
+        background: var(--secondaryColor);
         border: none;
         transition: 200ms;
     }
@@ -2147,7 +2160,7 @@
 .userImageWrapper {
     border-radius: 50%;
     overflow: hidden;
-    background-color: #ccc;
+    background: #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2204,7 +2217,7 @@
     width: 570px;
     height: 270px;
     border-radius: 20px;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -2238,7 +2251,7 @@
 }
 
 .derived-hovered {
-    background-color: #FF8FBB;
+    background: #FF8FBB;
 }
 
 .segurancaContainer {
@@ -2441,7 +2454,7 @@
 /* .imageWrapper {
     border-radius: 50%;
     overflow: hidden;
-    background-color: #ccc;
+    background: #ccc;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2459,7 +2472,7 @@
 }
 
 .petCard {
-    background-color: var(--tercearyColor);
+    background: var(--tercearyColor);
     width: 200px;
     height: 240px;
     border-radius: 10px !important;
@@ -2472,7 +2485,7 @@
         margin: 10px 10px 10px 10px;
 
         .menu3p {
-            background-color: var(--tercearyColor);
+            background: var(--tercearyColor);
             bottom: 90%;
             left: 90%;
             position: absolute;
@@ -2500,18 +2513,18 @@
             z-index: 10;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-            .baloonText{
+            .baloonText {
                 cursor: pointer;
                 padding: 5px;
                 border-radius: 5px;
 
-                &.adopted:hover{
+                &.adopted:hover {
                     color: var(--secondaryColor);
-                    background-color: var(--primaryColor);
+                    background: var(--primaryColor);
                 }
-                
-                &.notAdopted:hover{
-                    background-color: var(--secondaryColor);
+
+                &.notAdopted:hover {
+                    background: var(--secondaryColor);
                 }
             }
         }
@@ -2552,7 +2565,7 @@
             justify-content: space-between;
 
             button {
-                background-color: var(--tercearyColor);
+                background: var(--tercearyColor);
                 border: none;
                 font-size: 20px;
             }
@@ -2570,7 +2583,7 @@
 .petCard.adopted .nameOptions,
 .petCard.adopted .options button,
 .petCard.adopted .baloonPet {
-    background-color: var(--secondaryColor) !important;
+    background: var(--secondaryColor) !important;
     border-radius: 10px !important;
 }
 
@@ -2588,12 +2601,12 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5); 
   z-index: 999;
 } */
 
 .editPetModal {
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     width: 40%;
     height: 80%;
     margin-top: -40px;
@@ -2686,7 +2699,7 @@
                 min-width: 530px;
                 border-radius: 10px;
                 padding: 10px;
-                background-color: var(--backgroundColor);
+                background: var(--backgroundColor);
                 border: #000 2px solid;
                 font-size: 16px;
             }
@@ -2694,7 +2707,7 @@
     }
 
     .division {
-        background-color: #000;
+        background: #000;
         height: 2px;
         width: 60%;
         margin-top: 10px;
@@ -2759,7 +2772,7 @@
         height: 100px;
         border: 2px solid #000;
         border-radius: 10px;
-        background-color: #f7f7f7;
+        background: #f7f7f7;
         position: relative;
         overflow: hidden;
         display: flex;
@@ -2782,7 +2795,7 @@
         position: absolute;
         top: 4px;
         right: 4px;
-        background-color: #ff4d4d;
+        background: #ff4d4d;
         border: none;
         border-radius: 50%;
         color: white;
@@ -2815,7 +2828,7 @@
         margin-top: -10px;
 
         .button1 {
-            background-color: var(--secondaryColor);
+            background: var(--secondaryColor);
             border: none;
             height: 15px;
             width: 15px;
@@ -2823,7 +2836,7 @@
         }
 
         .button2 {
-            background-color: var(--backgroundColor);
+            background: var(--backgroundColor);
             border: black 2px solid;
             height: 15px;
             width: 15px;
