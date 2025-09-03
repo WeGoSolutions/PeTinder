@@ -15,7 +15,7 @@ import { formatarCEP, capitalizar, formatarCPF } from "../../utils";
 import { url } from "../../provider/apiInstance"; // Certifique-se de importar a instância axios
 import ImageInput from "../../components/ImageInput";
 import { convertImagesToBase64 } from "../../utils"; // ajuste o caminho se necessário
-
+import Reqs from "../../reqs";
 function Initial() {
     const Navigate = useNavigate();
     const [formValues, setFormValues] = useState({
@@ -87,7 +87,7 @@ function Initial() {
     const handleCloseModalAndReset = async () => {
         setShowModal(false);
         setModalStep(1);
-        await handleCloseModal();
+        await Reqs.handleCloseModal();
     };
 
     useEffect(() => {
@@ -203,20 +203,13 @@ function Initial() {
     };
 
     useEffect(() => {
-        const userId = sessionStorage.getItem("userId");
-        url.get(`/status/default/${userId}`)
-            .then(response => {
-                setPets(response.data);
-                setNotFound(false);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    setNotFound(true);
-                } else {
-                    setNotFound(false);
-                    console.error("Error fetching pets:", error);
-                }
-            });
+        const fetchPets = async () => {
+            const userId = sessionStorage.getItem("userId");
+            const petData = await Reqs.listarPetsDisponiveis(userId);
+            setPets(petData.data || []);
+            setNotFound(petData.notFound);
+        };
+        fetchPets();
     }, []);
 
     useEffect(() => {
@@ -247,72 +240,20 @@ function Initial() {
 
 
     useEffect(() => {
-        if (pet.id) {
-            url.get(`/pets/${pet.id}/imagens`)
-                .then(response => setPet(prevPet => ({
+        async function fetchImages() {
+            if (pet.id) {
+                const petImages = await Reqs.getImagensPets(pet.id);
+                setPet(prevPet => ({
                     ...prevPet,
-                    images: response.data
-                })))
-                .catch(error => console.error("Error fetching pet images:", error));
+                    images: petImages || []
+                }));
+            }
         }
+        fetchImages();
     }, [pet.id]);
 
-    const handleCloseModal = async () => {
-        const userId = sessionStorage.getItem("userId");
-        const authToken = sessionStorage.getItem("authToken");
-
-        if (!userId) {
-            return;
-        }
-
-        try {
-            const response = await url.patch(`/users/${userId}/user-novo`, null, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${authToken}`,
-                },
-            });
-
-            if (response.status === 200) {
-                sessionStorage.setItem("isNew", "false");
-                setShowModal(false);
-            }
-        } catch (error) {
-            console.error("Erro ao atualizar o status de novo usuário:", error);
-        }
-    };
-
     const handleSubmit = async () => {
-        console.log("handleSubmit foi chamado");
-        const userId = sessionStorage.getItem("userId");
-        const authToken = sessionStorage.getItem("authToken");
-
-        if (!userId) {
-            return;
-        }
-
-        const formValuesToSend = {
-            ...formValues,
-            cpf: formValues.cpf.replace(/[^\d]/g, ""),
-            cep: formValues.cep.replace(/[^\d]/g, "")
-        };
-
-        try {
-            const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${authToken}`,
-                },
-            });
-
-            if (response.status === 200) {
-                await handleCloseModal();
-                window.location.reload();
-            } else {
-            }
-        } catch (error) {
-            console.error("Erro ao enviar os dados:", error);
-        }
+        await Reqs.handleSubmit(formValues);
     };
 
     const handleAdotarPet = async () => {
@@ -345,6 +286,10 @@ function Initial() {
 
         try {
             await url.post(`/status/liked/${pet.id}/${userId}`);
+            if(!pet.isLiked) {
+                setSideMenuTab("liked");
+                setIsSideMenuOpen(true);
+            }
             removerPetAtualEDepois(); // Remove o pet curtido e avança para o próximo
         } catch (error) {
             console.error("Erro ao curtir o pet:", error);
@@ -538,7 +483,7 @@ function Initial() {
                     )}
                     <div className={styles.footerModal}>
                         <div className={styles.link}
-                            onClick={modalStep === 1 ? handleNextModal : handleCloseModal}>
+                            onClick={modalStep === 1 ? handleNextModal : Reqs.handleCloseModal}>
                             <HiperLink
                                 href="#"
                                 label="Fazer Depois"
