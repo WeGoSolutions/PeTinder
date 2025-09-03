@@ -1443,12 +1443,11 @@
     background: var(--backgroundColor);
     height: 60px;
     padding: 16px 12px 8px;
-    border: 2px solid black;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
+    border: none;
+    border-bottom: 3px solid black;
+    font-size: 16px;
+    font-weight: 600;
     appearance: none;
-    /* Remove o estilo padrão do select */
     outline: none;
     cursor: pointer;
     position: relative;
