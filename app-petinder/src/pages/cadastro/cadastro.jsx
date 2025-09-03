@@ -7,6 +7,7 @@ import { url } from "../../provider/apiInstance";
 import Toast from "../../components/Toast";
 import GenericModal from "../../components/GenericModal";
 import Logo from "../../components/Logo";
+import Strings from "../../utils/strings"
 
 const terms = `
 <b>1. Introdução</b><br/>
@@ -138,32 +139,32 @@ function Cadastro() {
         const tamanhoValido = senha.length >= 8;
 
         if (!formValues.nome.trim()) {
-            newErrors.nome = "O nome é obrigatório.";
+            newErrors.nome = Strings.erroNome1;
             setErrorStyle("nome");
         } else if (formValues.nome.trim().length < 3) {
-            newErrors.nome = "O nome deve ter pelo menos 3 caracteres.";
+            newErrors.nome = Strings.erroNome2;
             setErrorStyle("nome");
         } else if (/[^a-zA-ZÀ-ÿ\s]/.test(formValues.nome.trim())) {
-            newErrors.nome = "O nome não deve conter símbolos ou caracteres especiais.";
+            newErrors.nome = Strings.erroNome3;
             setErrorStyle("nome");
         } else {
             resetInputStyle("nome");
         }
 
         if (!email.trim()) {
-            newErrors.email = "O email é obrigatório.";
+            newErrors.email = Strings.erroEmail1;
             setErrorStyle("email");
         } else if (email.includes(" ")) {
-            newErrors.email = "O email não pode conter espaços.";
+            newErrors.email = Strings.erroEmail2;
             setErrorStyle("email");
         } else if (contemAcento) {
-            newErrors.email = "O email não deve conter acentos.";
+            newErrors.email = Strings.erroEmail3;
             setErrorStyle("email");
         } else if (!email.includes("@") || email.lastIndexOf(".") < email.indexOf("@")) {
-            newErrors.email = "Formato de email inválido.";
+            newErrors.email = Strings.erroEmail4;
             setErrorStyle("email");
         } else if (!emailValido) {
-            newErrors.email = "Formato de email inválido.";
+            newErrors.email = Strings.erroEmail4;
             setErrorStyle("email");
 
         } else {
@@ -171,33 +172,33 @@ function Cadastro() {
         }
 
         if (!senha.trim()) {
-            newErrors.senha = "A senha é obrigatória.";
+            newErrors.senha = Strings.erroSenha1;
             setErrorStyle("senha");
         } else if (!tamanhoValido) {
-            newErrors.senha = "A senha deve ter no mínimo 8 caracteres.";
+            newErrors.senha = Strings.erroSenha2;
             setErrorStyle("senha");
         } else if (!temLetraMaiuscula) {
-            newErrors.senha = "A senha deve conter pelo menos uma letra maiúscula.";
+            newErrors.senha = Strings.erroSenha3;
             setErrorStyle("senha");
         } else if (!temLetraMinuscula) {
-            newErrors.senha = "A senha deve conter pelo menos uma letra minúscula.";
+            newErrors.senha = Strings.erroSenha4;
             setErrorStyle("senha");
         } else if (!temSimbolo) {
-            newErrors.senha = "A senha deve conter pelo menos um símbolo.";
+            newErrors.senha = Strings.erroSenha5;
             setErrorStyle("senha");
         } else {
             resetInputStyle("senha");
         }
 
         if (formValues.confSenha !== formValues.senha) {
-            newErrors.confSenha = "As senhas não coincidem.";
+            newErrors.confSenha = Strings.erroSenha6;
             setErrorStyle("confSenha");
         } else {
             resetInputStyle("confSenha");
         }
 
         if (!formValues.dataNasc) {
-            newErrors.dataNasc = "A data de nascimento é obrigatória.";
+            newErrors.dataNasc = Strings.erroDataNasc1;
             setErrorStyle("dataNasc");
         } else {
             const birthDate = new Date(formValues.dataNasc);
@@ -208,7 +209,7 @@ function Cadastro() {
             const adjustedAge = monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0) ? age : age - 1;
 
             if (adjustedAge < 21) {
-                newErrors.dataNasc = "Você deve ter pelo menos 21 anos.";
+                newErrors.dataNasc = Strings.erroDataNasc2;
                 setErrorStyle("dataNasc");
             } else {
                 resetInputStyle("dataNasc");
@@ -268,7 +269,7 @@ function Cadastro() {
             });
             setIsChecked(false);
             setToast({
-                mensagem: "Conta criada com sucesso!",
+                mensagem: Strings.sucessoCriacao,
                 tipo: "sucesso"
             });
 
@@ -281,7 +282,7 @@ function Cadastro() {
             if (error.response && error.response.status === 409) {
                 setErrors((prevErrors) => ({
                     ...prevErrors,
-                    email: "Este e-mail já está cadastrado.",
+                    email: Strings.erroEmail5,
                 }));
                 setModalWarning(false);
                 const inputElement = document.getElementById("email");
@@ -292,7 +293,7 @@ function Cadastro() {
             } else {
                 console.error("Erro:", error);
                 setToast({
-                    mensagem: "Erro inesperado ao criar conta. Tente novamente mais tarde.",
+                    mensagem: Strings.erro,
                     tipo: "erro"
                 });
             }
@@ -328,7 +329,7 @@ function Cadastro() {
                                     <FormInput
                                         id="nome"
                                         name="nome"
-                                        label="Nome Completo"
+                                        label={Strings.nome}
                                         type="text"
                                         required
                                         value={formValues.nome}
@@ -338,7 +339,7 @@ function Cadastro() {
                                     <FormInput
                                         id="email"
                                         name="email"
-                                        label="Email"
+                                        label= {Strings.email}
                                         type="email"
                                         required
                                         value={formValues.email}
@@ -348,7 +349,7 @@ function Cadastro() {
                                     <FormInput
                                         id="senha"
                                         name="senha"
-                                        label="Senha"
+                                        label={Strings.senha}
                                         type="password"
                                         required
                                         value={formValues.senha}
@@ -358,7 +359,7 @@ function Cadastro() {
                                     <FormInput
                                         id="confSenha"
                                         name="confSenha"
-                                        label="Confirmar Senha"
+                                        label={Strings.confSenha}
                                         type="password"
                                         required
                                         value={formValues.confSenha}
@@ -369,7 +370,7 @@ function Cadastro() {
                                         <FormInput
                                             id="dataNasc"
                                             name="dataNasc"
-                                            label="Data de Nascimento"
+                                            label={Strings.dataNasc}
                                             type="date"
                                             required
                                             value={formValues.dataNasc}

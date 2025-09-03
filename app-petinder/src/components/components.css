@@ -57,35 +57,6 @@
     color: #000;
 }
 
-/* .button-eye{
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-} */
-
-/* .input-container input[disabled] {
-  background: #f1f1f1;
-  color: #888;            
-  cursor: not-allowed;      
-  border: 1px solid #ccc;    
-}
-
-.input-container input[disabled]::placeholder {
-  color: #aaa;
-} */
-
-/* .input-container label { */
-/* color: #888;  
-} */
-
 .error-message {
     color: red;
     font-size: 12px;
@@ -559,14 +530,6 @@
     transform: translateX(-42%) scale(0.9);
 }
 
-/* 
-
-.carouselImage.behind {
-    transform: translateX(7%) scale(0.9);
-    z-index: 1;
-    opacity: 0.6;
-} */
-
 .navButton {
     position: absolute;
     top: 50%;
@@ -873,7 +836,6 @@
     background: rgba(0, 0, 0, 0.4);
     /* 40% de opacidade */
     z-index: 999;
-    /* um abaixo do menu */
 }
 
 .sidebar-content {
@@ -2166,6 +2128,20 @@
     justify-content: center;
 }
 
+.perfilAreaModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 91vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    z-index: 2000;
+    margin-top: 70px;
+}
+
 .image {
     width: 100%;
     height: 100%;
@@ -2182,13 +2158,8 @@
     height: 100%;
 }
 
-.perfilAreaModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 91vh;
-    background: rgba(0, 0, 0, 0.4);
+
+.petContainer {
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
@@ -2450,16 +2421,6 @@
     }
 }
 
-
-/* .imageWrapper {
-    border-radius: 50%;
-    overflow: hidden;
-    background: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
-
 .image {
     width: 100%;
     height: 100%;
@@ -2716,7 +2677,6 @@
 
     .petInfosCheckbox {
         margin-top: 10px;
-        /* margin-bottom: 10px; */
         gap: 7px;
         margin-bottom: -24px;
 
@@ -2861,7 +2821,6 @@
 
         .back {
             margin-top: 15px;
-            /* margin-left: -300px; */
         }
     }
 
@@ -2878,7 +2837,6 @@
 
         .back {
             margin-top: 15px;
-            /* margin-left: -300px; */
         }
     }
 }

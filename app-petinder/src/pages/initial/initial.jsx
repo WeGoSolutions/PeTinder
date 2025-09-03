@@ -11,11 +11,13 @@ import HiperLink from "../../components/HiperLink";
 import PrimaryButton from "../../components/PrimaryButton";
 import DropDown from "../../components/DropDown";
 import NotFoundPets from "../../components/exceptions/NotFoundPets";
-import { formatarCEP, capitalizar, formatarCPF } from "../../utils";
+import { formatarCEP, capitalizar, formatarCPF } from "../../utils/utils";
 import { url } from "../../provider/apiInstance"; // Certifique-se de importar a instância axios
 import ImageInput from "../../components/ImageInput";
-import { convertImagesToBase64 } from "../../utils"; // ajuste o caminho se necessário
 import Reqs from "../../reqs";
+import { convertImagesToBase64 } from "../../utils/utils"; // ajuste o caminho se necessário
+import Strings from "../../utils/strings"
+
 function Initial() {
     const Navigate = useNavigate();
     const [formValues, setFormValues] = useState({
@@ -402,7 +404,7 @@ function Initial() {
                         <FormInput
                             id="cpf"
                             name="cpf"
-                            label="CPF"
+                            label={Strings.cpf}
                             type="text"
                             required
                             value={formValues.cpf}
@@ -412,7 +414,7 @@ function Initial() {
                         <FormInput
                             id="cep"
                             name="cep"
-                            label="CEP"
+                            label={Strings.cep}
                             type="text"
                             required
                             value={formValues.cep}
@@ -421,7 +423,7 @@ function Initial() {
                         <FormInput
                             id="rua"
                             name="rua"
-                            label="Rua"
+                            label={Strings.rua}
                             type="text"
                             required
                             value={formValues.rua}
@@ -432,7 +434,7 @@ function Initial() {
                                 <FormInput
                                     id="complemento"
                                     name="complemento"
-                                    label="Complemento"
+                                    label={Strings.complemento}
                                     type="text"
                                     value={formValues.complemento}
                                     onChange={handleInputChange}
@@ -442,7 +444,7 @@ function Initial() {
                                 <FormInput
                                     id="numero"
                                     name="numero"
-                                    label="Número"
+                                    label={Strings.numero}
                                     type="text"
                                     required
                                     value={formValues.numero}
@@ -455,7 +457,7 @@ function Initial() {
                                 <FormInput
                                     id="cidade"
                                     name="cidade"
-                                    label="Cidade"
+                                    label={Strings.cidade}
                                     type="text"
                                     required
                                     value={formValues.cidade}
@@ -466,7 +468,7 @@ function Initial() {
                                 <DropDown
                                     id="uf"
                                     name="uf"
-                                    label="UF"
+                                    label={Strings.uf}
                                     options={ufs}
                                     value={formValues.uf}
                                     onChange={(e) => {
