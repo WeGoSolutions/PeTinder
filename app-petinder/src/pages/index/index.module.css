@@ -1,7 +1,8 @@
 :root {
     --backgroundColor: #F4F4F4;
-    --primaryColor: #FFC0D9;
-    --secondaryColor: #80465D;
+    --primaryColor: linear-gradient(90deg, #C7849E 0%, #FFC0D9 100%);
+    --secondaryColor: linear-gradient(90deg, #80465D 0%, #59253A 100%);
+    --tercearyColor: #FF8FBB;
 }
 
 * {
@@ -14,14 +15,14 @@
 html,
 body {
     height: 100%;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     overflow-x: hidden;
 }
 
 .indexContainer {
     min-height: 100vh;
     width: 100vw;
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     display: flex;
     flex-direction: column;
     padding-top: 120px;

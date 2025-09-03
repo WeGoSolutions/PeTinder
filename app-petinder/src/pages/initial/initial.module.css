@@ -1,7 +1,8 @@
 :root {
     --backgroundColor: #F4F4F4;
-    --primaryColor: #FFC0D9;
-    --secondaryColor: #80465D;
+    --primaryColor: linear-gradient(90deg, #C7849E 0%, #FFC0D9 100%);
+    --secondaryColor: linear-gradient(90deg, #80465D 0%, #59253A 100%);
+    --tercearyColor: #FF8FBB;
 }
 
 body {
@@ -11,7 +12,7 @@ body {
 .container {
     width: 100vw;
     height: 100vh;
-    background-color: var(--secondaryColor);
+    background: var(--secondaryColor);
 }
 
 .extraContent {

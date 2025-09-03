@@ -1,7 +1,7 @@
 .not-found-pets {
     width: 85%;
     height: 90%;
-    background-color: #F4F4F4;
+    background: #F4F4F4;
     border-radius: 10px;
     display: flex;
     align-items: center;
