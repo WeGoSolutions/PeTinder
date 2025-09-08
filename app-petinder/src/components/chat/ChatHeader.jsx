@@ -17,7 +17,7 @@ function ChatHeader(props) {
                 </div>
             )}
             <div className="chatTitle">
-                <div className="petName">
+                <div className="petName" onClick={() => props.onPendingPetClick && props.onPendingPetClick(props.petId)}>
                     <h2>{props.petName}</h2>
                 </div>
                 {props.petName && props.ongName && (
