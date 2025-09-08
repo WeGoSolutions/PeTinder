@@ -72,6 +72,7 @@ function SideMenu(props) {
                             ongName={selectedChat?.ongNome}
                             petName={selectedChat?.petNome}
                             ongLink={selectedChat?.ongLink}
+                            onPendingPetClick={props.onPendingPetClick}
                             ongId={selectedChat?.ongId}
                         />
                     )}
