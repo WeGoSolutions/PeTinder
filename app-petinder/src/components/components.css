@@ -1377,7 +1377,7 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            overflow-y: auto;
+            /* overflow-y: auto; */
 
             .titleModal {
                 font-size: 20px;
@@ -1412,6 +1412,8 @@
                     justify-content: space-between;
                     gap: 18px;
                     border: solid 1px #80465D;
+                    margin-bottom: 5px;
+
 
                     .imgPerfil {
                         width: 52px;
