@@ -39,9 +39,7 @@ export default function GenericModal(props) {
                     )}
                     <div className="titleModal">{props.title}</div>
                     <div className="text" dangerouslySetInnerHTML={{ __html: props.text }} />
-                    <div>{props.children && (
-                        <div className="">{props.children}</div>
-                    )}</div>
+                    {props.children}
                 </div>
             </div>
         </div>
