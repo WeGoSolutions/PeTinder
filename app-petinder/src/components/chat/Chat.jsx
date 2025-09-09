@@ -38,7 +38,13 @@ function Chat(props) {
 
     return (
         <div className="chat">
-            <ChatHeader urlImage={urlImage} ongName={props.ongName} petName={props.petName} />
+            <ChatHeader 
+                urlImage={urlImage} 
+                ongName={props.ongName} 
+                petName={props.petName} 
+                petId={props.petId} 
+                onPendingPetClick={props.onPendingPetClick}
+            />
             <div className="chatMessagesNoChat">
                 <div className="chatMessagesNoChatContainer">
                     {urlImage ? (

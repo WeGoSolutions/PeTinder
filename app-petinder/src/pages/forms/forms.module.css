@@ -1,7 +1,8 @@
 :root {
     --backgroundColor: #F4F4F4;
-    --primaryColor: #FFC0D9;
-    --secondaryColor: #80465D;
+    --primaryColor: linear-gradient(90deg, #C7849E 0%, #FFC0D9 100%);
+    --secondaryColor: linear-gradient(90deg, #80465D 0%, #59253A 100%);
+    --tercearyColor: #FF8FBB;
 }
 
 * {
@@ -28,7 +29,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #fff;
+    background: #fff;
 
     input:hover {
         cursor: pointer;
@@ -36,7 +37,7 @@ body {
 }
 
 .container {
-    background-color: var(--backgroundColor);
+    background: var(--backgroundColor);
     display: flex;
     flex-direction: column;
     border-radius: 20px;
@@ -140,7 +141,7 @@ h1 {
         padding: 10px;
         font-size: 18px;
         border-radius: 20px;
-        background-color: var(--backgroundColor)
+        background: var(--backgroundColor)
     }
 }
 
@@ -206,7 +207,7 @@ h1 {
     height: 100px;
     border: 2px solid #000;
     border-radius: 10px;
-    background-color: #f7f7f7;
+    background: #f7f7f7;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -229,7 +230,7 @@ h1 {
     position: absolute;
     top: 4px;
     right: 4px;
-    background-color: #ff4d4d;
+    background: #ff4d4d;
     border: none;
     border-radius: 50%;
     color: white;
