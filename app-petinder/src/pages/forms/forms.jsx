@@ -17,8 +17,6 @@ function Forms() {
 
         const formData = new FormData();
         formData.append('image', image);
-
-        console.log("Imagem pronta para envio:", image);
     };
 
     const [castradoVacinado, setcastradoVacinado] = useState({

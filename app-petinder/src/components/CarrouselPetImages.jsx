@@ -3,8 +3,6 @@ import React, { useState } from "react";
 function CarrouselPetImages({ pet, images }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    console.log(images);
-
     const goToPrevious = () => {
         setCurrentIndex((prev) =>
             prev === 0 ? images.length - 1 : prev - 1

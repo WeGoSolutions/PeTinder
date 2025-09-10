@@ -302,7 +302,7 @@ function Initial() {
         try {
             const response = await url.get(`/pets/${petId}`);
             const data = response.data;
-            console.log("Pet carregado:", data);
+            
             setPet({
                 id: data.id,
                 nome: data.nome,
