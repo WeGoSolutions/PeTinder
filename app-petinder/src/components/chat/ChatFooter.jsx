@@ -5,7 +5,7 @@ function ChatFooter(props) {
     const handleNoInterest = async () => {
         const userId = sessionStorage.getItem("userId");
         const petId = props.petId;
-        console.log("petId:", petId, "userId:", userId); // debug
+        // console.log("petId:", petId, "userId:", userId); // debug
         if (!userId || !petId) return;
         try {
             await url.delete(`/status/${petId}/${userId}`);

@@ -79,7 +79,6 @@ function FirstPetEdit(props) {
             </div>
             <div className="next">
                 <div onClick={() => {
-                    console.log("Botão próximo clicado");
                     props.onNext();
                 }}>
                     <PrimaryButton text="Próximo" />

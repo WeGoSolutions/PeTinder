@@ -49,7 +49,7 @@ const handleSubmit = async () => {
 
     try {
         const response = await url.post('/pets', payload);
-        console.log('Pet cadastrado com sucesso:', response.data);
+        
         alert('Pet cadastrado com sucesso!');
     } catch (error) {
         console.error('Erro ao cadastrar o pet:', error);

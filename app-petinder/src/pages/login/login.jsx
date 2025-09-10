@@ -90,7 +90,7 @@ function Login() {
             }).then(response => {
                 if (response.status === 200 && response.data?.token) {
                     const data = response.data;
-                    console.log(data);
+                    
                     sessionStorage.setItem("userId", data.id);
                     sessionStorage.setItem('authToken', data.token);
                     sessionStorage.setItem('userName', data.nome);

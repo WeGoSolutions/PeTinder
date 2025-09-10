@@ -252,12 +252,8 @@ function Cadastro() {
                 email: formValues.email,
                 senha: formValues.senha,
                 dataNasc: formValues.dataNasc,
-                cpf: null,
-                cep: null,
-                rua: null,
-                numero: null,
-                cidade: null,
-                uf: null,
+                userNovo: true,
+                maiorDe21: true,
             });
 
             setFormValues({
