@@ -3,8 +3,9 @@ import FormInput from "./FormInput";
 import SecondaryButton from "./SecondaryButton";
 import { useState, useEffect } from "react";
 import emailjs from '@emailjs/browser';
-import { serviceID, templateID, publicKey, url } from "../provider/apiInstance"
+import { serviceID, templateID, publicKey } from "../provider/apiInstance"
 import ModalCodigo from "./ModalCodigo";
+import reqs from "../reqs";
 
 export default function Modal(props) {
     const [openModalCodigo, setOpenModalCodigo] = useState(false);
@@ -54,23 +55,13 @@ export default function Modal(props) {
         }
     };
 
-    const validarEmailNoBackend = async (email) => {
-        try {
-            const response = await url.get(`/users/${email}/validar-email`);
-            return response.status === 200;
-        } catch (error) {
-            console.error("Email não encontrado no banco de dados.", error);
-            return false;
-        }
-    };
-
     const changeModal = async () => {
         if (isButtonDisabled) return; // Impede múltiplos envios
         setIsButtonDisabled(true);
         if (validateEmail()) {
             setIsLoading(true);
 
-            const emailExiste = await validarEmailNoBackend(formValues.email);
+            const emailExiste = await reqs.validarEmailNoBackend(formValues.email);
             if (!emailExiste) {
                 setErrors({ email: "Este e-mail não está cadastrado." });
                 setErrorStyle("emailredefinir");

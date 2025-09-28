@@ -2,7 +2,7 @@ import UserImage from "./UserImage";
 import SecondaryButton from "./SecondaryButton";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { url } from "../provider/apiInstance";
+import reqs from "../reqs";
 
 function PerfilArea() {
     const Navigate = useNavigate();
@@ -15,17 +15,13 @@ function PerfilArea() {
             setUserImageSrc(false);
             return;
         }
-        url.get(`/users/${userId}/imagem`)
-            .then(response => {
-                setUserImageSrc(response.data.imageUrl);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    setUserImageSrc(false);
-                } else {
-                    setUserImageSrc(false);
-                }
-            });
+        
+        const fetchUserImage = async () => {
+            const result = await reqs.getUserImage(userId);
+            setUserImageSrc(result.imageUrl);
+        };
+        
+        fetchUserImage();
     }, [userId]);
 
     return (

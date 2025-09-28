@@ -4,8 +4,8 @@ import { TiPencil } from "react-icons/ti";
 import GenericModal from "./GenericModal";
 import PrimaryButton from "./PrimaryButton";
 import SecondaryButton from "./SecondaryButton";
-import { url } from "../provider/apiInstance";
 import { convertImagesToBase64 } from "../utils/utils";
+import reqs from "../reqs";
 
 function UserImage({ src, alt = "Foto do usuário", size = 180, hasEdit }) {
     const [modalOpen, setModalOpen] = useState(false);
@@ -34,16 +34,17 @@ function UserImage({ src, alt = "Foto do usuário", size = 180, hasEdit }) {
     const handleSave = async () => {
         if (!selectedFile) return;
         setIsSaving(true);
-        const userId = sessionStorage.getItem("userId");
-        const ongId = sessionStorage.getItem("ongId");
+        
         try {
             const [base64] = await convertImagesToBase64([selectedFile]);
-            if (ongId) {
-                await url.put(`/ongs/${ongId}/imagem`, { imagensBytes: base64 });
-            } else if (userId) {
-                await url.put(`/users/${userId}/imagem`, { imagemUsuario: base64 });
+            const result = await reqs.saveUserAndOngImage(base64);
+            
+            if (result.success) {
+                window.location.reload();
+            } else {
+                alert(result.message);
+                setIsSaving(false);
             }
-            window.location.reload();
         } catch (error) {
             alert("Erro ao salvar imagem.");
             setIsSaving(false);

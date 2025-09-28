@@ -4,8 +4,8 @@ import ChatHeader from "./ChatHeader";
 import ReceivedMessage from "./ReceivedMessage";
 import SentMessage from "./SentMessage";
 import HiperLink from "../HiperLink";
-import { url } from "../../provider/apiInstance";
 import { CgProfile } from "react-icons/cg";
+import reqs from "../../reqs";
 
 function Chat(props) {
     const chatEndRef = useRef(null);
@@ -25,15 +25,14 @@ function Chat(props) {
     }, [props.messages]);
 
     useEffect(() => {
-
-        url.get(`/ongs/${props.ongId}/imagem/arquivo`)
-            .then(ongRes => {
-                setUrlImage(ongRes.data?.imageUrl || "");
-            })
-            .catch(() => {
-                setUrlImage(""); // fallback
-            });
-
+        if (!props.ongId) return;
+        
+        const fetchOngImage = async () => {
+            const result = await reqs.getOngImageForChat(props.ongId);
+            setUrlImage(result.imageUrl);
+        };
+        
+        fetchOngImage();
     }, [props.ongId]);
 
     return (

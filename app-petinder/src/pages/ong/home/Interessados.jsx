@@ -4,6 +4,7 @@ import Mensagens from "../../../components/ong/Mensagens";
 import SemMensagensdeInteressados from "../../../components/ong/SemMensagensdeInteressados";
 import { useEffect, useState } from "react";
 import { url } from "../../../provider/apiInstance";
+import reqs from "../../../reqs";
 
 export default function Interessados() {
 
@@ -15,14 +16,16 @@ export default function Interessados() {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        url.get(`/ongs/${ongId}/mensagens-pendentes`)
-            .then(response => {
-                const dados = response.data;
-                setInfosMensagens(Array.isArray(dados) ? dados : []);
-            })
-            .catch(error => {
-                console.error('Erro ao buscar mensagens:', error);
-            });
+        const fetchMensagens = async () => {
+            const result = await reqs.interessadosMensagens(ongId);
+            if (result.success) {
+                setInfosMensagens(result.mensagens);
+            } else {
+                console.error('Erro ao buscar mensagens:', result.error);
+            }
+        };
+
+        fetchMensagens();
     }, []);
 
     function formatarData(dataHora) {

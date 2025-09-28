@@ -4,6 +4,7 @@ import FormInput from "../../components/FormInput";
 import PrimaryButton from "../../components/PrimaryButton";
 import styles from './cadastro.module.css';
 import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 import Toast from "../../components/Toast";
 import GenericModal from "../../components/GenericModal";
 import Logo from "../../components/Logo";
@@ -247,52 +248,55 @@ function Cadastro() {
         setIsLoading(true);
 
         try {
-            await url.post("/users", {
-                nome: formValues.nome,
-                email: formValues.email,
-                senha: formValues.senha,
-                dataNasc: formValues.dataNasc,
-                userNovo: true,
-                maiorDe21: true,
-            });
+            const result = await reqs.CadastrarUsuario(formValues);
+            
+            if (result.success) {
+                setFormValues({
+                    nome: "",
+                    email: "",
+                    senha: "",
+                    confSenha: "",
+                    dataNasc: "",
+                });
+                setIsChecked(false);
+                setToast({
+                    mensagem: Strings.sucessoCriacao,
+                    tipo: "sucesso"
+                });
 
-            setFormValues({
-                nome: "",
-                email: "",
-                senha: "",
-                confSenha: "",
-                dataNasc: "",
-            });
-            setIsChecked(false);
-            setToast({
-                mensagem: Strings.sucessoCriacao,
-                tipo: "sucesso"
-            });
+                setTimeout(() => {
+                    Navigate("/login");
+                }, 1100);
+            } else {
+                const error = result.error;
+                setIsButtonDisabled(false);
 
-            setTimeout(() => {
-                Navigate("/login");
-            }, 1100);
+                if (error.response && error.response.status === 409) {
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        email: Strings.erroEmail5,
+                    }));
+                    setModalWarning(false);
+                    const inputElement = document.getElementById("email");
+                    if (inputElement) {
+                        inputElement.style.border = "2px solid red";
+                        inputElement.closest(".input-container").classList.add("error");
+                    }
+                } else {
+                    console.error("Erro:", error);
+                    setToast({
+                        mensagem: Strings.erro,
+                        tipo: "erro"
+                    });
+                }
+            }
         } catch (error) {
             setIsButtonDisabled(false);
-
-            if (error.response && error.response.status === 409) {
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    email: Strings.erroEmail5,
-                }));
-                setModalWarning(false);
-                const inputElement = document.getElementById("email");
-                if (inputElement) {
-                    inputElement.style.border = "2px solid red";
-                    inputElement.closest(".input-container").classList.add("error");
-                }
-            } else {
-                console.error("Erro:", error);
-                setToast({
-                    mensagem: Strings.erro,
-                    tipo: "erro"
-                });
-            }
+            console.error("Erro inesperado:", error);
+            setToast({
+                mensagem: Strings.erro,
+                tipo: "erro"
+            });
         } finally {
             setIsLoading(false);
         }

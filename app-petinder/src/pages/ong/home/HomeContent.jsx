@@ -9,6 +9,7 @@ import DashboardMaioresCurtidos from "../../../components/ong/DashboardMaioresCu
 import DashboardAdotadosENao from "../../../components/ong/DashboardAdotadosENao";
 import { Link } from "react-router-dom";
 import { url } from "../../../provider/apiInstance";
+import reqs from "../../../reqs";
 
 export default function HomeContent() {
     const [pets, setPets] = useState([]);
@@ -28,31 +29,32 @@ export default function HomeContent() {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        url.get(`/ongs/${ongId}/pets`)
-            .then(response => {
-                setPets(response.data);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    setPets([]);
-                } else {
-                    console.error('Erro ao buscar pets:', error);
-                }
-            });
+        const fetchPets = async () => {
+            const result = await reqs.homeOngCharts(ongId);
+            if (result.success) {
+                setPets(result.pets);
+            } else {
+                console.error('Erro ao buscar pets:', result.error);
+            }
+        };
+
+        fetchPets();
     }, []);
     
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        url.get(`/ongs/${ongId}/mensagens-pendentes`)
-            .then(response => {
-                const dados = response.data;
-                setInfosMensagens(Array.isArray(dados) ? dados : []);
-            })
-            .catch(error => {
-                console.error('Erro ao buscar mensagens:', error);
-            });
+        const fetchMensagens = async () => {
+            const result = await reqs.homeOngInteressados(ongId);
+            if (result.success) {
+                setInfosMensagens(result.mensagens);
+            } else {
+                console.error('Erro ao buscar mensagens:', result.error);
+            }
+        };
+
+        fetchMensagens();
     }, []);
 
     function formatarData(dataHora) {

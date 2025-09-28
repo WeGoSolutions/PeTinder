@@ -6,6 +6,7 @@ import SecondaryButton from "../../components/SecondaryButton";
 import Modal from "../../components/Modal";
 import styles from './login.module.css';
 import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 import Toast from "../../components/Toast";
 import Logo from "../../components/Logo";
 import Strings from "../../utils/strings"
@@ -82,52 +83,36 @@ function Login() {
             return;
         }
 
-        try {
-            url.post("/users/login", {
-                email: formValues.email,
-                senha: formValues.senha
+        const result = await reqs.LoginUser(formValues.email, formValues.senha);
+        
+        if (result.success) {
+            const data = result.data;
+            
+            sessionStorage.setItem("userId", data.id);
+            sessionStorage.setItem('authToken', data.token);
+            sessionStorage.setItem('userName', data.nome);
+            sessionStorage.setItem('isNew', data.userNovo);
 
-            }).then(response => {
-                if (response.status === 200 && response.data?.token) {
-                    const data = response.data;
-                    
-                    sessionStorage.setItem("userId", data.id);
-                    sessionStorage.setItem('authToken', data.token);
-                    sessionStorage.setItem('userName', data.nome);
-                    sessionStorage.setItem('isNew', data.userNovo)
-
-                    setToast({
-                        mensagem: Strings.sucessoLogin,
-                        tipo: 'sucesso'
-                    });
-
-                    setTimeout(() => {
-                        Navigate('/initial');
-                    }, 1000);
-                } else {
-                    setToast({
-                        mensagem: Strings.erroLogin1,
-                        tipo: 'erro'
-                    });
-                    return;
-                }
-            })
-                .catch((error) => {
-                    setToast({
-                        mensagem: Strings.erroLogin2,
-                        tipo: 'erro'
-                    });
-                    console.error("Erro ao fazer login:", error);
-                    setToast({
-                        mensagem: Strings.erroLogin3,
-                        tipo: 'erro'
-                    });
-                });
-        } catch (error) {
             setToast({
-                mensagem: Strings.erroLogin2,
-                tipo: 'erro'
+                mensagem: Strings.sucessoLogin,
+                tipo: 'sucesso'
             });
+
+            setTimeout(() => {
+                Navigate('/initial');
+            }, 1000);
+        } else {
+            if (result.errorType === "invalidCredentials") {
+                setToast({
+                    mensagem: Strings.erroLogin1,
+                    tipo: 'erro'
+                });
+            } else {
+                setToast({
+                    mensagem: Strings.erroLogin2,
+                    tipo: 'erro'
+                });
+            }
         }
     };
 
@@ -138,48 +123,33 @@ function Login() {
             return;
         }
 
-        try {
-            url.post("/ongs/login", {
-                email: formValues.email,
-                senha: formValues.senha
-            }).then(response => {
-                if (response.status === 200) {
-                    const data = response.data;
-                    sessionStorage.setItem("ongId", data.id);
-                    sessionStorage.setItem('userName', data.nome);
+        const result = await reqs.LoginOng(formValues.email, formValues.senha);
+        
+        if (result.success) {
+            const data = result.data;
+            sessionStorage.setItem("ongId", data.id);
+            sessionStorage.setItem('userName', data.nome);
 
-                    setToast({
-                        mensagem: Strings.sucessoLogin,
-                        tipo: 'sucesso'
-                    });
-
-                    setTimeout(() => {
-                        Navigate('/ong/home');
-                    }, 1000);
-                } else {
-                    setToast({
-                        mensagem: Strings.erroLogin1,
-                        tipo: 'erro'
-                    });
-                    return;
-                }
-            })
-                .catch((error) => {
-                    setToast({
-                        mensagem: Strings.erroLogin2,
-                        tipo: 'erro'
-                    });
-                    console.error("Erro ao fazer login:", error);
-                    setToast({
-                        mensagem: Strings.erroLogin3,
-                        tipo: 'erro'
-                    });
-                });
-        } catch (error) {
             setToast({
-                mensagem: Strings.erroLogin2,
-                tipo: 'erro'
+                mensagem: Strings.sucessoLogin,
+                tipo: 'sucesso'
             });
+
+            setTimeout(() => {
+                Navigate('/ong/home');
+            }, 1000);
+        } else {
+            if (result.errorType === "invalidCredentials") {
+                setToast({
+                    mensagem: Strings.erroLogin1,
+                    tipo: 'erro'
+                });
+            } else {
+                setToast({
+                    mensagem: Strings.erroLogin2,
+                    tipo: 'erro'
+                });
+            }
         }
     };
 

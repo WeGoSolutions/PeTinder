@@ -5,6 +5,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useState } from "react";
 import axios from "axios";
 import { url } from "../../../provider/apiInstance";
+import reqs from "../../../reqs";
 import Toast from "../../../components/Toast";
 import PrimaryButton from "../../../components/PrimaryButton";
 import Strings from "../../../utils/strings"
@@ -114,12 +115,13 @@ export default function ConfigSeguranca() {
             return;
         }
 
-        try {
-            await url.patch(`/ongs/${ongId}/senha`, {
-                senhaAtual: formValues.senhaAtual,
-                novaSenha: formValues.novaSenha
-            });
+        const result = await reqs.AtualizarSenhaOngConfig(
+            ongId, 
+            formValues.senhaAtual, 
+            formValues.novaSenha
+        );
 
+        if (result.success) {
             setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });
             setFormValues({
                 senhaAtual: "",
@@ -130,11 +132,11 @@ export default function ConfigSeguranca() {
             setTimeout(() => {
                 navigate('/login');
             }, 2000);
-        } catch (error) {
-            console.error("Erro ao atualizar a senha:", error);
+        } else {
+            console.error("Erro ao atualizar a senha:", result.error);
 
             let newErrors = {};
-            if (error.response && error.response.status === 409) {
+            if (result.errorType === "wrongCurrentPassword") {
                 newErrors.senhaAtual = Strings.erroSenha9;
                 setErrorStyle("senhaAtual");
             }
@@ -183,7 +185,7 @@ export default function ConfigSeguranca() {
                     <FormInput
                         id="novaSenha"
                         name="novaSenha"
-                        label={String.novaSenha}
+                        label={Strings.novaSenha}
                         type="password"
                         required
                         value={formValues.novaSenha}

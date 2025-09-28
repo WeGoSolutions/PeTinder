@@ -4,7 +4,7 @@ import Chat from "./chat/Chat";
 import ChatsArea from "./chat/ChatsArea";
 import LikedArea from "./LikedArea.jsx";
 import { IoChatbubblesOutline } from "react-icons/io5";
-import { url } from "../provider/apiInstance";
+import reqs from "../reqs";
 
 function SideMenu(props) {
     const isOpen = props.isOpen;
@@ -22,11 +22,12 @@ function SideMenu(props) {
         if (isOpen && activeTab === "chats") {
             const userId = sessionStorage.getItem("userId");
             if (!userId) return;
-            url.get(`/status/pending/ong/${userId}`)
-                .then(res => {
-                    setPendingChats(Array.isArray(res.data) ? res.data : []);
-                })
-                .catch(() => {
+            
+            const fetchPendingChats = async () => {
+                const result = await reqs.getPendingChats(userId);
+                if (result.success) {
+                    setPendingChats(result.data);
+                } else {
                     setPendingChats([]);
                     setSelectedChat({
                         petId: "",
@@ -35,7 +36,10 @@ function SideMenu(props) {
                         ongLink: "",
                         ongId: "",
                     });
-                });
+                }
+            };
+            
+            fetchPendingChats();
         }
     }, [isOpen, activeTab]);
 

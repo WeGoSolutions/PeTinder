@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { url } from "../../provider/apiInstance";
 import { CgProfile } from "react-icons/cg";
+import reqs from "../../reqs";
 
 function ChatCard({ petNome, ongNome, descricao, petId }) {
     const titleTooltip = `${petNome} • ${ongNome}`
@@ -10,19 +10,11 @@ function ChatCard({ petNome, ongNome, descricao, petId }) {
     useEffect(() => {
         async function fetchOngImage() {
             if (!petId) return;
-            try {
-                // Busca o pet para pegar o ongId
-                const petRes = await url.get(`/pets/${petId}`);
-                const ongId = petRes.data.ongId;
-                if (!ongId) return;
-
-                // Busca a imagem da ONG
-                const ongRes = await url.get(`/ongs/${ongId}/imagem/arquivo`);
-                setUrlImage(ongRes.data?.imageUrl || "");
-            } catch (err) {
-                setUrlImage(""); // fallback
-            }
+            
+            const result = await reqs.getPetInfosAndOngImage(petId);
+            setUrlImage(result.imageUrl);
         }
+        
         fetchOngImage();
     }, [petId]);
 
