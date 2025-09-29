@@ -1,4 +1,5 @@
 import { url } from "../../../provider/apiInstance";
+import reqs from "../../../reqs";
 import FirstPetEdit from "../../../components/ong/FirstPetModal";
 import SecondPetEdit from "../../../components/ong/SecondPetModal";
 import PetCard from "../../../components/ong/PetCard";
@@ -121,16 +122,12 @@ export default function PetsContent() {
             imagemBase64,
         };
 
-        try {
-            if (modo === "Editar") {
-                await url.put(`/pets/${editingPetId}`, payload);
-            } else {
-                await url.post("/pets", payload);
-            }
+        const result = await reqs.editarInfosDoPet(modo, editingPetId, payload);
+        if (result.success) {
             closeEditModal();
             window.location.reload();
-        } catch (error) {
-            console.error(error);
+        } else {
+            console.error(result.error);
             setIsButtonDisabled(false); // Reabilita o botão em caso de erro
         }
     };
@@ -194,20 +191,18 @@ export default function PetsContent() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        url.get(`/ongs/${ongId}/pets`)
-            .then(res => {
-                const petsData = Array.isArray(res.data) ? res.data.map(pet => ({
-                    id: pet.petId,
-                    nome: pet.petNome,
-                    src: pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : "",
-                    isAdopted: Array.isArray(pet.status) && pet.status.includes('ADOPTED'),
-                })) : [];
-                setPets(petsData);
-            })
-            .catch(err => {
+        
+        const fetchPets = async () => {
+            const result = await reqs.listarPetsDaOng(ongId);
+            if (result.success) {
+                setPets(result.pets);
+            } else {
                 setPets([]);
-                console.error("Erro ao buscar pets da ONG:", err);
-            });
+                console.error("Erro ao buscar pets da ONG:", result.error);
+            }
+        };
+
+        fetchPets();
     }, []);
 
     const openAddModal = () => {
@@ -243,9 +238,10 @@ export default function PetsContent() {
     const openEditModal = async (petId) => {
         setModo("Editar");
         setEditingPetId(petId);
-        try {
-            const res = await url.get(`/pets/${petId}`);
-            const pet = res.data;
+        
+        const result = await reqs.modalDeEdicao(petId);
+        if (result.success) {
+            const pet = result.pet;
 
             let idade = "";
             let idadeTipo = "anos";
@@ -290,8 +286,8 @@ export default function PetsContent() {
                 setImages([]);
             }
             setEditStep(1);
-        } catch (err) {
-            console.error("Erro ao buscar pet para edição:", err);
+        } else {
+            console.error("Erro ao buscar pet para edição:", result.error);
         }
     };
 
@@ -306,13 +302,13 @@ export default function PetsContent() {
 
     const handleConfirmDelete = async () => {
         if (petToDelete) {
-            try {
-                await url.delete(`/pets/${petToDelete.id}`);
+            const result = await reqs.deletarPet(petToDelete.id);
+            if (result.success) {
                 setShowDeleteModal(false);
                 setPetToDelete(null);
                 window.location.reload();
-            } catch (error) {
-                console.error("Erro ao deletar pet:", error);
+            } else {
+                console.error("Erro ao deletar pet:", result.error);
             }
         } else {
             setShowDeleteModal(false);

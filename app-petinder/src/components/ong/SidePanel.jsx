@@ -7,6 +7,7 @@ import SideButtonsConfig from "./SideButtonsConfig";
 import { useEffect} from "react";
 import UserImage from "../UserImage";
 import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 
 export default function SidePanel() {
     const [open, setOpen] = useState(false);
@@ -22,12 +23,15 @@ export default function SidePanel() {
       useEffect(() => {
              const ongId = sessionStorage.getItem("ongId");
              if (!ongId) return;
-             url.get(`/ongs/${ongId}/imagem/arquivo`)
-                 .then(res => {
-                     const data = res.data;
-     
-                     setUrlImage(data.imageUrl);
-                 })
+
+             const fetchOngImage = async () => {
+                 const result = await reqs.getOngImageSidePanel(ongId);
+                 if (result.success) {
+                     setUrlImage(result.imageUrl);
+                 }
+             };
+
+             fetchOngImage();
          }, [])
 
     return (

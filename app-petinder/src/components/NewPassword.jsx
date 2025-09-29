@@ -2,8 +2,8 @@ import { useState } from "react";
 import "./components.css";
 import FormInput from "./FormInput";
 import SecondaryButton from "./SecondaryButton";
-import { url } from "../provider/apiInstance";
 import Toast from "../components/Toast";
+import reqs from "../reqs";
 
 export default function NewPassword(props) {
     if (!props.passwordOpen) return null;
@@ -92,22 +92,16 @@ export default function NewPassword(props) {
     const changePassword = async () => {
         if (!validatePasswords()) return;
 
-        try {
-            await url.patch(`/users/senha`, {
-                senha: formNewValues.novaSenha,
-                email: props.emailReset
-            });
-
-            setToast({ mensagem: 'Senha atualizada com sucesso!', tipo: 'sucesso' });
+        const result = await reqs.changePassword(formNewValues.novaSenha, props.emailReset);
+        
+        if (result.success) {
+            setToast({ mensagem: result.message, tipo: 'sucesso' });
 
             setTimeout(() => {
                 props.onCloseAll();
             }, 2000);
-
-        } catch (error) {
-            console.error("Erro ao atualizar a senha:", error);
-            setToast({ mensagem: 'Erro ao atualizar a senha. Tente novamente.', tipo: 'erro' });
-
+        } else {
+            setToast({ mensagem: result.message, tipo: 'erro' });
         }
     };
 

@@ -5,6 +5,7 @@ import { IoMdMore } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 import GenericModal from "../../components/GenericModal";
 import Mensagens from "./Mensagens";
 import SemMensagensdeInteressados from "./SemMensagensdeInteressados";
@@ -35,11 +36,11 @@ function PetCard(props) {
     }, [showBaloon]);
 
     const marcarComoAdotado = async (idAdotante) => {
-        try {
-            await url.post(`/status/adopted/${props.id}/${idAdotante}`);
+        const result = await reqs.marcarPetComoAdotado(props.id, idAdotante);
+        if (result.success) {
             setAdotanteId(idAdotante);
             window.location.reload();
-        } catch (err) {
+        } else {
             alert("Erro ao marcar como adotado");
         }
     };
@@ -47,10 +48,10 @@ function PetCard(props) {
     const idAdotanteRoot = "11111111-1111-1111-1111-111111111111";
 
     const marcarComoAdotadoExterno = async () => {
-        try {
-            await url.post(`/status/adopted/${props.id}/11111111-1111-1111-1111-111111111111`);
+        const result = await reqs.marcarComoAdotadoExterno(props.id);
+        if (result.success) {
             window.location.reload();
-        } catch (err) {
+        } else {
             alert("Erro ao marcar como adotado");
         }
     }
@@ -61,12 +62,12 @@ function PetCard(props) {
     };
 
     const voltarParaAdocao = async () => {
-        try {
-            const adotanteIdToDelete = adotanteInfo?.userId || idAdotanteRoot;
-            await url.delete(`/status/${props.id}/${adotanteIdToDelete}`);
+        const adotanteIdToDelete = adotanteInfo?.userId || idAdotanteRoot;
+        const result = await reqs.voltarParaAdocao(props.id, adotanteIdToDelete);
+        if (result.success) {
             window.location.reload();
-        } catch (err) {
-            console.error("Erro ao voltar para adoção:", err);
+        } else {
+            console.error("Erro ao voltar para adoção:", result.error);
             alert("Erro ao voltar para adoção");
         }
     };
@@ -77,26 +78,16 @@ function PetCard(props) {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
-        url.get(`/ongs/${ongId}/mensagens-pendentes`)
-            .then(response => {
-                const dados = response.data;
-                const mensagensDoPet = Array.isArray(dados)
-                    ? dados
-                        .filter(msg => msg.nomePet === props.nome || msg.petNome === props.nome)
-                        .map(msg => {
-                            const idOng = msg.idOng;
-                            const idUser = msg.idUser;
-                            const idPet = msg.idPet;
-                            const nomeUser = msg.nomeUser;
-                            const nomePet = msg.nomePet || msg.petNome;
-                            return { ...msg, idOng, idUser, idPet, nomeUser, nomePet };
-                        })
-                    : [];
-                setInfosMensagens(mensagensDoPet);
-            })
-            .catch(error => {
-                console.error('Erro ao buscar mensagens:', error);
-            });
+        const fetchMensagens = async () => {
+            const result = await reqs.getMensagensPendentesPetCard(ongId, props.nome);
+            if (result.success) {
+                setInfosMensagens(result.data);
+            } else {
+                console.error('Erro ao buscar mensagens:', result.error);
+            }
+        };
+
+        fetchMensagens();
     }, [props.nome]);
 
     const handleCloseModal = () => {
@@ -111,10 +102,10 @@ function PetCard(props) {
     };
 
     const fetchAdotanteInfo = async () => {
-        try {
-            const res = await url.get(`/status/adopted/${props.id}`);
-            setAdotanteInfo(res.data);
-        } catch (err) {
+        const result = await reqs.fetchAdotanteInfoPetCard(props.id);
+        if (result.success) {
+            setAdotanteInfo(result.data);
+        } else {
             setAdotanteInfo(null);
         }
     };

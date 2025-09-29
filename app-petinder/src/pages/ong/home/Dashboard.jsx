@@ -8,6 +8,7 @@ import DashboardPendentes from "../../../components/ong/DashboardPendentes";
 import SemMensagensdeInteressados from '../../../components/ong/SemMensagensdeInteressados';
 import { Link } from "react-router-dom";
 import { url } from "../../../provider/apiInstance";
+import reqs from "../../../reqs";
 
 export default function Dashboard() {
     const [pets, setPets] = useState([]);
@@ -25,17 +26,16 @@ useEffect(() => {
     const ongId = sessionStorage.getItem("ongId");
     if (!ongId) return;
 
-    url.get(`/ongs/${ongId}/pets`)
-        .then(response => {
-            setPets(response.data);
-        })
-        .catch(error => {
-            if (error.response && error.response.status === 404) {
-                setPets([]);
-            } else {
-                console.error('Erro ao buscar pets:', error);
-            }
-        });
+    const fetchOngPets = async () => {
+        const result = await reqs.dashboardInfosDosPets(ongId);
+        if (result.success) {
+            setPets(result.pets);
+        } else {
+            console.error('Erro ao buscar pets:', result.error);
+        }
+    };
+
+    fetchOngPets();
 }, []);
 
     return (

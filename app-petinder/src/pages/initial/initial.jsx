@@ -66,19 +66,13 @@ function Initial() {
         const userId = sessionStorage.getItem("userId");
         const authToken = sessionStorage.getItem("authToken");
 
-        try {
-            const [base64Image] = await convertImagesToBase64([profileImage]);
-            await url.post(`/users/${userId}/imagem`, {
-                imagemUsuario: base64Image
-            }, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${authToken}`,
-                },
-            });
+        const [base64Image] = await convertImagesToBase64([profileImage]);
+        const result = await Reqs.uploadUserImageInitial(userId, base64Image, authToken);
+        
+        if (result.success) {
             setModalStep(2);
-        } catch (error) {
-            console.error(error);
+        } else {
+            console.error("Erro ao enviar imagem:", result.error);
         }
     };
 
@@ -95,24 +89,18 @@ function Initial() {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        url.get(`/users/${userId}`)
-            .then(response => {
-                const data = response.data;
-                if (data.cep) {
-                    setUserEndereco({
-                        cep: data.cep,
-                        rua: data.rua,
-                        numero: data.numero,
-                        cidade: data.cidade,
-                        uf: data.uf,
-                        complemento: data.complemento,
-                    });
-                }
-            })
-            .catch(error => {
-                console.error("Erro ao buscar endereço do usuário:", error);
+        
+        const fetchUserAddress = async () => {
+            const result = await Reqs.getUserAddressInitial(userId);
+            if (result.success) {
+                setUserEndereco(result.data);
+            } else {
+                console.error("Erro ao buscar endereço do usuário:", result.error);
                 setUserEndereco(null);
-            });
+            }
+        };
+        
+        fetchUserAddress();
     }, []);
 
     useEffect(() => {
@@ -264,8 +252,9 @@ function Initial() {
             return;
         }
 
-        try {
-            await url.post(`/status/pending/${pet.id}/${userId}`);
+        const result = await Reqs.EnviarRequestdeAdocao(pet.id, userId);
+        
+        if (result.success) {
             setSelectedChat({
                 petId: pet.id,
                 ongNome: pet.nomeOng,
@@ -275,8 +264,8 @@ function Initial() {
             setSideMenuTab("chats");
             setIsSideMenuOpen(true);
             removerPetAtualEDepois();
-        } catch (error) {
-            console.error("Erro ao enviar solicitação de adoção:", error);
+        } else {
+            console.error("Erro ao enviar solicitação de adoção:", result.error);
         }
     };
 
@@ -286,23 +275,24 @@ function Initial() {
             return;
         }
 
-        try {
-            await url.post(`/status/liked/${pet.id}/${userId}`);
+        const result = await Reqs.likePetInitial(pet.id, userId);
+        
+        if (result.success) {
             if(!pet.isLiked) {
                 setSideMenuTab("liked");
                 setIsSideMenuOpen(true);
             }
             removerPetAtualEDepois(); // Remove o pet curtido e avança para o próximo
-        } catch (error) {
-            console.error("Erro ao curtir o pet:", error);
+        } else {
+            console.error("Erro ao curtir o pet:", result.error);
         }
     };
 
     const handleLoadPetById = async (petId) => {
-        try {
-            const response = await url.get(`/pets/${petId}`);
-            const data = response.data;
-            
+        const result = await Reqs.getPetByIdInitial(petId);
+        
+        if (result.success) {
+            const data = result.data;
             setPet({
                 id: data.id,
                 nome: data.nome,
@@ -322,8 +312,8 @@ function Initial() {
             });
             setNotFound(false); // <-- Garante que o erro some ao selecionar um pet curtido
             setIsSideMenuOpen(false);
-        } catch (error) {
-            console.error(error);
+        } else {
+            console.error("Erro ao carregar pet:", result.error);
         }
     };
 

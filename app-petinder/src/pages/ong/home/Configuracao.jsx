@@ -7,6 +7,7 @@ import UserImage from "../../../components/UserImage";
 import { formatarCPF, formatarCNPJ, formatarCEP } from "../../../utils/utils";
 import axios from "axios";
 import { url } from "../../../provider/apiInstance";
+import reqs from "../../../reqs";
 import Toast from "../../../components/Toast";
 import Strings from "../../../utils/strings"
 
@@ -50,20 +51,27 @@ export default function Configuracao() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        url.get(`/ongs/${ongId}/imagem/arquivo`)
-            .then(res => {
-                const data = res.data;
-
-                setUrlImage(data.imageUrl);
-            })
+        
+        const fetchOngImage = async () => {
+            const result = await reqs.getOngImageConfig(ongId);
+            if (result.success) {
+                setUrlImage(result.imageUrl);
+            } else {
+                console.error("Erro ao buscar imagem da ONG:", result.error);
+            }
+        };
+        
+        fetchOngImage();
     }, [])
 
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        url.get(`/ongs/${ongId}`)
-            .then(res => {
-                const data = res.data;
+        
+        const fetchOngData = async () => {
+            const result = await reqs.listarInfosDaOngEmConfig(ongId);
+            if (result.success) {
+                const data = result.data;
                 const endereco = data.endereco || {};
 
                 let cepFormatado = "";
@@ -105,10 +113,12 @@ export default function Configuracao() {
                 });
                 setInitialCpf(cpfFormatado);
                 setInitialCnpj(cnpjFormatado);
-            })
-            .catch(err => {
-                console.error("Erro ao buscar dados do usuário:", err);
-            });
+            } else {
+                console.error("Erro ao buscar dados da ONG:", result.error);
+            }
+        };
+        
+        fetchOngData();
     }, []);
 
     function validateNome() {
@@ -170,15 +180,15 @@ export default function Configuracao() {
             }
         };
 
-        try {
-            await url.patch(`/ongs/${ongId}`, payload);
+        const result = await reqs.updateOngInfosConfig(ongId, payload);
+        if (result.success) {
             sessionStorage.setItem("userName", formValues.nomeOng);
             setToast({ mensagem: Strings.atualizacaoDadosSucesso, tipo: 'sucesso' });
             setTimeout(() => {
                 window.location.reload();
             }, 1500);
-        } catch (error) {
-            console.error("Erro ao atualizar dados da ONG:", error);
+        } else {
+            console.error("Erro ao atualizar dados da ONG:", result.error);
             setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
         }
     };
@@ -364,15 +374,16 @@ export default function Configuracao() {
  
                         const ongId = sessionStorage.getItem("ongId");
                         if (!ongId) return;
-                        url.get(`/ongs/${ongId}`)
-                            .then(res => {
-                                const data = res.data;
-                                setFormValues(prev => ({
-                                    ...prev,
-                                    cpf: data.cpf ? formatarCPF(data.cpf.replace(/\D/g, "")) : "",
-                                    cnpj: data.cnpj ? formatarCNPJ(data.cnpj.replace(/\D/g, "")) : ""
-                                }));
-                            });
+                        
+                        const result = await reqs.pegarCpfOuCnpjDaOng(ongId);
+                        if (result.success) {
+                            const data = result.data;
+                            setFormValues(prev => ({
+                                ...prev,
+                                cpf: data.cpf ? formatarCPF(data.cpf.replace(/\D/g, "")) : "",
+                                cnpj: data.cnpj ? formatarCNPJ(data.cnpj.replace(/\D/g, "")) : ""
+                            }));
+                        }
                     }}
                 >
                     <PrimaryButton text="Salvar" />

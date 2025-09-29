@@ -1,7 +1,7 @@
 import "./css/DashboardPendentes.css";
 import React, { useEffect, useState } from "react";
 import SemMensagensdeInteressados from "./SemMensagensdeInteressados";
-import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 
 function formatPendencias(pendencias) {
     const colorMap = {
@@ -35,9 +35,16 @@ useEffect(() => {
     const ongId = sessionStorage.getItem("ongId");
     if (!ongId) return;
 
-    url.get(`/dashs/pendencias/${ongId}`)
-        .then(res => setPendentes(res.data))
-        .catch(err => console.error(err));
+    const fetchPendentes = async () => {
+        const result = await reqs.getDashboardPendenciasBadges(ongId);
+        if (result.success) {
+            setPendentes(result.data);
+        } else {
+            setPendentes([]);
+        }
+    };
+    
+    fetchPendentes();
 }, []);
 
     return (

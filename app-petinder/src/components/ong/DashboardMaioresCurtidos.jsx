@@ -10,7 +10,7 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
-import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -25,13 +25,12 @@ useEffect(() => {
     const ongId = sessionStorage.getItem("ongId");
     if (!ongId) return;
 
-    url.get(`/dashs/ranking/${ongId}`)
-        .then((response) => {
-            const labels = response.data.map((item) => item.nome);
-            const data = response.data.map((item) => item.curtidas);
-
+    const fetchDashboardData = async () => {
+        const result = await reqs.getDashboardRanking(ongId);
+        
+        if (result.success) {
             setChartData({
-                labels: labels,
+                labels: result.data.labels,
                 datasets: [
                     {
                         label: "Curtidas",
@@ -40,14 +39,14 @@ useEffect(() => {
                         borderWidth: 3,
                         hoverBackgroundColor: "rgba(255, 113, 169, 0.6)",
                         hoverBorderColor: "rgba(255, 113, 169, 1)",
-                        data: data,
+                        data: result.data.curtidas,
                     },
                 ],
             });
-        })
-        .catch((error) => {
-            console.error("Erro ao buscar dados:", error);
-        });
+        }
+    };
+    
+    fetchDashboardData();
 }, []);
 
     return (

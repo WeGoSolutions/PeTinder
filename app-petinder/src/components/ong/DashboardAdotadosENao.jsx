@@ -1,7 +1,7 @@
 import "./css/DashboardAdotadosENao.css";
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
-import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 import {
     Chart as ChartJS,
     ArcElement,
@@ -21,13 +21,15 @@ useEffect(() => {
     const ongId = sessionStorage.getItem("ongId");
     if (!ongId) return;
 
-    url.get(`/dashs/adotados-ou-nao/${ongId}`)
-        .then((response) => {
+    const fetchDashboardData = async () => {
+        const result = await reqs.getDashboardAdotadosENao(ongId);
+        
+        if (result.success) {
             setChartData({
                 labels: ["Adotados", "Não Adotados"],
                 datasets: [
                     {
-                        data: [response.data.adotados, response.data.naoAdotados],
+                        data: [result.data.adotados, result.data.naoAdotados],
                         backgroundColor: [
                             "rgba(128, 70, 93, 0.6)",
                             "rgba(255, 113, 169, 0.6)"
@@ -40,10 +42,10 @@ useEffect(() => {
                     },
                 ],
             });
-        })
-        .catch((error) => {
-            console.error("Erro ao buscar dados:", error);
-        });
+        }
+    };
+    
+    fetchDashboardData();
 }, []);
 
     return (

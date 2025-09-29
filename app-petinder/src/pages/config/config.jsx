@@ -13,6 +13,7 @@ import GenericModal from "../../components/GenericModal"
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { url } from "../../provider/apiInstance";
+import reqs from "../../reqs";
 import Toast from "../../components/Toast";
 import Strings from "../../utils/strings"
 
@@ -52,45 +53,18 @@ function Config() {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        url.get(`/users/${userId}`)
-            .then(res => {
-                const data = res.data;
 
-                const maskCPF = (value) => {
-                    return (value || "")
-                        .replace(/\D/g, "")
-                        .slice(0, 11)
-                        .replace(/(\d{3})(\d)/, "$1.$2")
-                        .replace(/(\d{3})(\d)/, "$1.$2")
-                        .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-                };
+        const fetchUserData = async () => {
+            const result = await reqs.getUserDataConfig(userId);
+            if (result.success) {
+                setFormValues(result.data);
+                setInitialValues(result.data); // Salva os valores iniciais
+            } else {
+                console.error(Strings.erroBuscaUser, result.error);
+            }
+        };
 
-                const maskCEP = (value) => {
-                    return (value || "")
-                        .replace(/\D/g, "")
-                        .slice(0, 8)
-                        .replace(/(\d{5})(\d{1,3})$/, "$1-$2");
-                };
-
-                const loadedValues = {
-                    nome: data.nome || "",
-                    email: data.email || "",
-                    cpf: maskCPF(data.cpf),
-                    dataNasc: data.dataNasc || "",
-                    cep: maskCEP(data.cep) || "",
-                    rua: data.rua || "",
-                    complemento: data.complemento || "",
-                    numero: data.numero || "",
-                    cidade: data.cidade || "",
-                    uf: data.uf || "",
-                    imagemUrl: data.imagemUrl || ""
-                };
-                setFormValues(loadedValues);
-                setInitialValues(loadedValues); // Salva os valores iniciais
-            })
-            .catch(err => {
-                console.error(Strings.erroBuscaUser, err);
-            });
+        fetchUserData();
     }, []);
 
     const [seguranca, setSeguranca] = useState(false);
@@ -200,12 +174,13 @@ function Config() {
             return;
         }
 
-        try {
-            await url.patch(`/users/${userId}/senha`, {
-                senhaAtual: formValuesSenha.senhaAtual,
-                novaSenha: formValuesSenha.novaSenha
-            });
+        const result = await reqs.changePasswordConfig(
+            userId, 
+            formValuesSenha.senhaAtual, 
+            formValuesSenha.novaSenha
+        );
 
+        if (result.success) {
             setToast({ mensagem: Strings.senhaSucesso, tipo: 'sucesso' });
             setFormValuesSenha({
                 senhaAtual: "",
@@ -216,12 +191,11 @@ function Config() {
             setTimeout(() => {
                 navigate('/login');
             }, 2000);
-
-        } catch (error) {
-            console.error("Erro ao atualizar a senha:", error);
+        } else {
+            console.error("Erro ao atualizar a senha:", result.error);
 
             let newErrors = {};
-            if (error.response && error.response.status === 409) {
+            if (result.errorType === "wrongCurrentPassword") {
                 newErrors.senhaAtual = Strings.erroSenha9;
                 setErrorStyle("senhaAtual");
                 // setToast({ mensagem: 'Senha atual incorreta', tipo: 'erro' });
@@ -237,14 +211,16 @@ function Config() {
     const deleteUserAccount = async () => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        try {
-            await url.delete(`/users/${userId}`);
+
+        const result = await reqs.deleteUserAccountConfig(userId);
+        
+        if (result.success) {
             // Opcional: Limpar dados do usuário e redirecionar
             sessionStorage.clear();
             window.location.href = "/";
-        } catch (error) {
+        } else {
             setToast({ mensagem: "Erro ao deletar conta.", tipo: "erro" });
-            console.error("Erro ao deletar conta:", error);
+            console.error("Erro ao deletar conta:", result.error);
         }
     };
 
@@ -270,8 +246,9 @@ function Config() {
             complemento: formValues.complemento,
         };
 
-        try {
-            await url.patch(`/users/${userId}`, payload);
+        const result = await reqs.updateUserDataConfig(userId, payload, formValues.nome);
+        
+        if (result.success) {
             sessionStorage.setItem("userName", formValues.nome);
             setToast({ mensagem: Strings.sucessoAtualizacao, tipo: 'sucesso' });
             //tirar talvez, se não quiser o reload automático
@@ -279,8 +256,8 @@ function Config() {
                 window.location.reload();
             }, 1500);
             setJustSaved(true); // Bloqueia edição após salvar
-        } catch (error) {
-            console.error("Erro ao atualizar dados da ONG:", error);
+        } else {
+            console.error("Erro ao atualizar dados do usuário:", result.error);
             setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
         }
     };

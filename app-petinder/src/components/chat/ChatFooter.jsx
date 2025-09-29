@@ -1,17 +1,14 @@
 import { HiOutlineEmojiSad } from "react-icons/hi";
-import { url } from "../../provider/apiInstance"; // ajuste o caminho se necessário
+import reqs from "../../reqs";
 
 function ChatFooter(props) {
     const handleNoInterest = async () => {
-        const userId = sessionStorage.getItem("userId");
-        const petId = props.petId;
-        // console.log("petId:", petId, "userId:", userId); // debug
-        if (!userId || !petId) return;
-        try {
-            await url.delete(`/status/${petId}/${userId}`);
+        const result = await reqs.removeInterest(props.petId);
+        
+        if (result.success) {
             window.location.reload();
-        } catch (error) {
-            console.error("Erro ao remover interesse:", error);
+        } else {
+            console.error("Erro ao remover interesse:", result.message);
         }
     };
 
@@ -26,15 +23,3 @@ function ChatFooter(props) {
 }
 
 export default ChatFooter;
-
-
-// <div className="chatFooter">
-//     <div className="chatInput">
-//         <input type="text" />
-//     </div>
-//     <div className="chatFooterButtons">
-//         <button>
-//             <img src="../../enviar.svg" alt="" />
-//         </button>
-//     </div>
-// </div>
