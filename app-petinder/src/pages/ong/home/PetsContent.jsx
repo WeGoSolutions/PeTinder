@@ -193,7 +193,7 @@ export default function PetsContent() {
         if (!ongId) return;
         
         const fetchPets = async () => {
-            const result = await reqs.listarPetsDaOng(ongId);
+            const result = await reqs.listarPetsDaOng(ongId, 1);
             if (result.success) {
                 setPets(result.pets);
             } else {
