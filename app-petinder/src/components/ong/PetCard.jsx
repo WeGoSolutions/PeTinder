@@ -128,11 +128,11 @@ function PetCard(props) {
                                     <Mensagens
                                         key={idx}
                                         onClick={async () => {
-                                            setAdotanteId(msg.idUser);
+                                            setAdotanteId(msg.userId);
                                             setShowModal(false);
-                                            await marcarComoAdotado(msg.idUser);
+                                            await marcarComoAdotado(msg.userId);
                                         }}
-                                        nome={`${msg.nomeUser}`}
+                                        nome={`${msg.userName}`}
                                         imgSrc={msg.imageUrl || "/profile.svg"}
                                         hideIcon={true}
                                     />
