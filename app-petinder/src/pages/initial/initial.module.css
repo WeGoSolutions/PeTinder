@@ -59,3 +59,28 @@ body {
     height: 17rem;
     align-items: center;
 }
+
+.toast {
+    position: fixed; /* fixa na tela */
+    top: 20px; /* distância do topo */
+    left: 50%; /* centraliza horizontalmente */
+    transform: translateX(-50%); /* corrige o deslocamento */
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px; /* não ocupa toda a tela */
+    height: auto;
+    padding: 15px;
+    background: transparent; /* deixa o fundo neutro */
+    overflow: visible;
+}
+
+.toastContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.8rem;
+    z-index: 2100;
+    position: relative;
+}
