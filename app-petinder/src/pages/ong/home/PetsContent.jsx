@@ -53,7 +53,7 @@ export default function PetsContent() {
     };
 
     const filteredPets = pets.filter(pet =>
-        pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
+        pet.nome && pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleNextStep = () => {
@@ -194,6 +194,7 @@ export default function PetsContent() {
         
         const fetchPets = async () => {
             const result = await reqs.listarPetsDaOng(ongId, 1);
+            console.log(result)
             if (result.success) {
                 setPets(result.pets);
             } else {

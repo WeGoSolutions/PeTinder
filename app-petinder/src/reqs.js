@@ -3,7 +3,7 @@ import { url } from "./provider/apiInstance";
 const reqs = {
     listarPetsDaOng: async function (ongId, page = 0, size = 10) {
     try {
-        const response = await url.get(`/ongs/${ongId}/pets`, {
+        const response = await url.get(`/v2/ongs/${ongId}/pets`, {
             params: { page, size }
         }); 
         return {
@@ -188,7 +188,7 @@ const reqs = {
             const ongId = sessionStorage.getItem("ongId");
             
             if (ongId) {
-                await url.put(`/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
+                await url.put(`/v2/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
             } else if (userId) {
                 await url.put(`/v2/users/${userId}/imagem`, { imagemUsuario: base64Image });
             } else {
@@ -214,7 +214,7 @@ const reqs = {
 
     getOngImageForChat: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}/imagem/arquivo`);
+            const response = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: response.data?.imageUrl || ""
@@ -244,7 +244,7 @@ const reqs = {
             }
 
             // Busca a imagem da ONG
-            const ongRes = await url.get(`/ongs/${ongId}/imagem/arquivo`);
+            const ongRes = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: ongRes.data?.imageUrl || "",
@@ -424,7 +424,7 @@ const reqs = {
 
     getMensagensPendentesPetCard: async function (ongId, nomePet) {
         try {
-            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
+            const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
             const mensagensDoPet = Array.isArray(dados)
                 ? dados
@@ -470,7 +470,7 @@ const reqs = {
 
     getOngImageSidePanel: async function (ongId) {
         try {
-            const res = await url.get(`/ongs/${ongId}/imagem/arquivo`);
+            const res = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: res.data.imageUrl
@@ -767,7 +767,7 @@ const reqs = {
 
     LoginOng: async function (email, senha) {
         try {
-            const response = await url.post("/ongs/login", {
+            const response = await url.post("/v2/ongs/login", {
                 email: email,
                 senha: senha
             });
@@ -801,7 +801,7 @@ const reqs = {
 
     AtualizarSenhaOngConfig: async function (ongId, senhaAtual, novaSenha) {
         try {
-            await url.patch(`/ongs/${ongId}/senha`, {
+            await url.patch(`/v2/ongs/${ongId}/senha`, {
                 senhaAtual: senhaAtual,
                 novaSenha: novaSenha
             });
@@ -829,7 +829,7 @@ const reqs = {
 
     getOngImageConfig: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}/imagem/arquivo`);
+            const response = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: response.data.imageUrl
@@ -846,7 +846,7 @@ const reqs = {
 
     listarInfosDaOngEmConfig: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}`);
+            const response = await url.get(`/v2/ongs/${ongId}`);
             return {
                 success: true,
                 data: response.data
@@ -863,7 +863,7 @@ const reqs = {
 
     updateOngInfosConfig: async function (ongId, payload) {
         try {
-            await url.patch(`/ongs/${ongId}`, payload);
+            await url.patch(`/v2/ongs/${ongId}`, payload);
             return {
                 success: true
             };
@@ -878,7 +878,7 @@ const reqs = {
 
     pegarCpfOuCnpjDaOng: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}`);
+            const response = await url.get(`/v2/ongs/${ongId}`);
             const data = response.data;
             return {
                 success: true,
@@ -902,7 +902,7 @@ const reqs = {
 
     dashboardInfosDosPets: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}/pets`);
+            const response = await url.get(`/v2/ongs/${ongId}/pets`);
             return {
                 success: true,
                 pets: response.data
@@ -926,7 +926,7 @@ const reqs = {
 
     homeOngCharts: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}/pets`);
+            const response = await url.get(`/v2/ongs/${ongId}/pets`);
             return {
                 success: true,
                 pets: response.data
@@ -950,7 +950,7 @@ const reqs = {
 
     homeOngInteressados: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
+            const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
             return {
                 success: true,
@@ -968,7 +968,7 @@ const reqs = {
 
     interessadosMensagens: async function (ongId) {
         try {
-            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
+            const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
             return {
                 success: true,
@@ -1007,7 +1007,7 @@ const reqs = {
 
     listarPetsDaOng: async function (ongId, page) {
         try {
-            const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
+            const response = await url.get(`/v2/ongs/${ongId}/pets?page=${page}&size=10`);
             const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
                 id: pet.petId,
                 nome: pet.petNome,
