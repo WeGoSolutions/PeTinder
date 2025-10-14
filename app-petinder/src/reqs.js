@@ -3,7 +3,7 @@ import { url } from "./provider/apiInstance";
 const reqs = {
     listarPetsDaOng: async function (ongId, page = 0, size = 10) {
     try {
-        const response = await url.get(`/v2/ongs/${ongId}/pets`, {
+        const response = await url.get(`/ongs/${ongId}/pets`, {
             params: { page, size }
         }); 
         return {
@@ -44,7 +44,7 @@ const reqs = {
         }
 
         try {
-            const response = await url.patch(`/v2/users/${userId}/user-novo`, null, {
+            const response = await url.patch(`/users/${userId}/user-novo`, null, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
@@ -76,7 +76,7 @@ const reqs = {
         };
 
         try {
-            const response = await url.put(`/v2/users/${userId}/optional`, formValuesToSend, {
+            const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
@@ -117,7 +117,7 @@ const reqs = {
 
     validarEmailNoBackend: async function (email) {
         try {
-            const response = await url.get(`/v2/users/${email}/validar-email`);
+            const response = await url.get(`/users/${email}/validar-email`);
             return response.status === 200;
         } catch (error) {
             console.error("Email não encontrado no banco de dados.", error);
@@ -127,7 +127,7 @@ const reqs = {
 
     changePassword: async function (novaSenha, email) {
         try {
-            await url.patch(`/v2/users/senha`, {
+            await url.patch(`/users/senha`, {
                 senha: novaSenha,
                 email: email
             });
@@ -147,7 +147,7 @@ const reqs = {
 
     getUserImage: async function (userId) {
         try {
-            const response = await url.get(`/v2/users/${userId}/imagem`);
+            const response = await url.get(`/users/${userId}/imagem`);
             return {
                 success: true,
                 imageUrl: response.data.imageUrl
@@ -192,9 +192,9 @@ const reqs = {
             const ongId = sessionStorage.getItem("ongId");
 
             if (ongId) {
-                await url.put(`/v2/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
+                await url.put(`/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
             } else if (userId) {
-                await url.put(`/v2/users/${userId}/imagem`, { imagemUsuario: base64Image });
+                await url.put(`/users/${userId}/imagem`, { imagemUsuario: base64Image });
             } else {
                 return {
                     success: false,
@@ -218,7 +218,7 @@ const reqs = {
 
     getOngImageForChat: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
+            const response = await url.get(`/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: response.data?.imageUrl || ""
@@ -248,7 +248,7 @@ const reqs = {
             }
 
             // Busca a imagem da ONG
-            const ongRes = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
+            const ongRes = await url.get(`/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: ongRes.data?.imageUrl || "",
@@ -428,7 +428,7 @@ const reqs = {
 
     getMensagensPendentesPetCard: async function (ongId, nomePet) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
+            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
             console.log(dados);
             const mensagensDoPet = Array.isArray(dados)
@@ -475,7 +475,7 @@ const reqs = {
 
     getOngImageSidePanel: async function (ongId) {
         try {
-            const res = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
+            const res = await url.get(`/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: res.data.imageUrl
@@ -492,7 +492,7 @@ const reqs = {
 
     CadastrarUsuario: async function (userData) {
         try {
-            await url.post("/v2/users", {
+            await url.post("/users", {
                 nome: userData.nome,
                 email: userData.email,
                 senha: userData.senha,
@@ -516,7 +516,7 @@ const reqs = {
 
     getUserDataConfig: async function (userId) {
         try {
-            const res = await url.get(`/v2/users/${userId}`);
+            const res = await url.get(`/users/${userId}`);
             const data = res.data;
 
             const maskCPF = (value) => {
@@ -565,7 +565,7 @@ const reqs = {
 
     changePasswordConfig: async function (userId, senhaAtual, novaSenha) {
         try {
-            await url.patch(`/v2/users/${userId}/senha`, {
+            await url.patch(`/users/${userId}/senha`, {
                 senhaAtual: senhaAtual,
                 novaSenha: novaSenha
             });
@@ -593,7 +593,7 @@ const reqs = {
 
     deleteUserAccountConfig: async function (userId) {
         try {
-            await url.delete(`/v2/users/${userId}`);
+            await url.delete(`/users/${userId}`);
             return {
                 success: true,
                 message: "Conta deletada com sucesso!"
@@ -610,7 +610,7 @@ const reqs = {
 
     updateUserDataConfig: async function (userId, payload, userName) {
         try {
-            await url.patch(`/v2/users/${userId}`, payload);
+            await url.patch(`/users/${userId}`, payload);
             return {
                 success: true,
                 message: "Dados atualizados com sucesso!",
@@ -637,7 +637,7 @@ const reqs = {
 
     uploadUserImageInitial: async function (userId, base64Image, authToken) {
         try {
-            await url.post(`/v2/users/${userId}/imagem`, {
+            await url.post(`/users/${userId}/imagem`, {
                 imagemUsuario: base64Image
             }, {
                 headers: {
@@ -661,7 +661,7 @@ const reqs = {
 
     getUserAddressInitial: async function (userId) {
         try {
-            const response = await url.get(`/v2/users/${userId}`);
+            const response = await url.get(`/users/${userId}`);
             const data = response.data;
 
             if (data.cep) {
@@ -745,7 +745,7 @@ const reqs = {
 
     LoginUser: async function (email, senha) {
         try {
-            const response = await url.post("/v2/users/login", {
+            const response = await url.post("/users/login", {
                 email: email,
                 senha: senha
             });
@@ -781,7 +781,7 @@ const reqs = {
 
     LoginOng: async function (email, senha) {
         try {
-            const response = await url.post("/v2/ongs/login", {
+            const response = await url.post("/ongs/login", {
                 email: email,
                 senha: senha
             });
@@ -815,7 +815,7 @@ const reqs = {
 
     AtualizarSenhaOngConfig: async function (ongId, senhaAtual, novaSenha) {
         try {
-            await url.patch(`/v2/ongs/${ongId}/senha`, {
+            await url.patch(`/ongs/${ongId}/senha`, {
                 senhaAtual: senhaAtual,
                 novaSenha: novaSenha
             });
@@ -843,7 +843,7 @@ const reqs = {
 
     getOngImageConfig: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/imagem/arquivo`);
+            const response = await url.get(`/ongs/${ongId}/imagem/arquivo`);
             return {
                 success: true,
                 imageUrl: response.data.imageUrl
@@ -860,7 +860,7 @@ const reqs = {
 
     listarInfosDaOngEmConfig: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}`);
+            const response = await url.get(`/ongs/${ongId}`);
             return {
                 success: true,
                 data: response.data
@@ -877,7 +877,7 @@ const reqs = {
 
     updateOngInfosConfig: async function (ongId, payload) {
         try {
-            await url.patch(`/v2/ongs/${ongId}`, payload);
+            await url.patch(`/ongs/${ongId}`, payload);
             return {
                 success: true
             };
@@ -892,7 +892,7 @@ const reqs = {
 
     pegarCpfOuCnpjDaOng: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}`);
+            const response = await url.get(`/ongs/${ongId}`);
             const data = response.data;
             return {
                 success: true,
@@ -916,7 +916,7 @@ const reqs = {
 
     dashboardInfosDosPets: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/pets`);
+            const response = await url.get(`/ongs/${ongId}/pets`);
             return {
                 success: true,
                 pets: response.data
@@ -940,7 +940,7 @@ const reqs = {
 
     homeOngCharts: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/pets`);
+            const response = await url.get(`/ongs/${ongId}/pets`);
             return {
                 success: true,
                 pets: response.data
@@ -964,7 +964,7 @@ const reqs = {
 
     homeOngInteressados: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
+            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
             return {
                 success: true,
@@ -982,7 +982,7 @@ const reqs = {
 
     interessadosMensagens: async function (ongId) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
+            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
             return {
                 success: true,
@@ -1021,7 +1021,7 @@ const reqs = {
 
     listarPetsDaOng: async function (ongId, page) {
         try {
-            const response = await url.get(`/v2/ongs/${ongId}/pets?page=${page}&size=10`);
+            const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
             const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
                 id: pet.petId,
                 nome: pet.petNome,

@@ -1,34 +1,48 @@
-import React from 'react';
+import UserImage from "./UserImage";
+import SecondaryButton from "./SecondaryButton";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { url } from "../provider/apiInstance";
 
-const NotifyCard = ({ title, message, onClose }) => (
-    <div style={{
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        padding: '16px',
-        background: '#fff',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-        maxWidth: '320px',
-        margin: '12px auto',
-        position: 'relative'
-    }}>
-        <button
-            onClick={onClose}
-            style={{
-                position: 'absolute',
-                top: '8px',
-                right: '8px',
-                background: 'transparent',
-                border: 'none',
-                fontSize: '18px',
-                cursor: 'pointer'
-            }}
-            aria-label="Fechar"
-        >
-            &times;
-        </button>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2em' }}>{title}</h3>
-        <p style={{ margin: 0 }}>{message}</p>
-    </div>
-);
+function NotifyCard(props) {
+    const Navigate = useNavigate();
+    const name = sessionStorage.userName;
+    const userId = sessionStorage.getItem("userId");
+    const [notifyIcon, setNotifyIcon] = useState("");
+
+    useEffect(() => {
+        if (props.notifyType === "ADOPTED") {
+            setNotifyIcon("./adopted.svg");
+        } else if (props.notifyType === "NOTADOPTED" || props.notifyType === "OTHERS") {
+            setNotifyIcon("./others.svg");
+        }
+    }, [props.notifyType]);
+    
+    useEffect(() => {
+
+    }, [userId]);
+
+    return (
+        <div className="notifyCard-area">
+            <div className="notifyCardContainer">
+                <div className="notifyIcon">
+                    <img src={notifyIcon} />
+                </div>
+                <div className="notifyCardAreaContainer">
+                    <div className="notifyCardAreaTitle">
+                        <p>
+                            {props.title}
+                        </p>
+                    </div>
+                    <div className="notifyCardAreaDescription">
+                        <p>
+                            {props.description}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default NotifyCard;

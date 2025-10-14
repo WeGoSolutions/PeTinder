@@ -17,7 +17,6 @@ function CarrouselPetImages({ pet, images }) {
 
     const getClassName = (index) => {
         if (index === currentIndex) return "current";
-        if (index === (currentIndex - 1 + images.length) % images.length) return "previous";
         if (index === (currentIndex + 1) % images.length) return "next";
         return "hidden";
     };

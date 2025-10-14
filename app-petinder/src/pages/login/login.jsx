@@ -87,6 +87,8 @@ function Login() {
         
         if (result.success) {
             const data = result.data;
+            console.log(result)
+            console.log(data)
             
             sessionStorage.setItem("userId", data.id);
             sessionStorage.setItem('authToken', data.token);
