@@ -86,12 +86,16 @@ const reqs = {
             if (response.status === 200) {
                 await reqs.handleCloseModal();
                 window.location.reload();
-                return true;
+                return { success: true };
             }
         } catch (error) {
             console.error("Erro ao enviar os dados:", error);
+            return {
+                success: false,
+                error: error
+            };
         }
-        return false;
+        return { success: false };
     },
 
     likedArea: async function (userId) {
@@ -186,7 +190,7 @@ const reqs = {
         try {
             const userId = sessionStorage.getItem("userId");
             const ongId = sessionStorage.getItem("ongId");
-            
+
             if (ongId) {
                 await url.put(`/v2/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
             } else if (userId) {
@@ -197,7 +201,7 @@ const reqs = {
                     message: "Nenhum ID de usuário ou ONG encontrado."
                 };
             }
-            
+
             return {
                 success: true,
                 message: "Imagem salva com sucesso!"
@@ -234,7 +238,7 @@ const reqs = {
             // Busca o pet para pegar o ongId
             const petRes = await url.get(`/pets/${petId}`);
             const ongId = petRes.data.ongId;
-            
+
             if (!ongId) {
                 return {
                     success: false,
@@ -263,14 +267,14 @@ const reqs = {
     removeInterest: async function (petId) {
         try {
             const userId = sessionStorage.getItem("userId");
-            
+
             if (!userId || !petId) {
                 return {
                     success: false,
                     message: "ID do usuário ou pet não encontrado."
                 };
             }
-            
+
             await url.delete(`/status/${petId}/${userId}`);
             return {
                 success: true,
@@ -331,7 +335,7 @@ const reqs = {
             const response = await url.get(`/dashs/ranking/${ongId}`);
             const labels = response.data.map((item) => item.nome);
             const data = response.data.map((item) => item.curtidas);
-            
+
             return {
                 success: true,
                 data: {
@@ -426,16 +430,17 @@ const reqs = {
         try {
             const response = await url.get(`/v2/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
+            console.log(dados);
             const mensagensDoPet = Array.isArray(dados)
                 ? dados
                     .filter(msg => msg.nomePet === nomePet || msg.petNome === nomePet)
                     .map(msg => {
                         const idOng = msg.idOng;
-                        const idUser = msg.idUser;
-                        const idPet = msg.idPet;
-                        const nomeUser = msg.nomeUser;
-                        const nomePet = msg.nomePet || msg.petNome;
-                        return { ...msg, idOng, idUser, idPet, nomeUser, nomePet };
+                        const userId = msg.userId;
+                        const petId = msg.petId;
+                        const userName = msg.userName;
+                        const petNome = msg.nomePet || msg.petNome;
+                        return { ...msg, idOng, userId, petId, userName, petNome };
                     })
                 : [];
             return {
@@ -534,7 +539,7 @@ const reqs = {
                 nome: data.nome || "",
                 email: data.email || "",
                 cpf: maskCPF(data.cpf),
-                dataNasc: data.dataNasc || "",
+                dataNascimento: data.dataNascimento || "",
                 cep: maskCEP(data.cep) || "",
                 rua: data.rua || "",
                 complemento: data.complemento || "",
@@ -564,19 +569,19 @@ const reqs = {
                 senhaAtual: senhaAtual,
                 novaSenha: novaSenha
             });
-            
+
             return {
                 success: true,
                 message: "Senha atualizada com sucesso!"
             };
         } catch (error) {
             console.error("Erro ao atualizar a senha:", error);
-            
+
             let errorType = "generic";
             if (error.response && error.response.status === 409) {
                 errorType = "wrongCurrentPassword";
             }
-            
+
             return {
                 success: false,
                 message: "Erro ao atualizar a senha",
@@ -613,9 +618,18 @@ const reqs = {
             };
         } catch (error) {
             console.error("Erro ao atualizar dados do usuário:", error);
+
+            if (error.response && error.response.status === 409) {
+                return {
+                    success: false,
+                    message: "O CPF informado já está em uso. Por favor, verifique e tente novamente.",
+                    error: error
+                };
+            }
+
             return {
                 success: false,
-                message: "Erro ao atualizar dados do usuário",
+                message: "Erro ao atualizar dados do usuário.",
                 error: error
             };
         }
@@ -649,7 +663,7 @@ const reqs = {
         try {
             const response = await url.get(`/v2/users/${userId}`);
             const data = response.data;
-            
+
             if (data.cep) {
                 return {
                     success: true,
@@ -735,7 +749,7 @@ const reqs = {
                 email: email,
                 senha: senha
             });
-            
+
             if (response.status === 200 && response.data?.token) {
                 const data = response.data;
                 return {
@@ -771,7 +785,7 @@ const reqs = {
                 email: email,
                 senha: senha
             });
-            
+
             if (response.status === 200) {
                 const data = response.data;
                 return {
@@ -805,19 +819,19 @@ const reqs = {
                 senhaAtual: senhaAtual,
                 novaSenha: novaSenha
             });
-            
+
             return {
                 success: true,
                 message: "Senha atualizada com sucesso!"
             };
         } catch (error) {
             console.error("Erro ao atualizar a senha:", error);
-            
+
             let errorType = "generic";
             if (error.response && error.response.status === 409) {
                 errorType = "wrongCurrentPassword";
             }
-            
+
             return {
                 success: false,
                 message: "Erro ao atualizar a senha",
@@ -1065,7 +1079,7 @@ const reqs = {
     //continuar do Teste.jsx - Até então tudo parece funcional
     // ong cadastrada: petinder@gmail.com - Felipe@00
     // user: felipe@hotmail.com - Felipe@00
-    
+
 };
 
 export default reqs;

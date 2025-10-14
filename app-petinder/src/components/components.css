@@ -1336,7 +1336,7 @@
 
 .toastContainer {
     width: 100%;
-    height: 6rem;
+    height: 5rem;
     position: absolute;
     z-index: 1000;
     display: flex;
@@ -2344,7 +2344,7 @@
     /*VERIFIFCAR E APAGAR PROVAVELMENTE MAS PODE SER UTIL PRO TOAST GREEN*/
     .toastContainer {
         width: 75% !important;
-        height: 6rem !important;
+        height: 5rem !important;
         position: absolute !important;
         z-index: 2000 !important;
         display: flex !important;

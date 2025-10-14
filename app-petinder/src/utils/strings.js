@@ -32,6 +32,7 @@ const Strings = {
     erroSenha9: "Senha atual incorreta.",
     sucessoAtualizacao: "Dados atualizados com sucesso!",
     erroAtualizacao: "Erro ao atualizar dados.",
+    erroAtualizacaoCPF: "CPF já cadastrado. Verifique e tente novamente.",
     cpf: "CPF",
     cep: "CEP",
     rua: "Rua",
