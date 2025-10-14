@@ -1,32 +1,39 @@
 import { url } from "./provider/apiInstance";
 
 const reqs = {
-    listarPetsDisponiveis: async function (userId) {
-        try {
-            const response = await url.get(`/status/default/${userId}`); // <-- Adicione await aqui
-            return {
-                data: response.data,
-                notFound: false
-            };
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                return { notFound: true };
-            } else {
-                console.error("Error fetching pets:", error);
-                return { notFound: false };
-            }
+    listarPetsDaOng: async function (ongId, page = 0, size = 10) {
+    try {
+        const response = await url.get(`/ongs/${ongId}/pets`, {
+            params: { page, size }
+        }); 
+        return {
+            data: response.data,
+            notFound: false
+        };
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return { notFound: true };
+        } else {
+            console.error("Error fetching pets:", error);
+            return { notFound: false };
         }
-    },
+    }
+},
 
-    getImagensPets: async function (petId) {
-        try {
-            const response = await url.get(`/pets/${petId}/imagens`);
-            return response.data;
-        } catch (error) {
-            console.error("Error fetching pet images:", error);
-            return [];
+   getTodasImagensPet: async function (petId, totalImagens) {
+    try {
+        const promises = [];
+        for (let i = 0; i < totalImagens; i++) {
+            promises.push(url.get(`/pets/${petId}/imagens/${i}`));
         }
-    },
+        
+        const responses = await Promise.all(promises);
+        return responses.map(response => response.data);
+    } catch (error) {
+        console.error("Error fetching all pet images:", error);
+        return [];
+    }
+},
 
     handleCloseModal: async function () {
         const userId = sessionStorage.getItem("userId");
@@ -1012,9 +1019,9 @@ const reqs = {
         }
     },
 
-    listarPetsDaOng: async function (ongId) {
+    listarPetsDaOng: async function (ongId, page) {
         try {
-            const response = await url.get(`/ongs/${ongId}/pets`);
+            const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
             const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
                 id: pet.petId,
                 nome: pet.petNome,

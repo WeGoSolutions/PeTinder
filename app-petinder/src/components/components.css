@@ -2236,7 +2236,7 @@
     padding: 15px;
     width: 570px;
     height: 270px;
-    border-radius: 20px;
+    border-radius: 5px;
     background: var(--backgroundColor);
     display: flex;
     flex-direction: row;
@@ -2937,4 +2937,78 @@
 
 .cancelButtonDelete {
     margin-top: 15px;
+}
+
+.notifyContainer {
+    margin-right: 1.5rem;
+}
+
+.notifyIsland {
+    display: flex;
+    width: 72.5%;
+    height: 40px;
+    flex-direction: row-reverse;
+    align-items: center;
+
+    img {
+        width: 2.2rem;
+    }
+}
+
+.notifyAreaContainer {
+    padding: 15px;
+    width: 570px;
+    min-height: 350px;
+    max-height: 600px;
+    border-radius: 5px;
+    background: var(--backgroundColor);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.notifyAreaModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 91vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    z-index: 2000;
+    margin-top: 70px;
+}
+
+.notifyCard-area{
+    width: 100%;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    transition: 500ms;
+}
+
+.notifyCardContainer {
+    width: 95%;
+    min-height: 80px;
+    border-bottom: 2px solid black;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notifyCard-area:hover {
+    background: #DBDBDB;
+    border-radius: 10px
+}
+
+.notifyCardAreaTitle p {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.notifyCardAreaDescription p {
+    font-size: 12px;
 }
