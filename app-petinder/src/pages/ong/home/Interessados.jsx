@@ -51,11 +51,11 @@ export default function Interessados() {
                     {infosMensagens.map((msg, idx) => (
                         <Mensagens
                             key={idx}
-                            nome={msg.nomeUser}
-                            mensagem={`Estou interessado(a) em adotar o(a) ${msg.nomePet}!`}
-                            data={formatarData(msg.dataHora)}
+                            nome={msg.userName}
+                            mensagem={`Estou interessado(a) em adotar o(a) ${msg.petNome}!`}
+                            data={formatarData(msg.dataStatus)}
                             telefone={msg.telefoneUser}
-                            email={msg.emailUser}
+                            email={msg.userEmail}
                             imgSrc={msg.imageUrl || "/profile.svg"}
                         />
                     ))}

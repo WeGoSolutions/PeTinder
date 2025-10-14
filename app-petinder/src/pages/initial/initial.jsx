@@ -17,6 +17,7 @@ import ImageInput from "../../components/ImageInput";
 import Reqs from "../../reqs";
 import { convertImagesToBase64 } from "../../utils/utils"; // ajuste o caminho se necessário
 import Strings from "../../utils/strings"
+import Toast from "../../components/Toast";
 
 function Initial() {
     const Navigate = useNavigate();
@@ -42,6 +43,7 @@ function Initial() {
     const [selectedChat, setSelectedChat] = useState(null);
     const [userEndereco, setUserEndereco] = useState(null);
     const [notFound, setNotFound] = useState(false);
+    const [toast, setToast] = useState({ mensagem: '', tipo: 'sucesso' });
 
     const handleProfileImageChange = async (file) => {
         setProfileImage(file);
@@ -68,7 +70,7 @@ function Initial() {
 
         const [base64Image] = await convertImagesToBase64([profileImage]);
         const result = await Reqs.uploadUserImageInitial(userId, base64Image, authToken);
-        
+
         if (result.success) {
             setModalStep(2);
         } else {
@@ -89,7 +91,7 @@ function Initial() {
     useEffect(() => {
         const userId = sessionStorage.getItem("userId");
         if (!userId) return;
-        
+
         const fetchUserAddress = async () => {
             const result = await Reqs.getUserAddressInitial(userId);
             if (result.success) {
@@ -99,7 +101,7 @@ function Initial() {
                 setUserEndereco(null);
             }
         };
-        
+
         fetchUserAddress();
     }, []);
 
@@ -243,7 +245,17 @@ function Initial() {
     }, [pet.id]);
 
     const handleSubmit = async () => {
-        await Reqs.handleSubmit(formValues);
+        const result = await Reqs.handleSubmit(formValues);
+
+        if (result.success) {
+            setToast({ mensagem: Strings.sucessoAtualizacao, tipo: 'sucesso' });
+        } else {
+            if (result.error?.response?.status === 409) {
+                setToast({ mensagem: Strings.erroAtualizacaoCPF, tipo: 'erro' });
+            } else {
+                setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
+            }
+        }
     };
 
     const handleAdotarPet = async () => {
@@ -253,7 +265,7 @@ function Initial() {
         }
 
         const result = await Reqs.EnviarRequestdeAdocao(pet.id, userId);
-        
+
         if (result.success) {
             setSelectedChat({
                 petId: pet.id,
@@ -276,9 +288,9 @@ function Initial() {
         }
 
         const result = await Reqs.likePetInitial(pet.id, userId);
-        
+
         if (result.success) {
-            if(!pet.isLiked) {
+            if (!pet.isLiked) {
                 setSideMenuTab("liked");
                 setIsSideMenuOpen(true);
             }
@@ -290,7 +302,7 @@ function Initial() {
 
     const handleLoadPetById = async (petId) => {
         const result = await Reqs.getPetByIdInitial(petId);
-        
+
         if (result.success) {
             const data = result.data;
             setPet({
@@ -364,6 +376,18 @@ function Initial() {
                         <NotFoundPets />
                     </>
                 }
+            </div>
+            
+            <div className={styles.toast}>
+                <div className="toastContainer">
+                    {toast.mensagem && (
+                        <Toast
+                            mensagem={toast.mensagem}
+                            tipo={toast.tipo}
+                            onClose={() => setToast({ mensagem: '', tipo: 'sucesso' })}
+                        />
+                    )}
+                </div>
             </div>
 
             {/* Modal para novos usuários */}
@@ -476,7 +500,7 @@ function Initial() {
                     )}
                     <div className={styles.footerModal}>
                         <div className={styles.link}
-                            onClick={modalStep === 1 ? handleNextModal : Reqs.handleCloseModal}>
+                            onClick={modalStep === 1 ? handleNextModal : handleCloseModalAndReset}>
                             <HiperLink
                                 href="#"
                                 label="Fazer Depois"

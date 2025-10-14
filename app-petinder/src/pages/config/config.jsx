@@ -31,7 +31,7 @@ function Config() {
         nome: "",
         email: "",
         cpf: "",
-        dataNasc: "",
+        dataNascimento: "",
         cep: "",
         rua: "",
         complemento: "",
@@ -175,8 +175,8 @@ function Config() {
         }
 
         const result = await reqs.changePasswordConfig(
-            userId, 
-            formValuesSenha.senhaAtual, 
+            userId,
+            formValuesSenha.senhaAtual,
             formValuesSenha.novaSenha
         );
 
@@ -213,7 +213,7 @@ function Config() {
         if (!userId) return;
 
         const result = await reqs.deleteUserAccountConfig(userId);
-        
+
         if (result.success) {
             // Opcional: Limpar dados do usuário e redirecionar
             sessionStorage.clear();
@@ -237,7 +237,7 @@ function Config() {
             nome: formValues.nome,
             email: formValues.email,
             cpf: cpfSemMascara,
-            dataNasc: formValues.dataNasc,
+            dataNascimento: formValues.dataNascimento,
             cep: cepSemMascara,
             rua: formValues.rua,
             numero: formValues.numero,
@@ -247,7 +247,7 @@ function Config() {
         };
 
         const result = await reqs.updateUserDataConfig(userId, payload, formValues.nome);
-        
+
         if (result.success) {
             sessionStorage.setItem("userName", formValues.nome);
             setToast({ mensagem: Strings.sucessoAtualizacao, tipo: 'sucesso' });
@@ -258,7 +258,12 @@ function Config() {
             setJustSaved(true); // Bloqueia edição após salvar
         } else {
             console.error("Erro ao atualizar dados do usuário:", result.error);
-            setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
+
+            if (result.error?.response?.status === 409) {
+                setToast({ mensagem: Strings.erroAtualizacaoCPF, tipo: 'erro' });
+            } else {
+                setToast({ mensagem: Strings.erroAtualizacao, tipo: 'erro' });
+            }
         }
     };
 
@@ -460,7 +465,7 @@ function Config() {
                                 <FormInput
                                     id="nome"
                                     name="nome"
-                                    label= {Strings.nome}
+                                    label={Strings.nome}
                                     value={formValues.nome}
                                     // disabled={isFieldDisabled("nome") || justSaved}
                                     disabled={false}
@@ -510,8 +515,8 @@ function Config() {
                                         label={Strings.dataNasc}
                                         type="date"
                                         required
-                                        value={formValues.dataNasc}
-                                        disabled={isFieldDisabled("dataNasc") || justSaved}
+                                        value={formValues.dataNascimento}
+                                        disabled={isFieldDisabled("dataNascimento") || justSaved}
                                     />
                                 </div>
                             </div>
