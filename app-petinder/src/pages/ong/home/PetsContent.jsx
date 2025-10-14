@@ -52,9 +52,9 @@ export default function PetsContent() {
         }));
     };
 
-    const filteredPets = pets.filter(pet =>
+    const filteredPets = pets?.filter(pet =>
         pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ) || [];
 
     const handleNextStep = () => {
         setFormStep1({
@@ -191,14 +191,16 @@ export default function PetsContent() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        
+
         const fetchPets = async () => {
-            const result = await reqs.listarPetsDaOng(ongId, 1);
-            if (result.success) {
-                setPets(result.pets);
+            const result = await reqs.listarPetsDaOng(ongId, 0, 10);
+            if (result.data) { // ← muda para verificar se existe result.data
+                setPets(result.data.content);
+            } else if (result.notFound) {
+                setPets([]);
             } else {
                 setPets([]);
-                console.error("Erro ao buscar pets da ONG:", result.error);
+                console.error("Erro ao buscar pets da ONG");
             }
         };
 
@@ -238,7 +240,7 @@ export default function PetsContent() {
     const openEditModal = async (petId) => {
         setModo("Editar");
         setEditingPetId(petId);
-        
+
         const result = await reqs.modalDeEdicao(petId);
         if (result.success) {
             const pet = result.pet;
@@ -538,10 +540,10 @@ export default function PetsContent() {
             )}
 
             <div className={styles.pets}>
-                {filteredPets.map((pet) => (
+                {filteredPets?.map((pet) => (
                     <PetCard
                         key={pet.id}
-                        id={pet.id}
+                        id  ={pet.id}
                         nome={pet.nome}
                         isAdopted={pet.isAdopted}
                         src={pet.src}

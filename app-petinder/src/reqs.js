@@ -1019,28 +1019,28 @@ const reqs = {
         }
     },
 
-    listarPetsDaOng: async function (ongId, page) {
-        try {
-            const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
-            const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
-                id: pet.petId,
-                nome: pet.petNome,
-                src: pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : "",
-                isAdopted: Array.isArray(pet.status) && pet.status.includes('ADOPTED'),
-            })) : [];
-            return {
-                success: true,
-                pets: petsData
-            };
-        } catch (error) {
-            console.error("Erro ao buscar pets da ONG:", error);
-            return {
-                success: false,
-                pets: [],
-                error: error
-            };
-        }
-    },
+    // listarPetsDaOng: async function (ongId, page) {
+    //     try {
+    //         const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
+    //         const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
+    //             id: pet.petId,
+    //             nome: pet.petNome,
+    //             src: pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : "",
+    //             isAdopted: Array.isArray(pet.status) && pet.status.includes('ADOPTED'),
+    //         })) : [];
+    //         return {
+    //             success: true,
+    //             pets: petsData
+    //         };
+    //     } catch (error) {
+    //         console.error("Erro ao buscar pets da ONG:", error);
+    //         return {
+    //             success: false,
+    //             pets: [],
+    //             error: error
+    //         };
+    //     }
+    // },
 
     modalDeEdicao: async function (petId) {
         try {
