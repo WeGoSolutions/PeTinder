@@ -54,7 +54,7 @@ export default function PetsContent() {
 
     const filteredPets = (pets && Array.isArray(pets))
         ? pets.filter(pet =>
-            pet.petNome && pet.petNome.toLowerCase().includes(searchTerm.toLowerCase()) // ← mudou para petNome
+            pet.petNome && pet.petNome.toLowerCase().includes(searchTerm.toLowerCase())
         )
         : [];
 
@@ -196,10 +196,10 @@ export default function PetsContent() {
 
         const fetchPets = async () => {
             const result = await reqs.listarPetsDaOng(ongId, 0, 10);
-            console.log("RESPOSTA DA API:", result); // ← ADICIONE ESTE LOG
+            console.log("RESPOSTA DA API:", result);
 
             if (result.data) {
-                console.log("Conteúdo dos pets:", result.data.content); // ← E ESTE
+                console.log("Conteúdo dos pets:", result.data.content); 
                 setPets(result.data.content || []);
             } else if (result.notFound) {
                 setPets([]);
@@ -547,12 +547,12 @@ export default function PetsContent() {
             <div className={styles.pets}>
                 {Array.isArray(filteredPets) && filteredPets.map((pet) => (
                     <PetCard
-                        key={pet.petId}  // ← mudou de id para petId
-                        id={pet.petId}   // ← mudou de id para petId
-                        nome={pet.petNome} // ← mudou de nome para petNome
-                        isAdopted={pet.status && pet.status.includes('ADOPTED')} // ← verifica no status
+                        key={pet.petId}
+                        id={pet.petId}  
+                        nome={pet.petNome}
+                        isAdopted={pet.status && pet.status.includes('ADOPTED')} 
                         src={pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : ""}
-                        onEdit={() => openEditModal(pet.petId)} // ← mudou para petId
+                        onEdit={() => openEditModal(pet.petId)} 
                         onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
