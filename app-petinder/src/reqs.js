@@ -2,38 +2,39 @@ import { url } from "./provider/apiInstance";
 
 const reqs = {
     listarPetsDaOng: async function (ongId, page = 0, size = 10) {
-    try {
-        const response = await url.get(`/ongs/${ongId}/pets`, {
-            params: { page, size }
-        }); 
-        return {
-            data: response.data,
-            notFound: false
-        };
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return { notFound: true };
-        } else {
-            console.error("Error fetching pets:", error);
-            return { notFound: false };
+        try {
+            const response = await url.get(`/ongs/${ongId}/pets`, {
+                params: { page, size }
+            });
+            console.log("RESPOSTA BRUTA:", response.data); // ← ADICIONE ESTE LOG
+            return {
+                data: response.data,
+                notFound: false
+            };
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                return { notFound: true };
+            } else {
+                console.error("Error fetching pets:", error);
+                return { notFound: false };
+            }
         }
-    }
-},
+    },
 
-   getTodasImagensPet: async function (petId, totalImagens) {
-    try {
-        const promises = [];
-        for (let i = 0; i < totalImagens; i++) {
-            promises.push(url.get(`/pets/${petId}/imagens/${i}`));
+    getTodasImagensPet: async function (petId, totalImagens) {
+        try {
+            const promises = [];
+            for (let i = 0; i < totalImagens; i++) {
+                promises.push(url.get(`/pets/${petId}/imagens/${i}`));
+            }
+
+            const responses = await Promise.all(promises);
+            return responses.map(response => response.data);
+        } catch (error) {
+            console.error("Error fetching all pet images:", error);
+            return [];
         }
-        
-        const responses = await Promise.all(promises);
-        return responses.map(response => response.data);
-    } catch (error) {
-        console.error("Error fetching all pet images:", error);
-        return [];
-    }
-},
+    },
 
     handleCloseModal: async function () {
         const userId = sessionStorage.getItem("userId");

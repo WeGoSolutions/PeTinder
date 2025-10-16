@@ -52,9 +52,11 @@ export default function PetsContent() {
         }));
     };
 
-    const filteredPets = pets?.filter(pet =>
-        pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    ) || [];
+    const filteredPets = (pets && Array.isArray(pets))
+        ? pets.filter(pet =>
+            pet.petNome && pet.petNome.toLowerCase().includes(searchTerm.toLowerCase()) // ← mudou para petNome
+        )
+        : [];
 
     const handleNextStep = () => {
         setFormStep1({
@@ -194,8 +196,11 @@ export default function PetsContent() {
 
         const fetchPets = async () => {
             const result = await reqs.listarPetsDaOng(ongId, 0, 10);
-            if (result.data) { // ← muda para verificar se existe result.data
-                setPets(result.data.content);
+            console.log("RESPOSTA DA API:", result); // ← ADICIONE ESTE LOG
+
+            if (result.data) {
+                console.log("Conteúdo dos pets:", result.data.content); // ← E ESTE
+                setPets(result.data.content || []);
             } else if (result.notFound) {
                 setPets([]);
             } else {
@@ -304,7 +309,7 @@ export default function PetsContent() {
 
     const handleConfirmDelete = async () => {
         if (petToDelete) {
-            const result = await reqs.deletarPet(petToDelete.id);
+            const result = await reqs.deletarPet(petToDelete.petId);
             if (result.success) {
                 setShowDeleteModal(false);
                 setPetToDelete(null);
@@ -540,14 +545,14 @@ export default function PetsContent() {
             )}
 
             <div className={styles.pets}>
-                {filteredPets?.map((pet) => (
+                {Array.isArray(filteredPets) && filteredPets.map((pet) => (
                     <PetCard
-                        key={pet.id}
-                        id  ={pet.id}
-                        nome={pet.nome}
-                        isAdopted={pet.isAdopted}
-                        src={pet.src}
-                        onEdit={() => openEditModal(pet.id)}
+                        key={pet.petId}  // ← mudou de id para petId
+                        id={pet.petId}   // ← mudou de id para petId
+                        nome={pet.petNome} // ← mudou de nome para petNome
+                        isAdopted={pet.status && pet.status.includes('ADOPTED')} // ← verifica no status
+                        src={pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : ""}
+                        onEdit={() => openEditModal(pet.petId)} // ← mudou para petId
                         onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
