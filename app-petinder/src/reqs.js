@@ -45,7 +45,7 @@ const reqs = {
         }
 
         try {
-            const response = await url.patch(`/v2/users/${userId}/user-novo`, null, {
+            const response = await url.patch(`/users/${userId}/user-novo`, null, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
@@ -77,7 +77,7 @@ const reqs = {
         };
 
         try {
-            const response = await url.put(`/v2/users/${userId}/optional`, formValuesToSend, {
+            const response = await url.put(`/users/${userId}/optional`, formValuesToSend, {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${authToken}`,
@@ -118,7 +118,7 @@ const reqs = {
 
     validarEmailNoBackend: async function (email) {
         try {
-            const response = await url.get(`/v2/users/${email}/validar-email`);
+            const response = await url.get(`/users/${email}/validar-email`);
             return response.status === 200;
         } catch (error) {
             console.error("Email não encontrado no banco de dados.", error);
@@ -128,7 +128,7 @@ const reqs = {
 
     changePassword: async function (novaSenha, email) {
         try {
-            await url.patch(`/v2/users/senha`, {
+            await url.patch(`/users/senha`, {
                 senha: novaSenha,
                 email: email
             });
@@ -148,7 +148,7 @@ const reqs = {
 
     getUserImage: async function (userId) {
         try {
-            const response = await url.get(`/v2/users/${userId}/imagem`);
+            const response = await url.get(`/users/${userId}/imagem`);
             return {
                 success: true,
                 imageUrl: response.data.imageUrl
@@ -195,7 +195,7 @@ const reqs = {
             if (ongId) {
                 await url.put(`/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
             } else if (userId) {
-                await url.put(`/v2/users/${userId}/imagem`, { imagemUsuario: base64Image });
+                await url.put(`/users/${userId}/imagem`, { imagemUsuario: base64Image });
             } else {
                 return {
                     success: false,
@@ -493,7 +493,7 @@ const reqs = {
 
     CadastrarUsuario: async function (userData) {
         try {
-            await url.post("/v2/users", {
+            await url.post("/users", {
                 nome: userData.nome,
                 email: userData.email,
                 senha: userData.senha,
@@ -517,7 +517,7 @@ const reqs = {
 
     getUserDataConfig: async function (userId) {
         try {
-            const res = await url.get(`/v2/users/${userId}`);
+            const res = await url.get(`/users/${userId}`);
             const data = res.data;
 
             const maskCPF = (value) => {
@@ -566,7 +566,7 @@ const reqs = {
 
     changePasswordConfig: async function (userId, senhaAtual, novaSenha) {
         try {
-            await url.patch(`/v2/users/${userId}/senha`, {
+            await url.patch(`/users/${userId}/senha`, {
                 senhaAtual: senhaAtual,
                 novaSenha: novaSenha
             });
@@ -594,7 +594,7 @@ const reqs = {
 
     deleteUserAccountConfig: async function (userId) {
         try {
-            await url.delete(`/v2/users/${userId}`);
+            await url.delete(`/users/${userId}`);
             return {
                 success: true,
                 message: "Conta deletada com sucesso!"
@@ -611,7 +611,7 @@ const reqs = {
 
     updateUserDataConfig: async function (userId, payload, userName) {
         try {
-            await url.patch(`/v2/users/${userId}`, payload);
+            await url.patch(`/users/${userId}`, payload);
             return {
                 success: true,
                 message: "Dados atualizados com sucesso!",
@@ -638,7 +638,7 @@ const reqs = {
 
     uploadUserImageInitial: async function (userId, base64Image, authToken) {
         try {
-            await url.post(`/v2/users/${userId}/imagem`, {
+            await url.post(`/users/${userId}/imagem`, {
                 imagemUsuario: base64Image
             }, {
                 headers: {
@@ -662,7 +662,7 @@ const reqs = {
 
     getUserAddressInitial: async function (userId) {
         try {
-            const response = await url.get(`/v2/users/${userId}`);
+            const response = await url.get(`/users/${userId}`);
             const data = response.data;
 
             if (data.cep) {
@@ -746,7 +746,7 @@ const reqs = {
 
     LoginUser: async function (email, senha) {
         try {
-            const response = await url.post("/v2/users/login", {
+            const response = await url.post("/users/login", {
                 email: email,
                 senha: senha
             });
