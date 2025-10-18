@@ -18,6 +18,16 @@ const reqs = {
         }
     },
 
+    getImagensPets: async function (petId) {
+        try {
+            const response = await url.get(`/pets/${petId}/imagens`);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching pet images:", error);
+            return [];
+        }
+    },
+
     listarPetsDaOng: async function (ongId, page = 0, size = 10) {
         try {
             const response = await url.get(`/ongs/${ongId}/pets`, {
