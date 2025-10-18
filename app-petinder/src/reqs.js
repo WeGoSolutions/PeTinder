@@ -1,6 +1,33 @@
 import { url } from "./provider/apiInstance";
 
 const reqs = {
+    listarPetsDisponiveis: async function (userId) {
+        try {
+            const response = await url.get(`/status/default/${userId}`); // <-- Adicione await aqui
+            return {
+                data: response.data,
+                notFound: false
+            };
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                return { notFound: true };
+            } else {
+                console.error("Error fetching pets:", error);
+                return { notFound: false };
+            }
+        }
+    },
+
+    getImagensPets: async function (petId) {
+        try {
+            const response = await url.get(`/pets/${petId}/imagens`);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching pet images:", error);
+            return [];
+        }
+    },
+
     listarPetsDaOng: async function (ongId, page = 0, size = 10) {
         try {
             const response = await url.get(`/ongs/${ongId}/pets`, {
