@@ -14,12 +14,16 @@ import styles from './css/petContent.module.css';
 import Tag from "../../../components/Tag";
 import SecondaryButton from "../../../components/SecondaryButton";
 import { convertImagesToBase64 } from "../../../utils/utils";
+import PaginationControls from '../../../components/ong/PaginationControls';
 
 export default function PetsContent() {
     const [editingPetId, setEditingPetId] = useState(null);
     const [editStep, setEditStep] = useState(0);
     const [modo, setModo] = useState("editar");
     const [pets, setPets] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalElements, setTotalElements] = useState(0);
     const idade = ["Anos", "Meses"];
     const porte = ["Pequeno", "Médio", "Grande"];
     const [images, setImages] = useState([]);
@@ -196,21 +200,25 @@ export default function PetsContent() {
 
         const fetchPets = async () => {
             const result = await reqs.listarPetsDaOng(ongId, 0, 10);
-            console.log("RESPOSTA DA API:", result);
 
             if (result.data) {
-                console.log("Conteúdo dos pets:", result.data.content); 
                 setPets(result.data.content || []);
+                setTotalPages(result.data.totalPages || 0);
+                setTotalElements(result.data.totalElements || 0);
             } else if (result.notFound) {
                 setPets([]);
+                setTotalPages(0);
+                setTotalElements(0);
             } else {
                 setPets([]);
+                setTotalPages(0);
+                setTotalElements(0);
                 console.error("Erro ao buscar pets da ONG");
             }
         };
 
         fetchPets();
-    }, []);
+    }, [currentPage]);
 
     const openAddModal = () => {
         setModo("Adicionar");
@@ -326,6 +334,12 @@ export default function PetsContent() {
     const handleCancelDelete = () => {
         setShowDeleteModal(false);
         setPetToDelete(null);
+    };
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 0 && newPage < totalPages) {
+            setCurrentPage(newPage);
+        }
     };
 
     return (
@@ -548,14 +562,23 @@ export default function PetsContent() {
                 {Array.isArray(filteredPets) && filteredPets.map((pet) => (
                     <PetCard
                         key={pet.petId}
-                        id={pet.petId}  
+                        id={pet.petId}
                         nome={pet.petNome}
-                        isAdopted={pet.status && pet.status.includes('ADOPTED')} 
+                        isAdopted={pet.status && pet.status.includes('ADOPTED')}
                         src={pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : ""}
-                        onEdit={() => openEditModal(pet.petId)} 
+                        onEdit={() => openEditModal(pet.petId)}
                         onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
+                <div className={styles.paginationWrapper}>
+                    <PaginationControls
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        totalElements={totalElements}
+                        currentItemsCount={pets.length}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
             </div>
         </div>
     );

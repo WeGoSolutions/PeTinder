@@ -6,7 +6,6 @@ const reqs = {
             const response = await url.get(`/ongs/${ongId}/pets`, {
                 params: { page, size }
             });
-            console.log("RESPOSTA BRUTA:", response.data); // ← ADICIONE ESTE LOG
             return {
                 data: response.data,
                 notFound: false
