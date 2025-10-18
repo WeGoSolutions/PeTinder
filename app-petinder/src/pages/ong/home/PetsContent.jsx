@@ -52,9 +52,11 @@ export default function PetsContent() {
         }));
     };
 
-    const filteredPets = pets.filter(pet =>
-        pet.nome && pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredPets = (pets && Array.isArray(pets))
+        ? pets.filter(pet =>
+            pet.petNome && pet.petNome.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
 
     const handleNextStep = () => {
         setFormStep1({
@@ -191,15 +193,19 @@ export default function PetsContent() {
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
-        
+
         const fetchPets = async () => {
-            const result = await reqs.listarPetsDaOng(ongId, 1);
-            console.log(result)
-            if (result.success) {
-                setPets(result.pets);
+            const result = await reqs.listarPetsDaOng(ongId, 0, 10);
+            console.log("RESPOSTA DA API:", result);
+
+            if (result.data) {
+                console.log("Conteúdo dos pets:", result.data.content); 
+                setPets(result.data.content || []);
+            } else if (result.notFound) {
+                setPets([]);
             } else {
                 setPets([]);
-                console.error("Erro ao buscar pets da ONG:", result.error);
+                console.error("Erro ao buscar pets da ONG");
             }
         };
 
@@ -239,7 +245,7 @@ export default function PetsContent() {
     const openEditModal = async (petId) => {
         setModo("Editar");
         setEditingPetId(petId);
-        
+
         const result = await reqs.modalDeEdicao(petId);
         if (result.success) {
             const pet = result.pet;
@@ -303,7 +309,7 @@ export default function PetsContent() {
 
     const handleConfirmDelete = async () => {
         if (petToDelete) {
-            const result = await reqs.deletarPet(petToDelete.id);
+            const result = await reqs.deletarPet(petToDelete.petId);
             if (result.success) {
                 setShowDeleteModal(false);
                 setPetToDelete(null);
@@ -539,14 +545,14 @@ export default function PetsContent() {
             )}
 
             <div className={styles.pets}>
-                {filteredPets.map((pet) => (
+                {Array.isArray(filteredPets) && filteredPets.map((pet) => (
                     <PetCard
-                        key={pet.id}
-                        id={pet.id}
-                        nome={pet.nome}
-                        isAdopted={pet.isAdopted}
-                        src={pet.src}
-                        onEdit={() => openEditModal(pet.id)}
+                        key={pet.petId}
+                        id={pet.petId}  
+                        nome={pet.petNome}
+                        isAdopted={pet.status && pet.status.includes('ADOPTED')} 
+                        src={pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : ""}
+                        onEdit={() => openEditModal(pet.petId)} 
                         onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
