@@ -8,7 +8,7 @@ export default function Home() {
 
     return (
         <div className={styles.container}>
-            <Navbar showButtonIndex={3} />
+            <Navbar showButtonIndex={4} />
 
             <div className="workspace">
                 <SidePanel />

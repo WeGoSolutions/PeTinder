@@ -33,7 +33,6 @@ const reqs = {
             const response = await url.get(`/ongs/${ongId}/pets`, {
                 params: { page, size }
             });
-            console.log("RESPOSTA BRUTA:", response.data); // ← ADICIONE ESTE LOG
             return {
                 data: response.data,
                 notFound: false
@@ -458,7 +457,6 @@ const reqs = {
         try {
             const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
-            console.log(dados);
             const mensagensDoPet = Array.isArray(dados)
                 ? dados
                     .filter(msg => msg.nomePet === nomePet || msg.petNome === nomePet)
