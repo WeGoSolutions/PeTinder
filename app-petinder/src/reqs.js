@@ -988,24 +988,6 @@ const reqs = {
         }
     },
 
-    homeOngInteressados: async function (ongId) {
-        try {
-            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
-            const dados = response.data;
-            return {
-                success: true,
-                mensagens: Array.isArray(dados) ? dados : []
-            };
-        } catch (error) {
-            console.error('Erro ao buscar mensagens:', error);
-            return {
-                success: false,
-                mensagens: [],
-                error: error
-            };
-        }
-    },
-
     interessadosMensagens: async function (ongId) {
         try {
             const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
