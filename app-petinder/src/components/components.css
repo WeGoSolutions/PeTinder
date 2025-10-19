@@ -124,8 +124,10 @@
     left: 0;
     z-index: 1000;
     box-sizing: border-box;
-    border: 0 solid;                /* define o estilo para todos os lados */
-    border-bottom-width: 3px;       /* só a base terá espessura */
+    border: 0 solid;
+    /* define o estilo para todos os lados */
+    border-bottom-width: 3px;
+    /* só a base terá espessura */
     border-image-source: var(--secondaryColor);
     border-image-slice: 1;
 }
@@ -2966,6 +2968,34 @@
     flex-direction: column;
     gap: 15px;
     overflow-y: auto;
+
+    .options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: auto;
+
+        button {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+        }
+
+        button:hover {
+            cursor: pointer;
+            transform: scale(1.2);
+            transition: transform 0.2s ease-in-out;
+        }
+    }
+
+    .no-notifications {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        flex-grow: 1;
+        text-align: center;
+    }
 }
 
 .notifyAreaModal {
@@ -2982,7 +3012,7 @@
     margin-top: 70px;
 }
 
-.notifyCard-area{
+.notifyCard-area {
     width: 100%;
     min-height: 80px;
     display: flex;

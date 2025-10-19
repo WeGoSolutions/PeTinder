@@ -3,6 +3,7 @@ import SecondaryButton from "./SecondaryButton";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { url } from "../provider/apiInstance";
+import { MdDelete } from "react-icons/md";
 
 function NotifyCard(props) {
     const Navigate = useNavigate();
@@ -13,20 +14,26 @@ function NotifyCard(props) {
     useEffect(() => {
         if (props.notifyType === "ADOPTED") {
             setNotifyIcon("./adopted.svg");
-        } else if (props.notifyType === "NOTADOPTED" || props.notifyType === "OTHERS") {
+        } else if (props.notifyType === "NOT_ADOPTED" || props.notifyType === "NOTADOPTED" || props.notifyType === "OTHERS") {
             setNotifyIcon("./others.svg");
         }
     }, [props.notifyType]);
-    
-    useEffect(() => {
 
-    }, [userId]);
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        if (props.onDelete) {
+            props.onDelete();
+        }
+    };
 
     return (
-        <div className="notifyCard-area">
+        <div
+            className={`notifyCard-area ${props.viewed ? 'viewed' : 'new'}`}
+            style={{ cursor: 'pointer' }}
+        >
             <div className="notifyCardContainer">
                 <div className="notifyIcon">
-                    <img src={notifyIcon} />
+                    <img src={notifyIcon} alt="Notification icon" />
                 </div>
                 <div className="notifyCardAreaContainer">
                     <div className="notifyCardAreaTitle">
@@ -39,6 +46,11 @@ function NotifyCard(props) {
                             {props.description}
                         </p>
                     </div>
+                </div>
+                <div className="options">
+                    <button className="delete" onClick={handleDelete}>
+                        <MdDelete color="black" />
+                    </button>
                 </div>
             </div>
         </div>
