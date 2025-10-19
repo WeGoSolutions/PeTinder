@@ -94,7 +94,6 @@ export default function Modal(props) {
                     templateParams,
                     publicKey
                 );
-                console.log('Email enviado com sucesso!', response.status, response.text);
                 setOpenModalCodigo(true);
             } catch (error) {
                 console.error('Erro ao enviar o email:', error);

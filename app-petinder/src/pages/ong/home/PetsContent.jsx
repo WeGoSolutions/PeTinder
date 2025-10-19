@@ -195,41 +195,42 @@ export default function PetsContent() {
     };
 
     useEffect(() => {
-        const ongId = sessionStorage.getItem("ongId");
-        if (!ongId) return;
+      const ongId = sessionStorage.getItem("ongId");
+      if (!ongId) return;
 
-        const fetchPets = async () => {
-            const result = await reqs.listarPetsDaOng(ongId, currentPage, 10);
+      const fetchPets = async () => {
+        try {
+          const result = await reqs.listarPetsDaOng(ongId, currentPage, 10);
 
-            if (result.data) {
-                console.log("✅ PAGINAÇÃO FUNCIONANDO - ESTRUTURA DO PET:",
-                    JSON.stringify(result.data.content[0], null, 2));
+          if (!result?.data) {
+            console.error("Erro: resposta inválida ao listar pets", result);
+            return;
+          }
 
-                // ↓↓↓ VERIFIQUE ESPECIALMENTE ISSO ↓↓↓
-                if (result.data.content[0].imageUrl) {
-                    console.log("🖼️ IMAGEURL:", result.data.content[0].imageUrl);
-                    console.log("🔗 PRIMEIRA URL:", result.data.content[0].imageUrl[0]);
+          const content = result.data.content || [];
 
-                    // Teste se a URL da imagem é acessível
-                    fetch(result.data.content[0].imageUrl[0])
-                        .then(response => {
-                            console.log("📡 STATUS DA IMAGEM:", response.status);
-                            console.log("📡 IMAGEM ACESSÍVEL:", response.ok);
-                        })
-                        .catch(error => {
-                            console.log("❌ ERRO AO ACESSAR IMAGEM:", error);
-                        });
-                } else {
-                    console.log("❌ imageUrl ESTÁ VAZIO/NULO");
-                }
-
-                setPets(result.data.content || []);
-                setTotalPages(result.data.totalPages || 0);
-                setTotalElements(result.data.totalElements || 0);
+          // Verifica acessibilidade da primeira imagem (somente em caso de erro será logado)
+          const firstImageUrl = content[0]?.imageUrl?.[0];
+          if (firstImageUrl) {
+            try {
+              const resp = await fetch(firstImageUrl);
+              if (!resp.ok) {
+                console.error("Imagem não acessível:", firstImageUrl, "status:", resp.status);
+              }
+            } catch (err) {
+              console.error("Erro ao acessar imagem:", firstImageUrl, err);
             }
-        };
+          }
 
-        fetchPets();
+          setPets(content);
+          setTotalPages(result.data.totalPages ?? 0);
+          setTotalElements(result.data.totalElements ?? 0);
+        } catch (error) {
+          console.error("Erro ao listar pets da ONG:", error);
+        }
+      };
+
+      fetchPets();
     }, [currentPage]);
 
     const openAddModal = () => {

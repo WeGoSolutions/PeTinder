@@ -343,7 +343,7 @@ function Config() {
     return (
         <div className={styles.background}>
             <div className={styles.fixed_top}>
-                <NavBar showButtonIndex={3} />
+                <NavBar showButtonIndex={4} />
             </div>
             <div className={styles.configContainer}>
                 <div className={styles.sideMenu}>
