@@ -40,13 +40,13 @@ export default function HomeContent() {
 
         fetchPets();
     }, []);
-    
+
     useEffect(() => {
         const ongId = sessionStorage.getItem("ongId");
         if (!ongId) return;
 
         const fetchMensagens = async () => {
-            const result = await reqs.homeOngInteressados(ongId);
+            const result = await reqs.interessadosMensagens(ongId);
             if (result.success) {
                 setInfosMensagens(result.mensagens);
             } else {
@@ -80,11 +80,11 @@ export default function HomeContent() {
                         {infosMensagens.slice(0, 2).map((msg, idx) => (
                             <Mensagens
                                 key={idx}
-                                nome={msg.nomeUser}
-                                mensagem={`Estou interessado(a) em adotar o(a) ${msg.nomePet}!`}
-                                data={formatarData(msg.dataHora)}
+                                nome={msg.userName}
+                                mensagem={`Estou interessado(a) em adotar o(a) ${msg.petNome}!`}
+                                data={formatarData(msg.dataStatus)}
                                 telefone={msg.telefoneUser}
-                                email={msg.emailUser}
+                                email={msg.userEmail}
                                 imgSrc={msg.imageUrl || "/profile.svg"}
                             />
                         ))}

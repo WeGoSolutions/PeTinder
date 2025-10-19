@@ -36,14 +36,21 @@ function PetInfo(props) {
         return R * c;
     }
 
-    useEffect(() => {
+   useEffect(() => {
         async function fetchDistance() {
-            if (!props.endereco) return;
+            if (!props.endereco || !props.userEndereco) return;
+
+            const { rua, numero, cidade, uf } = props.userEndereco || {};
+            // Aborta se qualquer campo do endereço do usuário for null/undefined/vazio
+            if ([rua, numero, cidade, uf].some(v => v === null || v === undefined || v === "")) {
+                setDistance(null);
+                return;
+            }
 
             // Endereço da ONG
             const ongAddress = `${props.endereco.rua}, ${props.endereco.numero}, ${props.endereco.cidade}, ${props.endereco.uf}`;
-            // Endereço do usuário (você precisa passar isso como prop ou buscar do perfil)
-            const userAddress = `${props.userEndereco.rua}, ${props.userEndereco.numero}, ${props.userEndereco.cidade}, ${props.userEndereco.uf}`;
+            // Endereço do usuário
+            const userAddress = `${rua}, ${numero}, ${cidade}, ${uf}`;
 
             const ongCoords = await getLatLngFromAddress(ongAddress);
             const userCoords = await getLatLngFromAddress(userAddress);

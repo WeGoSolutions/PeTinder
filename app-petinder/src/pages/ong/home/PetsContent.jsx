@@ -14,12 +14,16 @@ import styles from './css/petContent.module.css';
 import Tag from "../../../components/Tag";
 import SecondaryButton from "../../../components/SecondaryButton";
 import { convertImagesToBase64 } from "../../../utils/utils";
+import PaginationControls from '../../../components/ong/PaginationControls';
 
 export default function PetsContent() {
     const [editingPetId, setEditingPetId] = useState(null);
     const [editStep, setEditStep] = useState(0);
     const [modo, setModo] = useState("editar");
     const [pets, setPets] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalElements, setTotalElements] = useState(0);
     const idade = ["Anos", "Meses"];
     const porte = ["Pequeno", "Médio", "Grande"];
     const [images, setImages] = useState([]);
@@ -52,9 +56,11 @@ export default function PetsContent() {
         }));
     };
 
-    const filteredPets = pets.filter(pet =>
-        pet.nome && pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredPets = (pets && Array.isArray(pets))
+        ? pets.filter(pet =>
+            pet.petNome && pet.petNome.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
 
     const handleNextStep = () => {
         setFormStep1({
@@ -189,22 +195,43 @@ export default function PetsContent() {
     };
 
     useEffect(() => {
-        const ongId = sessionStorage.getItem("ongId");
-        if (!ongId) return;
-        
-        const fetchPets = async () => {
-            const result = await reqs.listarPetsDaOng(ongId, 1);
-            console.log(result)
-            if (result.success) {
-                setPets(result.pets);
-            } else {
-                setPets([]);
-                console.error("Erro ao buscar pets da ONG:", result.error);
-            }
-        };
+      const ongId = sessionStorage.getItem("ongId");
+      if (!ongId) return;
 
-        fetchPets();
-    }, []);
+      const fetchPets = async () => {
+        try {
+          const result = await reqs.listarPetsDaOng(ongId, currentPage, 10);
+
+          if (!result?.data) {
+            console.error("Erro: resposta inválida ao listar pets", result);
+            return;
+          }
+
+          const content = result.data.content || [];
+
+          // Verifica acessibilidade da primeira imagem (somente em caso de erro será logado)
+          const firstImageUrl = content[0]?.imageUrl?.[0];
+          if (firstImageUrl) {
+            try {
+              const resp = await fetch(firstImageUrl);
+              if (!resp.ok) {
+                console.error("Imagem não acessível:", firstImageUrl, "status:", resp.status);
+              }
+            } catch (err) {
+              console.error("Erro ao acessar imagem:", firstImageUrl, err);
+            }
+          }
+
+          setPets(content);
+          setTotalPages(result.data.totalPages ?? 0);
+          setTotalElements(result.data.totalElements ?? 0);
+        } catch (error) {
+          console.error("Erro ao listar pets da ONG:", error);
+        }
+      };
+
+      fetchPets();
+    }, [currentPage]);
 
     const openAddModal = () => {
         setModo("Adicionar");
@@ -239,7 +266,7 @@ export default function PetsContent() {
     const openEditModal = async (petId) => {
         setModo("Editar");
         setEditingPetId(petId);
-        
+
         const result = await reqs.modalDeEdicao(petId);
         if (result.success) {
             const pet = result.pet;
@@ -303,7 +330,7 @@ export default function PetsContent() {
 
     const handleConfirmDelete = async () => {
         if (petToDelete) {
-            const result = await reqs.deletarPet(petToDelete.id);
+            const result = await reqs.deletarPet(petToDelete.petId);
             if (result.success) {
                 setShowDeleteModal(false);
                 setPetToDelete(null);
@@ -320,6 +347,12 @@ export default function PetsContent() {
     const handleCancelDelete = () => {
         setShowDeleteModal(false);
         setPetToDelete(null);
+    };
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 0 && newPage < totalPages) {
+            setCurrentPage(newPage);
+        }
     };
 
     return (
@@ -539,17 +572,26 @@ export default function PetsContent() {
             )}
 
             <div className={styles.pets}>
-                {filteredPets.map((pet) => (
+                {Array.isArray(filteredPets) && filteredPets.map((pet) => (
                     <PetCard
-                        key={pet.id}
-                        id={pet.id}
-                        nome={pet.nome}
-                        isAdopted={pet.isAdopted}
-                        src={pet.src}
-                        onEdit={() => openEditModal(pet.id)}
+                        key={pet.petId}
+                        id={pet.petId}
+                        nome={pet.petNome}
+                        isAdopted={pet.status && pet.status.includes('ADOPTED')}
+                        src={pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : ""}
+                        onEdit={() => openEditModal(pet.petId)}
                         onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
+                <div className={styles.paginationWrapper}>
+                    <PaginationControls
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        totalElements={totalElements}
+                        currentItemsCount={pets.length}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
             </div>
         </div>
     );

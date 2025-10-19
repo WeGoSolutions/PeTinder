@@ -1,7 +1,7 @@
 import { url } from "./provider/apiInstance";
 
 const reqs = {
-     listarPetsDisponiveis: async function (userId) {
+    listarPetsDisponiveis: async function (userId) {
         try {
             const response = await url.get(`/status/default/${userId}`); // <-- Adicione await aqui
             return {
@@ -28,6 +28,39 @@ const reqs = {
         }
     },
 
+    listarPetsDaOng: async function (ongId, page = 0, size = 10) {
+        try {
+            const response = await url.get(`/ongs/${ongId}/pets`, {
+                params: { page, size }
+            });
+            return {
+                data: response.data,
+                notFound: false
+            };
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                return { notFound: true };
+            } else {
+                console.error("Error fetching pets:", error);
+                return { notFound: false };
+            }
+        }
+    },
+
+    getTodasImagensPet: async function (petId, totalImagens) {
+        try {
+            const promises = [];
+            for (let i = 0; i < totalImagens; i++) {
+                promises.push(url.get(`/pets/${petId}/imagens/${i}`));
+            }
+
+            const responses = await Promise.all(promises);
+            return responses.map(response => response.data);
+        } catch (error) {
+            console.error("Error fetching all pet images:", error);
+            return [];
+        }
+    },
 
     handleCloseModal: async function () {
         const userId = sessionStorage.getItem("userId");
@@ -424,7 +457,6 @@ const reqs = {
         try {
             const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
             const dados = response.data;
-            console.log(dados);
             const mensagensDoPet = Array.isArray(dados)
                 ? dados
                     .filter(msg => msg.nomePet === nomePet || msg.petNome === nomePet)
@@ -956,24 +988,6 @@ const reqs = {
         }
     },
 
-    homeOngInteressados: async function (ongId) {
-        try {
-            const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
-            const dados = response.data;
-            return {
-                success: true,
-                mensagens: Array.isArray(dados) ? dados : []
-            };
-        } catch (error) {
-            console.error('Erro ao buscar mensagens:', error);
-            return {
-                success: false,
-                mensagens: [],
-                error: error
-            };
-        }
-    },
-
     interessadosMensagens: async function (ongId) {
         try {
             const response = await url.get(`/ongs/${ongId}/mensagens-pendentes`);
@@ -1013,28 +1027,28 @@ const reqs = {
         }
     },
 
-    listarPetsDaOng: async function (ongId, page) {
-        try {
-            const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
-            const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
-                id: pet.petId,
-                nome: pet.petNome,
-                src: pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : "",
-                isAdopted: Array.isArray(pet.status) && pet.status.includes('ADOPTED'),
-            })) : [];
-            return {
-                success: true,
-                pets: petsData
-            };
-        } catch (error) {
-            console.error("Erro ao buscar pets da ONG:", error);
-            return {
-                success: false,
-                pets: [],
-                error: error
-            };
-        }
-    },
+    // listarPetsDaOng: async function (ongId, page) {
+    //     try {
+    //         const response = await url.get(`/ongs/${ongId}/pets?page=${page}&size=10`);
+    //         const petsData = Array.isArray(response.data) ? response.data.map(pet => ({
+    //             id: pet.petId,
+    //             nome: pet.petNome,
+    //             src: pet.imageUrl && pet.imageUrl.length > 0 ? pet.imageUrl[0] : "",
+    //             isAdopted: Array.isArray(pet.status) && pet.status.includes('ADOPTED'),
+    //         })) : [];
+    //         return {
+    //             success: true,
+    //             pets: petsData
+    //         };
+    //     } catch (error) {
+    //         console.error("Erro ao buscar pets da ONG:", error);
+    //         return {
+    //             success: false,
+    //             pets: [],
+    //             error: error
+    //         };
+    //     }
+    // },
 
     modalDeEdicao: async function (petId) {
         try {

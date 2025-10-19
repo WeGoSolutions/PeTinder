@@ -56,7 +56,7 @@ useEffect(() => {
                     <div className="container-pendencia" key={idx}>
                         <img className="imagem-pet" src={pet.imagemPet} />
                         <p>
-                            {pet.nome} necessita de: {formatPendencias(pet.pendencias)}
+                            {pet.nome} necessita de: {formatPendencias(pet.faltas)}
                         </p>
                     </div>
                 ))

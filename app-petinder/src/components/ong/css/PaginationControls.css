@@ -1,0 +1,123 @@
+.paginationContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    padding: 1rem;
+    width: 100%;
+}
+
+.paginationInfo {
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.paginationControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.paginationButton {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+    min-width: 80px;
+}
+
+.paginationButton:hover:not(:disabled) {
+    background: #f9fafb;
+    border-color: #9ca3af;
+    transform: translateY(-1px);
+}
+
+.paginationButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.pageNumbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.pageButton {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    min-width: 2.5rem;
+    color: #374151;
+}
+
+.pageButton:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+}
+
+.activePage {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.activePage:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+}
+
+.ellipsis {
+    padding: 0.5rem 0.25rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .paginationControls {
+        gap: 0.5rem;
+    }
+    
+    .paginationButton {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+        min-width: 70px;
+    }
+    
+    .pageButton {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+        min-width: 2rem;
+    }
+    
+    .paginationInfo {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pageNumbers {
+        gap: 0.25rem;
+    }
+    
+    .paginationButton {
+        min-width: 60px;
+        padding: 0.3rem 0.6rem;
+    }
+}
