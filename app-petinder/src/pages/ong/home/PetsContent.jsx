@@ -199,21 +199,33 @@ export default function PetsContent() {
         if (!ongId) return;
 
         const fetchPets = async () => {
-            const result = await reqs.listarPetsDaOng(ongId, 0, 10);
+            const result = await reqs.listarPetsDaOng(ongId, currentPage, 10);
 
             if (result.data) {
+                console.log("✅ PAGINAÇÃO FUNCIONANDO - ESTRUTURA DO PET:",
+                    JSON.stringify(result.data.content[0], null, 2));
+
+                // ↓↓↓ VERIFIQUE ESPECIALMENTE ISSO ↓↓↓
+                if (result.data.content[0].imageUrl) {
+                    console.log("🖼️ IMAGEURL:", result.data.content[0].imageUrl);
+                    console.log("🔗 PRIMEIRA URL:", result.data.content[0].imageUrl[0]);
+
+                    // Teste se a URL da imagem é acessível
+                    fetch(result.data.content[0].imageUrl[0])
+                        .then(response => {
+                            console.log("📡 STATUS DA IMAGEM:", response.status);
+                            console.log("📡 IMAGEM ACESSÍVEL:", response.ok);
+                        })
+                        .catch(error => {
+                            console.log("❌ ERRO AO ACESSAR IMAGEM:", error);
+                        });
+                } else {
+                    console.log("❌ imageUrl ESTÁ VAZIO/NULO");
+                }
+
                 setPets(result.data.content || []);
                 setTotalPages(result.data.totalPages || 0);
                 setTotalElements(result.data.totalElements || 0);
-            } else if (result.notFound) {
-                setPets([]);
-                setTotalPages(0);
-                setTotalElements(0);
-            } else {
-                setPets([]);
-                setTotalPages(0);
-                setTotalElements(0);
-                console.error("Erro ao buscar pets da ONG");
             }
         };
 
