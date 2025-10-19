@@ -196,10 +196,8 @@ export default function PetsContent() {
 
         const fetchPets = async () => {
             const result = await reqs.listarPetsDaOng(ongId, 0, 10);
-            console.log("RESPOSTA DA API:", result);
 
             if (result.data) {
-                console.log("Conteúdo dos pets:", result.data.content); 
                 setPets(result.data.content || []);
             } else if (result.notFound) {
                 setPets([]);
