@@ -1,8 +1,13 @@
+:global(.mainContent) {
+    padding: 10px !important;
+}
+
 .petContainer {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    justify-content: space-around;
 
     .petHeader {
         background: var(--secondaryColor);
@@ -15,7 +20,7 @@
         justify-content: space-evenly;
 
         input {
-            height: 6vh;
+            height: 60%;
             width: 85%;
             padding-left: 40px;
             border-radius: 20px;
@@ -28,7 +33,7 @@
         }
 
         button {
-            height: 6vh;
+            height: 60%;
             font-size: 16px;
             padding-left: 15px;
             padding-right: 15px;
@@ -49,9 +54,10 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 20px;
-        padding: 20px;
-        height: 70vh;
-        overflow-y: auto;
+        padding-top: 10px;
+        height: 80%;
+        /* overflow-y: auto; */
+        justify-items: center;
     }
 }
 
@@ -127,7 +133,6 @@
 
 .petInfosCheckbox {
     margin-top: 10px;
-    /* margin-bottom: 10px; */
     gap: 7px;
     margin-bottom: -24px;
 
@@ -272,7 +277,6 @@
 
     .back {
         margin-top: 15px;
-        /* margin-left: -300px; */
     }
 }
 
@@ -292,7 +296,6 @@
 
     .back {
         margin-top: 15px;
-        /* margin-left: -300px; */
     }
 }
 
@@ -319,39 +322,8 @@
     cursor: pointer !important;
 }
 
-/* ↓↓↓ ADICIONE ESTES ESTILOS NO FINAL DO ARQUIVO ↓↓↓ */
-
 .paginationWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 20px 0;
-    margin-top: auto; /* Empurra para baixo se necessário */
+    padding: 0px;
+    border-radius: 12px;
+    height: 10%;
 }
-
-/* Se quiser a paginação fixa no rodapé, use: */
-/* .paginationWrapper {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding: 15px 0;
-    border-top: 1px solid #eee;
-} */
-
-/* Ajuste a altura do container principal */
-/* .petContainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh; 
-}
-
-.pets {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    padding: 20px;
-    flex: 1;
-    overflow-y: auto;
-} */

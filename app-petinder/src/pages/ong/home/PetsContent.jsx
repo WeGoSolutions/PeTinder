@@ -195,42 +195,42 @@ export default function PetsContent() {
     };
 
     useEffect(() => {
-      const ongId = sessionStorage.getItem("ongId");
-      if (!ongId) return;
+        const ongId = sessionStorage.getItem("ongId");
+        if (!ongId) return;
 
-      const fetchPets = async () => {
-        try {
-          const result = await reqs.listarPetsDaOng(ongId, currentPage, 10);
-
-          if (!result?.data) {
-            console.error("Erro: resposta inválida ao listar pets", result);
-            return;
-          }
-
-          const content = result.data.content || [];
-
-          // Verifica acessibilidade da primeira imagem (somente em caso de erro será logado)
-          const firstImageUrl = content[0]?.imageUrl?.[0];
-          if (firstImageUrl) {
+        const fetchPets = async () => {
             try {
-              const resp = await fetch(firstImageUrl);
-              if (!resp.ok) {
-                console.error("Imagem não acessível:", firstImageUrl, "status:", resp.status);
-              }
-            } catch (err) {
-              console.error("Erro ao acessar imagem:", firstImageUrl, err);
+                const result = await reqs.listarPetsDaOng(ongId, currentPage, 10);
+
+                if (!result?.data) {
+                    console.error("Erro: resposta inválida ao listar pets", result);
+                    return;
+                }
+
+                const content = result.data.content || [];
+
+                // Verifica acessibilidade da primeira imagem (somente em caso de erro será logado)
+                const firstImageUrl = content[0]?.imageUrl?.[0];
+                if (firstImageUrl) {
+                    try {
+                        const resp = await fetch(firstImageUrl);
+                        if (!resp.ok) {
+                            console.error("Imagem não acessível:", firstImageUrl, "status:", resp.status);
+                        }
+                    } catch (err) {
+                        console.error("Erro ao acessar imagem:", firstImageUrl, err);
+                    }
+                }
+
+                setPets(content);
+                setTotalPages(result.data.totalPages ?? 0);
+                setTotalElements(result.data.totalElements ?? 0);
+            } catch (error) {
+                console.error("Erro ao listar pets da ONG:", error);
             }
-          }
+        };
 
-          setPets(content);
-          setTotalPages(result.data.totalPages ?? 0);
-          setTotalElements(result.data.totalElements ?? 0);
-        } catch (error) {
-          console.error("Erro ao listar pets da ONG:", error);
-        }
-      };
-
-      fetchPets();
+        fetchPets();
     }, [currentPage]);
 
     const openAddModal = () => {
@@ -583,15 +583,15 @@ export default function PetsContent() {
                         onDelete={() => handleDeleteClick(pet)}
                     />
                 ))}
-                <div className={styles.paginationWrapper}>
-                    <PaginationControls
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        totalElements={totalElements}
-                        currentItemsCount={pets.length}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
+            </div>
+            <div className={styles.paginationWrapper}>
+                <PaginationControls
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalElements={totalElements}
+                    currentItemsCount={pets.length}
+                    onPageChange={handlePageChange}
+                />
             </div>
         </div>
     );

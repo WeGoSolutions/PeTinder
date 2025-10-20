@@ -14,7 +14,7 @@ function NotifyCard(props) {
     useEffect(() => {
         if (props.notifyType === "ADOPTED") {
             setNotifyIcon("./adopted.svg");
-        } else if (props.notifyType === "NOT_ADOPTED" || props.notifyType === "NOTADOPTED" || props.notifyType === "OTHERS") {
+        } else if (props.notifyType === "NOTADOPTED" || props.notifyType === "OTHERS") {
             setNotifyIcon("./others.svg");
         }
     }, [props.notifyType]);

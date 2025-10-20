@@ -2,16 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
-    margin: 2rem 0;
-    padding: 1rem;
+    gap: 5px;
     width: 100%;
 }
 
 .paginationInfo {
     text-align: center;
     color: #666;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
 }
 
@@ -30,10 +28,10 @@
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     font-weight: 500;
     color: #374151;
-    min-width: 80px;
+    min-width: 50px;
 }
 
 .paginationButton:hover:not(:disabled) {
@@ -61,8 +59,8 @@
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 0.9rem;
-    min-width: 2.5rem;
+    font-size: 0.8rem;
+    min-width: 2.4rem;
     color: #374151;
 }
 
