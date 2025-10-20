@@ -1,6 +1,6 @@
 import UserImage from "./UserImage";
 import SecondaryButton from "./SecondaryButton";
-import NotifyCard from "./NotifyCard"
+import NotifyCard from "./NotifyCard";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { url } from "../provider/apiInstance";
@@ -10,68 +10,39 @@ function NotifyArea() {
     const name = sessionStorage.userName;
     const userId = sessionStorage.getItem("userId");
     const [userImageSrc, setUserImageSrc] = useState(null);
+    const [notifications, setNotifications] = useState([]);
 
-    const notifications = [
-  {
-    id: 1,
-    notifyType: "ADOPTED",
-    title: "É seu!",
-    description: "Adoção confirmada! Lucifer ganhou um novo lar.",
-    viewed: false
-  },
-  {
-    id: 2,
-    notifyType: "NOTADOPTED",
-    title: "Adoção não realizada",
-    description: "Infelizmente a adoção do Thor não foi concluída.",
-    viewed: false
-  },
-  {
-    id: 3,
-    notifyType: "OTHERS",
-    title: "Atualização",
-    description: "Seu perfil foi atualizado com sucesso.",
-    viewed: true
-  },
-  {
-    id: 2,
-    notifyType: "NOTADOPTED",
-    title: "Adoção não realizada",
-    description: "Infelizmente a adoção do Thor não foi concluída.",
-    viewed: false
-  },
-  {
-    id: 3,
-    notifyType: "OTHERS",
-    title: "Atualização",
-    description: "Seu perfil foi atualizado com sucesso.",
-    viewed: true
-  },
-  {
-    id: 3,
-    notifyType: "OTHERS",
-    title: "Atualização",
-    description: "Seu perfil foi atualizado com sucesso.",
-    viewed: true
-  },
-  {
-    id: 2,
-    notifyType: "NOTADOPTED",
-    title: "Adoção não realizada",
-    description: "Infelizmente a adoção do Thor não foi concluída.",
-    viewed: false
-  },
-  {
-    id: 3,
-    notifyType: "OTHERS",
-    title: "Atualização",
-    description: "Seu perfil foi atualizado com sucesso.",
-    viewed: true
-  }
-];
+    const buscarNotificacoes = async () => {
+        if (!userId) return;
+
+        try {
+            const response = await url.get(`/notifications/${userId}`);
+            
+            if (response.status === 200) {
+                setNotifications(response.data);
+            }
+        } catch (err) {
+            console.error("Erro ao buscar notificações:", err);
+        }
+    };
+
+    const deletarNotificacao = async (notifyId) => {
+        setNotifications(prev => prev.filter(n => n.notifyId !== notifyId));
+        
+        try {
+            await url.delete(`/notifications/${userId}/${notifyId}`);
+        } catch (err) {
+            console.error("❌ Erro ao deletar notificação:", err);
+            buscarNotificacoes();
+        }
+    };
 
     useEffect(() => {
-
+        buscarNotificacoes();
+        
+        const interval = setInterval(buscarNotificacoes, 10000);
+        
+        return () => clearInterval(interval);
     }, [userId]);
 
     return (
@@ -81,14 +52,22 @@ function NotifyArea() {
                     <img src="./setaUP.svg" alt="Seta para cima" />
                 </div>
                 <div className="notifyAreaContainer">
-                    {notifications.map((notify) => (
-                        <NotifyCard
-                            notifyType={notify.notifyType}
-                            title={notify.title}
-                            description={notify.description}
-                            viewed={notify.viewed}
-                        />
-                    ))}
+                    {notifications.length === 0 ? (
+                        <div className="no-notifications">
+                            <p>Sem notificações no momento.</p>
+                        </div>
+                    ) : (
+                        notifications.map((notify, index) => (
+                            <NotifyCard
+                                key={notify.notifyId || index}
+                                notifyType={notify.notifyType}
+                                title={notify.title}
+                                description={notify.description}
+                                viewed={notify.viewed}
+                                onDelete={() => deletarNotificacao(notify.notifyId)}
+                            />
+                        ))
+                    )}
                 </div>
             </div>
         </div>
