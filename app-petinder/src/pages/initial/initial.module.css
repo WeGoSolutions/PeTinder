@@ -74,6 +74,7 @@ body {
     padding: 15px;
     background: transparent; /* deixa o fundo neutro */
     overflow: visible;
+    pointer-events: none;
 }
 
 .toastContainer {
@@ -83,4 +84,5 @@ body {
     padding: 0.8rem;
     z-index: 2100;
     position: relative;
+    pointer-events: none;
 }
