@@ -219,9 +219,9 @@ const reqs = {
             const ongId = sessionStorage.getItem("ongId");
 
             if (ongId) {
-                await url.put(`/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
+                await url.post(`/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
             } else if (userId) {
-                await url.put(`/users/${userId}/imagem`, { imagemUsuario: base64Image });
+                await url.post(`/users/${userId}/imagem`, { imagemUsuario: base64Image });
             } else {
                 return {
                     success: false,
