@@ -197,8 +197,8 @@ function Initial() {
     useEffect(() => {
         const fetchPets = async () => {
             const userId = sessionStorage.getItem("userId");
-            const petData = await Reqs.listarPetsDisponiveis(userId);
-            setPets(petData.data || []);
+            const petData = await Reqs.listarPetsDisponiveis(userId, 0, 10);
+            setPets(petData.data?.content || []);
             setNotFound(petData.notFound);
         };
         fetchPets();
@@ -231,18 +231,18 @@ function Initial() {
     }, [pets, petIndex]);
 
 
-    useEffect(() => {
-        async function fetchImages() {
-            if (pet.id) {
-                const petImages = await Reqs.getImagensPets(pet.id);
-                setPet(prevPet => ({
-                    ...prevPet,
-                    images: petImages || []
-                }));
-            }
-        }
-        fetchImages();
-    }, [pet.id]);
+    // useEffect(() => {
+    //     async function fetchImages() {
+    //         if (pet.id) {
+    //             const petImages = await Reqs.getImagensPets(pet.id);
+    //             setPet(prevPet => ({
+    //                 ...prevPet,
+    //                 images: petImages || []
+    //             }));
+    //         }
+    //     }
+    //     fetchImages();
+    // }, [pet.id]);
 
     const handleSubmit = async () => {
         const result = await Reqs.handleSubmit(formValues);
@@ -377,7 +377,7 @@ function Initial() {
                     </>
                 }
             </div>
-            
+
             <div className={styles.toast}>
                 <div className="toastContainer">
                     {toast.mensagem && (

@@ -1,9 +1,11 @@
 import { url } from "./provider/apiInstance";
 
 const reqs = {
-    listarPetsDisponiveis: async function (userId) {
+    listarPetsDisponiveis: async function (userId, page = 0, size = 10) {
         try {
-            const response = await url.get(`/status/default/${userId}`); // <-- Adicione await aqui
+            const response = await url.get(`/status/default/${userId}`, {
+                params: { page, size }  
+            });
             return {
                 data: response.data,
                 notFound: false
