@@ -85,48 +85,75 @@ export default function PetsContent() {
 
         const vac = vacStatus;
 
-        const imagemBase64 = await Promise.all(
-            images.map(async (img) => {
-                if (img.file) {
-                    // Nova imagem (file)
-                    const [base64] = await convertImagesToBase64([img.file]);
-                    return base64;
-                } else if (img.url) {
-                    // Imagem existente (url)
+        const imagensResult = await (async () => {
+        const base64s = [];
+        const nomes = [];
+        for (let i = 0; i < images.length; i++) {
+            const img = images[i];
+            if (img.file) {
+                // Nova imagem (file)
+                const [base64] = await convertImagesToBase64([img.file]);
+                base64s.push(base64);
+                nomes.push(img.file.name || `imagem_${i}`);
+            } else if (img.url) {
+                // Imagem existente (url) -> busca blob e converte
+                try {
                     const response = await fetch(img.url);
                     const blob = await response.blob();
-                    return await new Promise((resolve, reject) => {
+                    const base64 = await new Promise((resolve, reject) => {
                         const reader = new FileReader();
                         reader.onloadend = () => resolve(reader.result);
                         reader.onerror = reject;
                         reader.readAsDataURL(blob);
                     });
+                    base64s.push(base64);
+                } catch (err) {
+                    console.error("Erro ao buscar imagem por URL:", img.url, err);
+                    base64s.push(null);
                 }
-                return null;
-            })
-        );
 
-        let idadeFinal = Number(formStep1.idade);
-        if (formStep1.idadeTipo === "Meses") {
-            idadeFinal = idadeFinal / 100;
+                // tenta extrair nome do caminho da URL, com fallback
+                try {
+                    const parsed = new URL(img.url, window.location.href);
+                    const extracted = decodeURIComponent(parsed.pathname.split("/").pop() || `imagem_${i}`);
+                    nomes.push(extracted);
+                } catch {
+                    const parts = img.url.split("/");
+                    nomes.push(decodeURIComponent(parts.pop() || `imagem_${i}`));
+                }
+            } else {
+                base64s.push(null);
+                nomes.push(null);
+            }
         }
+        return { imagensBase64: base64s, nomesArquivos: nomes };
+    })();
 
-        const payload = {
-            idade: idadeFinal,
-            nome: formStep1.nome,
-            peso: Number(formStep1.peso) || 0,
-            altura: Number(formStep1.altura) || 0,
-            porte: formStep1.porte,
-            curtidas: 0,
-            tags: selectedTags,
-            descricao: formStep1.descricao,
-            ongId: sessionStorage.getItem("ongId"),
-            sexo: formStep1.sexo?.toUpperCase() || "",
-            isCastrado: vac.castrado,
-            isVermifugo: vac.vermifugado,
-            isVacinado: vac.vacinado,
-            imagemBase64,
-        };
+    const imagensBase64 = imagensResult.imagensBase64;
+    const nomesArquivos = imagensResult.nomesArquivos;
+
+    let idadeFinal = Number(formStep1.idade);
+    if (formStep1.idadeTipo === "Meses") {
+        idadeFinal = idadeFinal / 100;
+    }
+
+    const payload = {
+        idade: idadeFinal,
+        nome: formStep1.nome,
+        peso: Number(formStep1.peso) || 0,
+        altura: Number(formStep1.altura) || 0,
+        porte: formStep1.porte,
+        curtidas: 0,
+        tags: selectedTags,
+        descricao: formStep1.descricao,
+        ongId: sessionStorage.getItem("ongId"),
+        sexo: formStep1.sexo?.toUpperCase() || "",
+        isCastrado: vac.castrado,
+        isVermifugado: vac.vermifugado,
+        isVacinado: vac.vacinado,
+        imagensBase64,
+        nomesArquivos, // <- adicionado
+    };
 
         const result = await reqs.editarInfosDoPet(modo, editingPetId, payload);
         if (result.success) {
@@ -210,7 +237,7 @@ export default function PetsContent() {
                 const content = result.data.content || [];
 
                 // Verifica acessibilidade da primeira imagem (somente em caso de erro será logado)
-                const firstImageUrl = content[0]?.imageUrl?.[0];
+                const firstImageUrl = content[0]?.imagensUrls?.[0];
                 if (firstImageUrl) {
                     try {
                         const resp = await fetch(firstImageUrl);

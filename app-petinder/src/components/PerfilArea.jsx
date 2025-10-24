@@ -18,7 +18,7 @@ function PerfilArea() {
         
         const fetchUserImage = async () => {
             const result = await reqs.getUserImage(userId);
-            setUserImageSrc(result.imageUrl);
+            setUserImageSrc(result.imagemUrl);
         };
         
         fetchUserImage();
