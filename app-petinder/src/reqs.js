@@ -176,22 +176,22 @@ const reqs = {
 
     getUserImage: async function (userId) {
         try {
-            const response = await url.get(`/users/${userId}/imagem`);
+            const response = await url.get(`/users/${userId}`);
             return {
                 success: true,
-                imageUrl: response.data.imageUrl
+                imagemUrl: response.data.imagemUrl
             };
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 return {
                     success: false,
-                    imageUrl: false,
+                    imagemUrl: false,
                     notFound: true
                 };
             } else {
                 return {
                     success: false,
-                    imageUrl: false,
+                    imagemUrl: false,
                     error: error
                 };
             }
@@ -221,7 +221,7 @@ const reqs = {
             const ongId = sessionStorage.getItem("ongId");
 
             if (ongId) {
-                await url.post(`/ongs/${ongId}/imagem`, { imagensBytes: base64Image });
+                await url.put(`/ongs/${ongId}/imagem`, { imagem: base64Image });
             } else if (userId) {
                 await url.post(`/users/${userId}/imagem`, { imagemUsuario: base64Image });
             } else {
