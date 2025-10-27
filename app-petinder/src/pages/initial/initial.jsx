@@ -224,6 +224,7 @@ function Initial() {
                 isVermifugo: currentPet.isVermifugo,
                 isVacinado: currentPet.isVacinado,
                 endereco: currentPet.endereco,
+                status: currentPet.status
             }
 
             setPet(pet);
@@ -300,11 +301,26 @@ function Initial() {
         }
     };
 
+   // ...existing code...
     const handleLoadPetById = async (petId) => {
         const result = await Reqs.getPetByIdInitial(petId);
 
         if (result.success) {
             const data = result.data;
+
+            let imagesArr = data.imagens || data.imagensUrls || [];
+            if (!Array.isArray(imagesArr)) imagesArr = [];
+
+            imagesArr = imagesArr.map(img => {
+                if (!img) return "";
+                if (typeof img === "string") return img;
+                if (img.url) return img.url;
+                if (img.imageUrl) return img.imageUrl;
+                return String(img);
+            }).filter(Boolean);
+
+            const tags = Array.isArray(data.tags) ? data.tags : [];
+
             setPet({
                 id: data.id,
                 nome: data.nome,
@@ -312,15 +328,16 @@ function Initial() {
                 curtidas: data.curtidas,
                 isLiked: true,
                 descricao: data.descricao,
-                tags: data.tags,
-                qntdTags: data.tags.length,
-                images: data.imagens || [],
+                tags: tags,
+                qntdTags: tags.length,
+                images: imagesArr,
                 nomeOng: data.nomeOng,
                 linkOng: data.linkOng,
                 isCastrado: data.isCastrado,
                 isVermifugo: data.isVermifugo,
                 isVacinado: data.isVacinado,
                 endereco: data.endereco,
+                status: data.status
             });
             setNotFound(false); // <-- Garante que o erro some ao selecionar um pet curtido
             setIsSideMenuOpen(false);
@@ -351,6 +368,7 @@ function Initial() {
                             images={pet.images}
                             adotar={handleAdotarPet}
                             passar={aumentarIndex}
+                            showAdotar={!(pet?.status === "PENDING")}
                         />
                         <PetInfo
                             petId={pet.id}

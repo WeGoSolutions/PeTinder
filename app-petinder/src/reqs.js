@@ -6,6 +6,7 @@ const reqs = {
             const response = await url.get(`/status/default/${userId}`, {
                 params: { page, size }  
             });
+            console.log("listarPetsDisponiveis response:", response);
             return {
                 data: response.data,
                 notFound: false
@@ -756,7 +757,8 @@ const reqs = {
 
     getPetByIdInitial: async function (petId) {
         try {
-            const response = await url.get(`/pets/${petId}`);
+            const response = await url.get(`/pets/${petId}?userId=${sessionStorage.getItem("userId")}`);
+            console.log("getPetByIdInitial response:", response);
             return {
                 success: true,
                 data: response.data
