@@ -2,13 +2,17 @@ import "./components.css";
 import CarrouselPetImages from "./CarrouselPetImages";
 
 function PetActions(props) {
+    const showAdotar = props.showAdotar ?? true;
+
     return (
         <div className="petActionsContainer">
             <div className="actionsContainer">
-                <button className="left" onClick={props.adotar}>
-                    <img src="../../adotar.svg" alt="" />
-                    <span>Adotar</span>
-                </button>
+                {showAdotar && (
+                    <button className="left" onClick={props.adotar}>
+                        <img src="../../adotar.svg" alt="" />
+                        <span>Adotar</span>
+                    </button>
+                )}
                 <button className="right" onClick={props.passar}>
                     <img src="../../proximo.svg" alt="" />
                     <span>Passar</span>
