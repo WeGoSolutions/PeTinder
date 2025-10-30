@@ -428,6 +428,11 @@
     font-weight: bold;
     color: #ff2828;
     background: #ffa5a5;
+    transition: 500ms;
+}
+
+.containerTag:hover {
+    scale: 1.03;
 }
 
 .containerTag p {
