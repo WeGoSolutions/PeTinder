@@ -1,3 +1,4 @@
+import axios from "axios";
 import { url } from "./provider/apiInstance";
 
 const reqs = {
@@ -157,7 +158,7 @@ const reqs = {
 
     changePassword: async function (novaSenha, email) {
         try {
-            await url.patch(`/users/senha`, {
+            await axios.patch(`http://localhost:8080/a/users/senha`, { //ALTERAR POIS UTILIZA O ENDPOINT DA V1 - @PatchMapping("/{id}/senha") - V2 MAS NÃO USA ID E SIM O EMAIL
                 senha: novaSenha,
                 email: email
             });
