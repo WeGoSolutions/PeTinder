@@ -158,9 +158,9 @@ const reqs = {
 
     changePassword: async function (novaSenha, email) {
         try {
-            await axios.patch(`http://localhost:8080/a/users/senha`, { //ALTERAR POIS UTILIZA O ENDPOINT DA V1 - @PatchMapping("/{id}/senha") - V2 MAS NÃO USA ID E SIM O EMAIL
-                senha: novaSenha,
-                email: email
+            await url.patch(`/users/${email}/senha`, {
+                senhaAtual: "", // Para "esqueci a senha", pode ser vazio ou um valor especial
+                novaSenha: novaSenha
             });
             return {
                 success: true,
