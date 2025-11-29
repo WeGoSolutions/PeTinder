@@ -170,7 +170,6 @@ function Config() {
         if (!userId) return;
 
         if (formValuesSenha.novaSenha !== formValuesSenha.confirmarSenha) {
-            alert(Strings.erroSenha6);
             return;
         }
 
