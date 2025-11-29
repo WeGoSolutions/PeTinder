@@ -42,11 +42,9 @@ function UserImage({ src, alt = "Foto do usuário", size = 180, hasEdit }) {
             if (result.success) {
                 window.location.reload();
             } else {
-                alert(result.message);
                 setIsSaving(false);
             }
         } catch (error) {
-            alert("Erro ao salvar imagem.");
             setIsSaving(false);
         }
     };

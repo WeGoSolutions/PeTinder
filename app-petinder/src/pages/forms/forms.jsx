@@ -11,7 +11,6 @@ function Forms() {
         event.preventDefault();
 
         if (!image) {
-            alert("Selecione uma imagem antes de enviar.");
             return;
         }
 
@@ -89,7 +88,6 @@ function Forms() {
 
     const handleSave = () => {
         localStorage.setItem("formularioAdocao", JSON.stringify(formData));
-        alert("Informações salvas com sucesso!");
     };
 
 

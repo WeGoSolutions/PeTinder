@@ -39,6 +39,7 @@ useEffect(() => {
         const result = await reqs.getDashboardPendenciasBadges(ongId);
         if (result.success) {
             setPendentes(result.data);
+            console.log("PEndentes", result.data)
         } else {
             setPendentes([]);
         }
@@ -54,7 +55,7 @@ useEffect(() => {
             ) : (
                 pendentes.map((pet, idx) => (
                     <div className="container-pendencia" key={idx}>
-                        <img className="imagem-pet" src={pet.imagemPet} />
+                        <img className="imagem-pet" src={pet.imageUrl} />
                         <p>
                             {pet.nome} necessita de: {formatPendencias(pet.faltas)}
                         </p>

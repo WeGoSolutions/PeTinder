@@ -41,7 +41,7 @@ function PetCard(props) {
             setAdotanteId(idAdotante);
             window.location.reload();
         } else {
-            alert("Erro ao marcar como adotado");
+            console.error("Erro ao marcar como adotado:", result.error);
         }
     };
 
@@ -52,7 +52,7 @@ function PetCard(props) {
         if (result.success) {
             window.location.reload();
         } else {
-            alert("Erro ao marcar como adotado");
+            console.error("Erro ao marcar como adotado:", result.error);
         }
     }
 
@@ -68,7 +68,6 @@ function PetCard(props) {
             window.location.reload();
         } else {
             console.error("Erro ao voltar para adoção:", result.error);
-            alert("Erro ao voltar para adoção");
         }
     };
 
