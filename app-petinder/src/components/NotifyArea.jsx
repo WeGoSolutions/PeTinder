@@ -1,6 +1,6 @@
 import UserImage from "./UserImage";
 import SecondaryButton from "./SecondaryButton";
-import NotifyCard from "./NotifyCard";
+import NotifyCard from "./notifyCard";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { url } from "../provider/apiInstance";
