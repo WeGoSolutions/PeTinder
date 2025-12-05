@@ -1,10 +1,9 @@
 name: Deploy Frontend Petinder
 
-# Dispara quando há push para a branch main
 on:
   push:
     branches:
-      - deploy-frontend
+      - develop
 
 jobs:
   build:
