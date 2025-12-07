@@ -7,7 +7,7 @@ import DemonstrationForm from "./pages/demonstration/demonstration"
 import Initial from "./pages/initial/initial";
 import Forms from "./pages/forms/forms";
 import Teste from "./pages/Teste";
-import Config from "./pages/config/Config";
+import Config from "./pages/config/config";
 import HomeOng from "./pages/ong/home/home";
 
 import HomeContent from "./pages/ong/home/HomeContent";
