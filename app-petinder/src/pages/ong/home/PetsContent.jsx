@@ -149,7 +149,7 @@ export default function PetsContent() {
         ongId: sessionStorage.getItem("ongId"),
         sexo: formStep1.sexo?.toUpperCase() || "",
         isCastrado: vac.castrado,
-        isVermifugado: vac.vermifugado,
+        isVermifugo: vac.vermifugado,
         isVacinado: vac.vacinado,
         imagensBase64,
         nomesArquivos, // <- adicionado
@@ -330,9 +330,9 @@ export default function PetsContent() {
                 vermifugado: !!pet.isVermifugo,
                 vacinado: !!pet.isVacinado,
             });
-            if (pet.imagens && pet.imagens.length > 0) {
+            if (pet.imagensUrls && pet.imagensUrls.length > 0) {
                 setImages(
-                    pet.imagens.map(url => ({
+                    pet.imagensUrls.map(url => ({
                         file: null,
                         url,
                     }))
